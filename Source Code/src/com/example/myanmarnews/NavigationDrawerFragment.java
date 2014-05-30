@@ -1,6 +1,8 @@
 package com.example.myanmarnews;
 
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -97,9 +99,9 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        /*mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
+                R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
                 		getString(R.string.myanmar_test),
@@ -107,6 +109,15 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section2),
                         getString(R.string.title_section3),
                 }));
+        */
+        ArrayList<Item> listItem = new ArrayList<Item>();
+        listItem.add(new Item(getString(R.string.title_section1), R.drawable.ic_launcher));
+        listItem.add(new Item(getString(R.string.title_section2), R.drawable.ic_launcher));
+        listItem.add(new Item(getString(R.string.title_section3), R.drawable.ic_launcher));
+        mDrawerListView.setAdapter(new ListItemAdapter(
+        		getActionBar().getThemedContext(),
+        		R.layout.list_item, 
+        		listItem));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
