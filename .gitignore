@@ -26,7 +26,3 @@ proguard/
 *.log
 #Cache files
 *.cache
-Source Code/bin/MyanmarNews.apk
-*.apk
-*.ap_
-*.dex
