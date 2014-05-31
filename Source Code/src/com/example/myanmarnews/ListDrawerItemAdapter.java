@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +33,7 @@ public class ListDrawerItemAdapter extends ArrayAdapter<DrawerItem> {
 		 * we are overriding the getView method here - this is what defines how each
 		 * list item will look.
 		 */
+		@Override
 		public View getView(int position, View convertView, ViewGroup parent){
 
 			// assign the view we are converting to a local variable

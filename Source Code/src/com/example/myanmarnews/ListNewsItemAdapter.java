@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +33,7 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 		 * we are overriding the getView method here - this is what defines how each
 		 * list item will look.
 		 */
+		@Override
 		public View getView(int position, View convertView, ViewGroup parent){
 
 			// assign the view we are converting to a local variable
@@ -43,7 +43,7 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 			// to inflate it basically means to render, or show, the view.
 			if (v == null) {
 				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = inflater.inflate(R.layout.main_content_news_layout, null);
+				v = inflater.inflate(R.layout.news_live_layout, null);
 			}
 
 			/*
