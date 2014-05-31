@@ -141,7 +141,7 @@ public class MainActivity extends Activity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.main_content_news_layout, container, false);
             ImageView avatar = (ImageView) rootView.findViewById(R.id.image_single_news);
             
             TextView titleNews = (TextView) rootView.findViewById(R.id.title_single_news);
