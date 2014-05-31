@@ -99,21 +99,14 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        /*mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                		getString(R.string.myanmar_test),
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
-        */
+        
+        //Create ArrayList for Item in menu
         ArrayList<Item> listItem = new ArrayList<Item>();
         listItem.add(new Item(getString(R.string.title_section1), R.drawable.ic_launcher));
         listItem.add(new Item(getString(R.string.title_section2), R.drawable.ic_launcher));
         listItem.add(new Item(getString(R.string.title_section3), R.drawable.ic_launcher));
+        
+        //SetAdapter for menu
         mDrawerListView.setAdapter(new ListItemAdapter(
         		getActionBar().getThemedContext(),
         		R.layout.list_item, 
