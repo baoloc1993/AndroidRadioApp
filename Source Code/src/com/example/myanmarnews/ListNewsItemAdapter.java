@@ -3,6 +3,10 @@ package com.example.myanmarnews;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +15,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
-
 	public ListNewsItemAdapter(Context context, int resource) {
 		super(context, resource);
+		
 		// TODO Auto-generated constructor stub
 	}
 
 	// declaring our ArrayList of items
 		private ArrayList<NewsItem> objects;
+		private int screenHeight;
+		private int screenWidth;
 
 		/* here we must override the constructor for ArrayAdapter
 		* the only variable we care about now is ArrayList<Item> objects,
@@ -43,7 +49,8 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 			// to inflate it basically means to render, or show, the view.
 			if (v == null) {
 				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = inflater.inflate(R.layout.news_live_layout, null);
+				v = inflater.inflate(R.layout.preview_single_news_layout, null);
+				
 			}
 
 			/*
@@ -60,24 +67,32 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 				// This is how you obtain a reference to the TextViews.
 				// These TextViews are created in the XML files we defined.
 
-				TextView title = (TextView) v.findViewById(R.id.title_single_news);
-				ImageView icon = (ImageView) v.findViewById(R.id.image_single_news);
-				TextView content = (TextView)v.findViewById(R.id.content_single_news);
-				TextView publicDate = (TextView)v.findViewById(R.id.date_time_single_news);
+				TextView title = (TextView) v.findViewById(R.id.title);
+				ImageView icon = (ImageView) v.findViewById(R.id.icon);
+				TextView content = (TextView)v.findViewById(R.id.content);
+				TextView timestamp = (TextView)v.findViewById(R.id.timestamp);
 				
 				// check to see if each individual textview is null.
 				// if not, assign some text!
 				if (title != null){
 					title.setText( i.getTitle());
+					title.setWidth((int)(MainActivity.screenWidth*0.7));
 				}
 				if (icon != null){
 					icon.setImageResource(i.getImageID());
+					Drawable drawable = icon.getDrawable();
+			        Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+			        int size = (int)(MainActivity.screenWidth*(0.2));
+			        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap,size,size,true);
+			        icon.setImageBitmap(scaledBitmap);
 				}
 				if (content != null){
 					content.setText(i.getContent());
+					content.setWidth((int)(MainActivity.screenWidth*0.7));
 				}
-				if (publicDate != null){
-					publicDate.setText(i.getPublicDate());
+				if (timestamp != null){
+					timestamp.setText(i.getPublicDate());
+					timestamp.setWidth((int)(MainActivity.screenWidth*0.7));
 				}
 				
 			}

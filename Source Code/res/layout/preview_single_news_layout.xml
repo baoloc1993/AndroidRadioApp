@@ -2,7 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:padding="10dp"
+    android:orientation="vertical"
+    
+    >
 
     <TextView
         android:id="@+id/title"
@@ -10,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        
+        android:text="title"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     <TextView
         android:id="@+id/content"
@@ -18,7 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="content"
+        android:lines="3"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
         android:id="@+id/icon"
@@ -26,8 +31,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="23dp"
-        android:layout_marginTop="23dp"
         android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/content"
+        android:layout_below="@+id/content"
+        android:text="Time Stamp" />
 
 </RelativeLayout>
