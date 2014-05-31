@@ -101,13 +101,13 @@ public class NavigationDrawerFragment extends Fragment {
         });
         
         //Create ArrayList for Item in menu
-        ArrayList<Item> listItem = new ArrayList<Item>();
-        listItem.add(new Item(getString(R.string.title_section1), R.drawable.ic_launcher));
-        listItem.add(new Item(getString(R.string.title_section2), R.drawable.ic_launcher));
-        listItem.add(new Item(getString(R.string.title_section3), R.drawable.ic_launcher));
+        ArrayList<DrawerItem> listItem = new ArrayList<DrawerItem>();
+        listItem.add(new DrawerItem(getString(R.string.title_section1), R.drawable.ic_launcher));
+        listItem.add(new DrawerItem(getString(R.string.title_section2), R.drawable.ic_launcher));
+        listItem.add(new DrawerItem(getString(R.string.title_section3), R.drawable.ic_launcher));
         
         //SetAdapter for menu
-        mDrawerListView.setAdapter(new ListItemAdapter(
+        mDrawerListView.setAdapter(new ListDrawerItemAdapter(
         		getActionBar().getThemedContext(),
         		R.layout.list_item, 
         		listItem));
