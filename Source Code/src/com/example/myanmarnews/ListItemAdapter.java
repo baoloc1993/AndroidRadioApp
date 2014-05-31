@@ -60,8 +60,9 @@ public class ListItemAdapter extends ArrayAdapter<Item> {
 				// This is how you obtain a reference to the TextViews.
 				// These TextViews are created in the XML files we defined.
 
-				TextView title = (TextView) v.findViewById(R.id.text1);
-				ImageView icon = (ImageView) v.findViewById(R.id.image1);
+				TextView title = (TextView) v.findViewById(R.id.title);
+				ImageView icon = (ImageView) v.findViewById(R.id.icon);
+				TextView notification = (TextView)v.findViewById(R.id.notification);
 				
 				// check to see if each individual textview is null.
 				// if not, assign some text!
@@ -70,6 +71,9 @@ public class ListItemAdapter extends ArrayAdapter<Item> {
 				}
 				if (icon != null){
 					icon.setImageResource(i.getImageID());
+				}
+				if (notification != null){
+					notification.setText(String.valueOf(i.getNotification()));
 				}
 				
 			}

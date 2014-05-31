@@ -13,25 +13,41 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="10dp" >
 
     <ImageView
-        android:id="@+id/image1"
+        android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher"
-        android:layout_gravity="center_vertical" />
-
+        android:layout_gravity="center_vertical"
+        android:layout_alignParentLeft="true" />
+l
     <TextView
-        android:id="@+id/text1"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Large Text"
         android:layout_gravity="center_vertical"
+        
+        android:layout_toRightOf="@id/icon"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+    	
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:text="TextView"
+ 
+        android:layout_alignParentRight="true"
+        android:layout_gravity = "center_vertical"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>

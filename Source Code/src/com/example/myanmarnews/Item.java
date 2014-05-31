@@ -4,6 +4,7 @@ public class Item {
 
 	private String title;
 	private int imageID;
+	private int notification;
 	
 	public Item() {
 		// TODO Auto-generated constructor stub
@@ -11,6 +12,7 @@ public class Item {
 	public Item(String content, int imageID){
 		this.title = content;
 		this.imageID = imageID;
+		notification = 0;
 		
 	}
 
@@ -28,6 +30,12 @@ public class Item {
 
 	public void setImageID(int imageID) {
 		this.imageID = imageID;
+	}
+	public int getNotification() {
+		return notification;
+	}
+	public void setNotification(int notification) {
+		this.notification = notification;
 	}
 
 }
