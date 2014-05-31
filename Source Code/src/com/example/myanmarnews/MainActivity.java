@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity
@@ -130,8 +131,15 @@ public class MainActivity extends Activity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            ImageView avatar = (ImageView) rootView.findViewById(R.id.image_single_news);
+            
+            TextView titleNews = (TextView) rootView.findViewById(R.id.title_single_news);
+            TextView contentNews = (TextView) rootView.findViewById(R.id.content_single_news);
+            TextView dateNews = (TextView) rootView.findViewById(R.id.date_time_single_news);
+            titleNews.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            contentNews.setText("CONTENT");
+            dateNews.setText("DATE");
+            avatar.setImageResource(R.drawable.ic_launcher);
             return rootView;
         }
 
