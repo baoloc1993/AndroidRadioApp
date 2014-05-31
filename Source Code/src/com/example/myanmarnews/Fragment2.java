@@ -36,7 +36,7 @@ public class Fragment2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment2_layout, container, false);
+        View rootView = inflater.inflate(R.layout.main_content_news_layout, container, false);
         
         return rootView;
     }
