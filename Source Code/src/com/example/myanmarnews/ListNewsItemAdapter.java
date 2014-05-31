@@ -11,21 +11,21 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ListItemAdapter extends ArrayAdapter<Item> {
+public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 
-	public ListItemAdapter(Context context, int resource) {
+	public ListNewsItemAdapter(Context context, int resource) {
 		super(context, resource);
 		// TODO Auto-generated constructor stub
 	}
 
 	// declaring our ArrayList of items
-		private ArrayList<Item> objects;
+		private ArrayList<NewsItem> objects;
 
 		/* here we must override the constructor for ArrayAdapter
 		* the only variable we care about now is ArrayList<Item> objects,
 		* because it is the list of objects we want to display.
 		*/
-		public ListItemAdapter(Context context, int textViewResourceId, ArrayList<Item> objects) {
+		public ListNewsItemAdapter(Context context, int textViewResourceId, ArrayList<NewsItem> objects) {
 			super(context, textViewResourceId, objects);
 			this.objects = objects;
 		}
@@ -43,7 +43,7 @@ public class ListItemAdapter extends ArrayAdapter<Item> {
 			// to inflate it basically means to render, or show, the view.
 			if (v == null) {
 				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = inflater.inflate(R.layout.list_item, null);
+				v = inflater.inflate(R.layout.main_content_news_layout, null);
 			}
 
 			/*
@@ -53,27 +53,31 @@ public class ListItemAdapter extends ArrayAdapter<Item> {
 			 * 
 			 * Therefore, i refers to the current Item object.
 			 */
-			Item i = objects.get(position);
+			NewsItem i = objects.get(position);
 
 			if (i != null) {
 
 				// This is how you obtain a reference to the TextViews.
 				// These TextViews are created in the XML files we defined.
 
-				TextView title = (TextView) v.findViewById(R.id.title);
-				ImageView icon = (ImageView) v.findViewById(R.id.icon);
-				TextView notification = (TextView)v.findViewById(R.id.notification);
+				TextView title = (TextView) v.findViewById(R.id.title_single_news);
+				ImageView icon = (ImageView) v.findViewById(R.id.image_single_news);
+				TextView content = (TextView)v.findViewById(R.id.content_single_news);
+				TextView publicDate = (TextView)v.findViewById(R.id.date_time_single_news);
 				
 				// check to see if each individual textview is null.
 				// if not, assign some text!
 				if (title != null){
-					title.setText( i.getContent());
+					title.setText( i.getTitle());
 				}
 				if (icon != null){
 					icon.setImageResource(i.getImageID());
 				}
-				if (notification != null){
-					notification.setText(String.valueOf(i.getNotification()));
+				if (content != null){
+					content.setText(i.getContent());
+				}
+				if (publicDate != null){
+					publicDate.setText(i.getPublicDate());
 				}
 				
 			}
