@@ -1,27 +1,27 @@
 package com.example.myanmarnews;
 
-public class Item {
+public class DrawerItem {
 
 	private String title;
 	private int imageID;
 	private int notification;
 	
-	public Item() {
+	public DrawerItem() {
 		// TODO Auto-generated constructor stub
 	}
-	public Item(String content, int imageID){
+	public DrawerItem(String content, int imageID){
 		this.title = content;
 		this.imageID = imageID;
 		notification = 0;
 		
 	}
 
-	public String getContent() {
+	public String getTitle() {
 		return title;
 	}
 
-	public void setContent(String content) {
-		this.title = content;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public int getImageID() {
