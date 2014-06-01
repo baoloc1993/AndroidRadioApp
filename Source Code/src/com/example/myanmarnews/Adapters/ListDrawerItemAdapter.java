@@ -1,6 +1,11 @@
-package com.example.myanmarnews;
+package com.example.myanmarnews.Adapters;
 
 import java.util.ArrayList;
+
+import com.example.myanmarnews.R;
+import com.example.myanmarnews.Items.DrawerItem;
+import com.example.myanmarnews.R.id;
+import com.example.myanmarnews.R.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;

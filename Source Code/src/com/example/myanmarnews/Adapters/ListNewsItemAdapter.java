@@ -1,6 +1,12 @@
-package com.example.myanmarnews;
+package com.example.myanmarnews.Adapters;
 
 import java.util.ArrayList;
+
+import com.example.myanmarnews.MainActivity;
+import com.example.myanmarnews.R;
+import com.example.myanmarnews.Items.NewsItem;
+import com.example.myanmarnews.R.id;
+import com.example.myanmarnews.R.layout;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -82,7 +88,7 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 					icon.setImageResource(i.getImageID());
 					Drawable drawable = icon.getDrawable();
 			        Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
-			        int size = (int)(MainActivity.screenWidth*(0.2));
+			        int size = (int)(MainActivity.screenWidth*(0.15));
 			        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap,size,size,true);
 			        icon.setImageBitmap(scaledBitmap);
 				}

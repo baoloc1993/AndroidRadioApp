@@ -1,5 +1,9 @@
 package com.example.myanmarnews;
 
+import com.example.myanmarnews.Fragments.BreakingNewsFragment;
+import com.example.myanmarnews.Fragments.NavigationDrawerFragment;
+import com.example.myanmarnews.Fragments.NewsLiveFragment;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.FragmentManager;

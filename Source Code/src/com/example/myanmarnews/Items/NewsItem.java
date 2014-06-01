@@ -1,4 +1,4 @@
-package com.example.myanmarnews;
+package com.example.myanmarnews.Items;
 
 public class NewsItem {
 

@@ -8,6 +8,8 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
+    <!-- Internet Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -22,6 +24,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+         <!-- Add New Site Activity -->
+        <activity android:name=".AddNewSiteActivity" />
+         
+        <!-- List rss items Activity -->
+        <activity android:name=".ListRSSItemsActivity"
+            android:configChanges="keyboardHidden|orientation"/>
+         
+        <!-- Display webpage Activity -->
+        <activity android:name=".DisPlayWebPageActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation" />
     </application>
+     
+  
 
 </manifest>

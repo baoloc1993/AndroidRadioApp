@@ -1,6 +1,13 @@
-package com.example.myanmarnews;
+package com.example.myanmarnews.Fragments;
 
 import java.util.ArrayList;
+
+import com.example.myanmarnews.R;
+import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
+import com.example.myanmarnews.Items.NewsItem;
+import com.example.myanmarnews.R.drawable;
+import com.example.myanmarnews.R.id;
+import com.example.myanmarnews.R.layout;
 
 import android.app.Activity;
 import android.app.Fragment;
