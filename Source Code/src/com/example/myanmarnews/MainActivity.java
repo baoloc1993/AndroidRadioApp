@@ -60,7 +60,7 @@ public class MainActivity extends Activity
             .commit();
         	return;
         }
-        if(position ==1){
+        if(position !=0){
         	fragmentManager.beginTransaction()
             .replace(R.id.container, new BreakingNewsFragment())
             .commit();

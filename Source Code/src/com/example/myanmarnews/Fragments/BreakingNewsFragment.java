@@ -1,63 +1,271 @@
 package com.example.myanmarnews.Fragments;
 
-
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
 import com.example.myanmarnews.Items.NewsItem;
+import com.example.myanmarnews.RSS.*;
 import com.example.myanmarnews.R.drawable;
 import com.example.myanmarnews.R.id;
 import com.example.myanmarnews.R.layout;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
+import android.widget.ListAdapter;
+import android.widget.SimpleAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class BreakingNewsFragment extends Fragment {
-    //    /**
-//     * Returns a new instance of this fragment for the given section
-//     * number.
-//     */
-//    public BreakingNews newInstance(int sectionNumber) {
-//        PlaceholderFragment fragment = new PlaceholderFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+	// /**
+	// * Returns a new instance of this fragment for the given section
+	// * number.
+	// */
+	// public BreakingNews newInstance(int sectionNumber) {
+	// PlaceholderFragment fragment = new PlaceholderFragment();
+	// Bundle args = new Bundle();
+	// args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+	// fragment.setArguments(args);
+	// return fragment;
+	// }
 
-    private ListView listNews;
+	// Progress Dialog
+	private ProgressDialog pDialog;
+	
+	Thread runOnUiThread;
+
+	// Array list for list view
+	ArrayList<HashMap<String, String>> rssFeedList;
+
+	RSSParser rssParser = new RSSParser();
+
+	RSSFeed rssFeed;
+
+	// button add new website
+	ImageButton btnAddSite;
+
+	// array to trace sqlite ids
+	String[] sqliteIds;
+
+	public static String TAG_ID = "id";
+	public static String TAG_TITLE = "title";
+	public static String TAG_LINK = "link";
+
+	// List view
+	ListView lv;
 
 	public BreakingNewsFragment() {
-    }
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.list_news_layout, container, false);
-        listNews = (ListView)rootView.findViewById(R.id.listNews);
-        ArrayList<NewsItem> newsItems = new ArrayList<NewsItem>();
-        for(int i=0;i<10;i++){
-	        newsItems.add(new NewsItem(
-	        		"Title " + String.valueOf(newsItems.size()+1),
-	        		R.drawable.ic_launcher,
-	        		"Content " + String.valueOf(newsItems.size()+1),
-					"Time Stamp "+ String.valueOf(newsItems.size()+1)
-	        ));
-        }
-        listNews.setAdapter(new ListNewsItemAdapter(rootView.getContext(), R.layout.preview_single_news_layout, newsItems));
-        return rootView;
-    }
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.list_news_layout, container,
+				false);
+		ArrayList<NewsItem> newsItems = new ArrayList<NewsItem>();
 
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        ((MainActivity) activity).onSectionAttached(
-//                getArguments().getInt(ARG_SECTION_NUMBER));
-//    }
+		// Hashmap for ListView
+		rssFeedList = new ArrayList<HashMap<String, String>>();
+
+		/**
+		 * Calling a background thread which will load web sites stored in
+		 * SQLite database
+		 * */
+		 new loadStoreSites().doInBackground(sqliteIds);
+
+		// selecting single ListView item
+		lv = (ListView) rootView.findViewById(R.id.listNews);
+
+		// Launching new screen on Selecting Single ListItem
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// getting values from selected ListItem
+				String sqlite_id = ((TextView) view
+						.findViewById(R.id.sqlite_id)).getText().toString();
+				// Starting new intent
+				Intent in = new Intent(getActivity(),
+						ListRSSItemsActivity.class);
+				// passing sqlite row id
+				in.putExtra(TAG_ID, sqlite_id);
+				startActivity(in);
+			}
+		});
+//		for (int i = 0; i < 10; i++) {
+//			newsItems.add(new NewsItem("Title "
+//					+ String.valueOf(newsItems.size() + 1),
+//					R.drawable.ic_launcher, "Content "
+//							+ String.valueOf(newsItems.size() + 1),
+//					"Time Stamp " + String.valueOf(newsItems.size() + 1)));
+//		}
+		lv.setAdapter(new ListNewsItemAdapter(rootView.getContext(),
+				R.layout.preview_single_news_layout, newsItems));
+		return rootView;
+	}
+
+	/**
+	 * Response from AddNewSiteActivity.java if response is 100 means new site
+	 * is added to sqlite reload this activity again to show newly added website
+	 * in listview
+	 * */
+	/*
+	 * @Override public void onActivityResult(int requestCode, int resultCode,
+	 * Intent data) { super.onActivityResult(requestCode, resultCode, data); //
+	 * if result code 100 if (resultCode == 100) { // reload this screen again
+	 * Intent intent = getIntent(); finish(); startActivity(intent); } }
+	 */
+	/**
+	 * Building a context menu for listview Long press on List row to see
+	 * context menu
+	 * */
+	/*
+	 * @Override public void onCreateContextMenu(ContextMenu menu, View v,
+	 * ContextMenuInfo menuInfo) { if (v.getId()==R.id.list) {
+	 * menu.setHeaderTitle("Delete"); menu.add(Menu.NONE, 0, 0, "Delete Feed");
+	 * } }
+	 */
+	/**
+	 * Responding to context menu selected option
+	 * */
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+				.getMenuInfo();
+		int menuItemIndex = item.getItemId();
+		// check for selected option
+		if (menuItemIndex == 0) {
+			// user selected delete
+			// delete the feed
+			RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
+			WebSite site = new WebSite();
+			site.setId(Integer.parseInt(sqliteIds[info.position]));
+			rssDb.deleteSite(site);
+			// reloading same activity again
+			// Fragment fragment =
+			// getFragmentManager().findFragmentById(getId());
+			// finish();
+			// startActivity(intent);
+			getActivity().getFragmentManager().beginTransaction()
+					.replace(R.id.container, this).commit();
+		}
+
+		return true;
+	}
+
+	/**
+	 * Background Async Task to get RSS data from URL
+	 * */
+	
+	 class loadStoreSites extends AsyncTask<String, String, String> {
+	
+	 /**
+	 * Before starting background thread Show Progress Dialog
+	 * */
+		 @Override
+		 protected void onPreExecute() {
+			 super.onPreExecute();
+			 
+			 pDialog = new ProgressDialog(
+					 getActivity());
+			 pDialog.setMessage("Loading websites ...");
+			 pDialog.setIndeterminate(false);
+			 pDialog.setCancelable(false);
+			 pDialog.show();
+			 
+		 }
+	/**
+	 * getting all stored website from SQLite
+	 * */
+		
+		protected String doInBackground(String...params ) {
+			//Thread runOnUiThread;
+			// updating UI from Background Thread
+			 Log.d("TEST", "TEST");
+			getActivity().runOnUiThread(new Runnable() {
+				public void run() {
+					RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
+					
+					// listing all websites from SQLite
+					List<WebSite> siteList = rssDb.getAllSites();
+	
+					sqliteIds = new String[siteList.size()];
+	
+					// loop through each website
+					for (int i = 0; i < siteList.size(); i++) {
+	
+						WebSite s = siteList.get(i);
+	
+						// creating new HashMap
+						HashMap<String, String> map = new HashMap<String, String>();
+	
+						// adding each child node to HashMap key => value
+//						map.put(TAG_ID, s.getId().toString());
+//						map.put(TAG_TITLE, s.getTitle());
+//						map.put(TAG_LINK, s.getLink());
+						map.put(TAG_ID, "TAG ID");
+						map.put(TAG_TITLE, "TAG TITLE");
+						map.put(TAG_LINK, "TAG LINK");
+	
+						// adding HashList to ArrayList
+						rssFeedList.add(map);
+	
+						// add sqlite id to array
+						// used when deleting a website from sqlite
+						sqliteIds[i] = s.getId().toString();
+					}
+					/**
+					 * Updating list view with websites
+					 * */
+					ListAdapter adapter = new SimpleAdapter(
+							getActivity(),
+							rssFeedList,
+							R.layout.preview_single_news_layout,
+							new String[] { TAG_ID,
+									TAG_TITLE, TAG_LINK }, 
+							new int[] {
+									R.id.sqlite_id, R.id.title, R.id.rss_url });
+					// updating listview
+					
+					lv.setAdapter(adapter);
+					registerForContextMenu(lv);
+				}
+			});
+			return null;
+		}
+
+		/**
+		 * After completing background task Dismiss the progress dialog
+		 * **/
+		protected void onPostExecute(String args) {
+			// dismiss the dialog after getting all products
+			pDialog.dismiss();
+		}
+		
+	 }
+
 }
+// @Override
+// public void onAttach(Activity activity) {
+// super.onAttach(activity);
+// ((MainActivity) activity).onSectionAttached(
+// getArguments().getInt(ARG_SECTION_NUMBER));
+// }
+

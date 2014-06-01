@@ -48,7 +48,7 @@ public class ListDrawerItemAdapter extends ArrayAdapter<DrawerItem> {
 			// to inflate it basically means to render, or show, the view.
 			if (v == null) {
 				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = inflater.inflate(R.layout.list_item, null);
+				v = inflater.inflate(R.layout.drawer_list_item, null);
 			}
 
 			/*

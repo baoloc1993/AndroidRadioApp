@@ -117,7 +117,7 @@ public class NavigationDrawerFragment extends Fragment {
         //SetAdapter for menu
         mDrawerListView.setAdapter(new ListDrawerItemAdapter(
         		getActionBar().getThemedContext(),
-        		R.layout.list_item, 
+        		R.layout.drawer_list_item, 
         		listItem));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
