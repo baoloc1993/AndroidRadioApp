@@ -84,11 +84,8 @@ public class BreakingNewsFragment extends Fragment {
 		// Hashmap for ListView
 		rssFeedList = new ArrayList<HashMap<String, String>>();
 		lv = (ListView) rootView.findViewById(R.id.listNews);
-		/**
-		 * Calling a background thread which will load web sites stored in
-		 * SQLite database
-		 * */
-		 new loadStoreSites().doInBackground(sqliteIds);
+		loadStoreSites load = new loadStoreSites();
+//		load.onPreExecute();
 
 		// selecting single ListView item
 		
@@ -116,8 +113,13 @@ public class BreakingNewsFragment extends Fragment {
 //							+ String.valueOf(newsItems.size() + 1),
 //					"Time Stamp " + String.valueOf(newsItems.size() + 1)));
 //		}
-		lv.setAdapter(new ListNewsItemAdapter(rootView.getContext(),
-				R.layout.preview_single_news_layout, newsItems));
+//		lv.setAdapter(new ListNewsItemAdapter(rootView.getContext(),
+//				R.layout.preview_single_news_layout, newsItems));
+		/**
+		 * Calling a background thread which will load web sites stored in
+		 * SQLite database
+		 * */
+		load.doInBackground(sqliteIds);
 		return rootView;
 	}
 
@@ -195,21 +197,30 @@ public class BreakingNewsFragment extends Fragment {
 	 * getting all stored website from SQLite
 	 * */
 		
-		protected String doInBackground(String...params ) {
+		protected String doInBackground	(String...params ) {
 			//Thread runOnUiThread;
 			// updating UI from Background Thread
-			 Log.d("TEST", "TEST");
+			 
 			getActivity().runOnUiThread(new Runnable() {
 				public void run() {
 					RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
 					
+					WebSite site = new WebSite(
+							"title", "link","rss_link","description" );
+					WebSite site2 = new WebSite(
+							"title2", "link2","rss_link2","description2" );
 					// listing all websites from SQLite
+					
+					rssDb.addSite(site);
+					rssDb.addSite(site2);
+					
 					List<WebSite> siteList = rssDb.getAllSites();
 	
 					sqliteIds = new String[siteList.size()];
 					
 	
 					// loop through each website
+					Log.d("TEST", String.valueOf(siteList.size()));
 					for (int i = 0; i < siteList.size(); i++) {
 	
 						WebSite s = siteList.get(i);
@@ -218,12 +229,12 @@ public class BreakingNewsFragment extends Fragment {
 						HashMap<String, String> map = new HashMap<String, String>();
 	
 						// adding each child node to HashMap key => value
-//						map.put(TAG_ID, s.getId().toString());
-//						map.put(TAG_TITLE, s.getTitle());
-//						map.put(TAG_LINK, s.getLink());
-						map.put(TAG_ID, "TAG ID");
-						map.put(TAG_TITLE, "TAG TITLE");
-						map.put(TAG_LINK, "TAG LINK");
+						map.put(TAG_ID, s.getId().toString());
+						map.put(TAG_TITLE, s.getTitle());
+						map.put(TAG_LINK, s.getLink());
+	//					map.put(TAG_ID, "TAG ID");
+		//				map.put(TAG_TITLE, "TAG TITLE");
+			//			map.put(TAG_LINK, "TAG LINK");
 	
 						// adding HashList to ArrayList
 						rssFeedList.add(map);
@@ -236,7 +247,7 @@ public class BreakingNewsFragment extends Fragment {
 					 * Updating list view with websites
 					 * */
 					ListAdapter adapter = new SimpleAdapter(
-							getActivity().getApplicationContext(),
+							getActivity(),
 							rssFeedList,
 							R.layout.preview_single_news_layout,
 							new String[] { TAG_ID,
