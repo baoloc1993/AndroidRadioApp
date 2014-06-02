@@ -113,6 +113,7 @@ public class NavigationDrawerFragment extends Fragment {
         listItem.add(new DrawerItem(getString(R.string.title_section1), R.drawable.ic_launcher));
         listItem.add(new DrawerItem(getString(R.string.title_section2), R.drawable.ic_launcher));
         listItem.add(new DrawerItem(getString(R.string.title_section3), R.drawable.ic_launcher));
+        listItem.add(new DrawerItem(getString(R.string.title_section4), R.drawable.ic_launcher));
         
         //SetAdapter for menu
         mDrawerListView.setAdapter(new ListDrawerItemAdapter(

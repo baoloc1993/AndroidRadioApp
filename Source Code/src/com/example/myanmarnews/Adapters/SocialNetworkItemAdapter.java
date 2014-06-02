@@ -6,10 +6,12 @@ import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.BasicFunctions.BasicFunctions;
 import com.example.myanmarnews.Items.NewsItem;
+import com.example.myanmarnews.Items.SocialNetworkItem;
 import com.example.myanmarnews.R.id;
 import com.example.myanmarnews.R.layout;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -21,25 +23,27 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
-	public ListNewsItemAdapter(Context context, int resource) {
+public class SocialNetworkItemAdapter extends ArrayAdapter<SocialNetworkItem> {
+	int orientation; //Screen orientation
+	
+	public SocialNetworkItemAdapter(Context context, int resource) {
 		super(context, resource);
 		
 		// TODO Auto-generated constructor stub
 	}
 
 	// declaring our ArrayList of items
-		private ArrayList<NewsItem> objects;
-		private int screenHeight;
-		private int screenWidth;
+		private ArrayList<SocialNetworkItem> objects;
 
 		/* here we must override the constructor for ArrayAdapter
 		* the only variable we care about now is ArrayList<Item> objects,
 		* because it is the list of objects we want to display.
+		* @params orientation to be used in setting up components' layout
 		*/
-		public ListNewsItemAdapter(Context context, int textViewResourceId, ArrayList<NewsItem> objects) {
+		public SocialNetworkItemAdapter(Context context, int textViewResourceId, ArrayList<SocialNetworkItem> objects, int orientation) {
 			super(context, textViewResourceId, objects);
 			this.objects = objects;
+			
 		}
 
 		/*
@@ -56,7 +60,7 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 			// to inflate it basically means to render, or show, the view.
 			if (v == null) {
 				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = inflater.inflate(R.layout.preview_single_news_layout, null);
+				v = inflater.inflate(R.layout.single_social_network_header, null);
 				
 			}
 
@@ -67,37 +71,33 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 			 * 
 			 * Therefore, i refers to the current Item object.
 			 */
-			NewsItem i = objects.get(position);
+			SocialNetworkItem i = objects.get(position);
 
 			if (i != null) {
 
 				// This is how you obtain a reference to the TextViews.
 				// These TextViews are created in the XML files we defined.
 
-				TextView title = (TextView) v.findViewById(R.id.title);
-				ImageView icon = (ImageView) v.findViewById(R.id.icon);
-				TextView content = (TextView)v.findViewById(R.id.content);
-				TextView timestamp = (TextView)v.findViewById(R.id.timestamp);
 				
-				// check to see if each individual textview is null.
-				// if not, assign some text!
-				if (title != null){
-					title.setText( i.getTitle());
-					title.setWidth((int)(MainActivity.screenWidth*0.7));
-				}
+				ImageView icon = (ImageView) v.findViewById(R.id.icon);
+				
+				
+				/**
+				 * set Icon resource and size
+				 */
+				
 				if (icon != null){
 					icon.setImageResource(i.getImageID());
-					BasicFunctions.ResizeImageView((int)(MainActivity.screenWidth*0.2), icon);
+					int size=0;
+					if(orientation == Configuration.ORIENTATION_PORTRAIT){
+						size = (MainActivity.screenWidth/objects.size())/3;
+					}else{
+						size = (MainActivity.screenHeight/objects.size())/3;
+					}
+					BasicFunctions.ResizeImageView(size, icon);
+					
 				}
-				if (content != null){
-					content.setText(i.getContent());
-					content.setWidth((int)(MainActivity.screenWidth*0.7));
-				}
-				if (timestamp != null){
-					timestamp.setText(i.getPublicDate());
-					timestamp.setWidth((int)(MainActivity.screenWidth*0.7));
-				}
-				
+								
 			}
 
 			// the view must be returned to our activity
