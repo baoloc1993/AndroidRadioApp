@@ -77,6 +77,7 @@ public class BreakingNewsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		//inflate layout
 		View rootView = inflater.inflate(R.layout.list_news_layout, container,
 				false);
 		ArrayList<NewsItem> newsItems = new ArrayList<NewsItem>();
@@ -106,15 +107,7 @@ public class BreakingNewsFragment extends Fragment {
 				startActivity(in);
 			}
 		});
-//		for (int i = 0; i < 10; i++) {
-//			newsItems.add(new NewsItem("Title "
-//					+ String.valueOf(newsItems.size() + 1),
-//					R.drawable.ic_launcher, "Content "
-//							+ String.valueOf(newsItems.size() + 1),
-//					"Time Stamp " + String.valueOf(newsItems.size() + 1)));
-//		}
-//		lv.setAdapter(new ListNewsItemAdapter(rootView.getContext(),
-//				R.layout.preview_single_news_layout, newsItems));
+
 		/**
 		 * Calling a background thread which will load web sites stored in
 		 * SQLite database
@@ -160,11 +153,6 @@ public class BreakingNewsFragment extends Fragment {
 			WebSite site = new WebSite();
 			site.setId(Integer.parseInt(sqliteIds[info.position]));
 			rssDb.deleteSite(site);
-			// reloading same activity again
-			// Fragment fragment =
-			// getFragmentManager().findFragmentById(getId());
-			// finish();
-			// startActivity(intent);
 			getActivity().getFragmentManager().beginTransaction()
 					.replace(R.id.container, this).commit();
 		}
@@ -223,6 +211,7 @@ public class BreakingNewsFragment extends Fragment {
 					Log.d("TEST", String.valueOf(siteList.size()));
 					for (int i = 0; i < siteList.size(); i++) {
 	
+						//Get each website in site list
 						WebSite s = siteList.get(i);
 	
 						// creating new HashMap
@@ -232,9 +221,7 @@ public class BreakingNewsFragment extends Fragment {
 						map.put(TAG_ID, s.getId().toString());
 						map.put(TAG_TITLE, s.getTitle());
 						map.put(TAG_LINK, s.getLink());
-	//					map.put(TAG_ID, "TAG ID");
-		//				map.put(TAG_TITLE, "TAG TITLE");
-			//			map.put(TAG_LINK, "TAG LINK");
+
 	
 						// adding HashList to ArrayList
 						rssFeedList.add(map);

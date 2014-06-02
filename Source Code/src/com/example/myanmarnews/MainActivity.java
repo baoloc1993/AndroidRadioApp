@@ -37,41 +37,53 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        //Get attribute of screen
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        screenHeight = displayMetrics.heightPixels;
-        screenWidth = displayMetrics.widthPixels;
+        screenHeight = displayMetrics.heightPixels;			//Height of screen
+        screenWidth = displayMetrics.widthPixels;			//Width of screen
+        
+        //Set up Navigation Drawer Fragment
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        
-        mTitle = getTitle();
-
-        // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        
+        mTitle = getTitle();
+
+        
     }
 
+    //Action when select each child of DrawerList
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
         switch (position) {
+        
+        //New live fragment
         case 0:
         	fragmentManager.beginTransaction()
             .replace(R.id.container, new NewsLiveFragment())
             .commit();
         	break;
+        	
+        //Breaking new fragment
         case 1:
         	fragmentManager.beginTransaction()
             .replace(R.id.container, new BreakingNewsFragment())
             .commit();
         	break;
+        	
+        //Selected News Fragment	
         case 2:
         	fragmentManager.beginTransaction()
             .replace(R.id.container, new SelectedNewsFragment())
             .commit();
             break;
+        //Social NetWork Fragment
         case 3:
         	fragmentManager.beginTransaction()
             .replace(R.id.container, new SocialNetworkFragment())
@@ -87,6 +99,7 @@ public class MainActivity extends Activity
         
     }
 
+    //Set title for each fragment which is selected
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
