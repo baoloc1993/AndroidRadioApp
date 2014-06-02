@@ -83,7 +83,7 @@ public class BreakingNewsFragment extends Fragment {
 
 		// Hashmap for ListView
 		rssFeedList = new ArrayList<HashMap<String, String>>();
-
+		lv = (ListView) rootView.findViewById(R.id.listNews);
 		/**
 		 * Calling a background thread which will load web sites stored in
 		 * SQLite database
@@ -91,7 +91,7 @@ public class BreakingNewsFragment extends Fragment {
 		 new loadStoreSites().doInBackground(sqliteIds);
 
 		// selecting single ListView item
-		lv = (ListView) rootView.findViewById(R.id.listNews);
+		
 
 		// Launching new screen on Selecting Single ListItem
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -207,6 +207,7 @@ public class BreakingNewsFragment extends Fragment {
 					List<WebSite> siteList = rssDb.getAllSites();
 	
 					sqliteIds = new String[siteList.size()];
+					
 	
 					// loop through each website
 					for (int i = 0; i < siteList.size(); i++) {
@@ -235,7 +236,7 @@ public class BreakingNewsFragment extends Fragment {
 					 * Updating list view with websites
 					 * */
 					ListAdapter adapter = new SimpleAdapter(
-							getActivity(),
+							getActivity().getApplicationContext(),
 							rssFeedList,
 							R.layout.preview_single_news_layout,
 							new String[] { TAG_ID,
