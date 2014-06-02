@@ -26,3 +26,5 @@ proguard/
 *.log
 #Cache files
 *.cache
+#Class Path
+.classpath
