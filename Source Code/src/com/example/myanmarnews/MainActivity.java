@@ -30,17 +30,17 @@ public class MainActivity extends Activity
     /**
      * Screen's Size
      */
-    public static int screenHeight;
-    public static int screenWidth;
+    private static DisplayMetrics displayMetrics;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
+        /**
+         * get screen's size;
+         */
+         displayMetrics= new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        screenHeight = displayMetrics.heightPixels;
-        screenWidth = displayMetrics.widthPixels;
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         
@@ -136,6 +136,25 @@ public class MainActivity extends Activity
         }
         return super.onOptionsItemSelected(item);
     }
+
+	/**
+	 * @return the screenHeight
+	 */
+	public static int getScreenHeight() {
+		return displayMetrics.heightPixels;
+	}
+
+	
+	
+
+	/**
+	 * @return the screenWidth
+	 */
+	public static int getScreenWidth() {
+        return displayMetrics.widthPixels;
+	}
+
+	
 
     /**
      * A placeholder fragment containing a simple view.

@@ -2,6 +2,7 @@ package com.example.myanmarnews.BasicFunctions;
 
 import com.example.myanmarnews.MainActivity;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -30,4 +31,13 @@ public class BasicFunctions {
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap,size,size,true);
         imageView.setImageBitmap(scaledBitmap);
 	}
+	/**
+	 * Convert DP to PX
+	 */
+	public static int dpToPx(int dp, Context context)
+	{
+	    float density = context.getResources().getDisplayMetrics().density;
+	    return Math.round((float)dp * density);
+	}
+	
 }

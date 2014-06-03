@@ -17,10 +17,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class SocialNetworkItemAdapter extends ArrayAdapter<SocialNetworkItem> {
@@ -88,16 +90,27 @@ public class SocialNetworkItemAdapter extends ArrayAdapter<SocialNetworkItem> {
 				
 				if (icon != null){
 					icon.setImageResource(i.getImageID());
+					/**
+					 * get suitable size to scale image
+					 */
 					int size=0;
-					if(orientation == Configuration.ORIENTATION_PORTRAIT){
-						size = (MainActivity.screenWidth/objects.size())/3;
-					}else{
-						size = (MainActivity.screenHeight/objects.size())/3;
+					int screenHeight = MainActivity.getScreenHeight();
+					int screenWidth = MainActivity.getScreenWidth();
+					if(screenHeight<=screenWidth){
+						// in landscape mode
+						size = (screenHeight/objects.size())/3;
+					}
+					if(screenHeight>screenWidth){
+						//in portrait mode
+						size = (screenWidth/objects.size())/3;
 					}
 					BasicFunctions.ResizeImageView(size, icon);
-					
 				}
-								
+				/**
+				 * Set background color
+				 */
+				RelativeLayout relativeLayout = (RelativeLayout)v.findViewById(R.id.background);
+				relativeLayout.setBackgroundColor(i.getBackground());
 			}
 
 			// the view must be returned to our activity

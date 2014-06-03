@@ -8,6 +8,7 @@ import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
 import com.example.myanmarnews.Adapters.SocialNetworkItemAdapter;
+import com.example.myanmarnews.BasicFunctions.BasicFunctions;
 import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.Items.SocialNetworkItem;
 import com.example.myanmarnews.RSS.*;
@@ -24,6 +25,10 @@ import android.app.ProgressDialog;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.opengl.Visibility;
 import android.os.AsyncTask;
@@ -50,88 +55,119 @@ import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-public class SocialNetworkFragment extends Fragment  {
+public class SocialNetworkFragment extends Fragment {
 	ProgressBar progressBar;
+	static Bundle savedInstanceState;
+
 	public SocialNetworkFragment() {
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.social_network_layout, container,
-				false);
-		/**
-		 * 
-		 * Progress Bar 
-		 */
-		progressBar = (ProgressBar)rootView.findViewById(R.id.progressBar);
-		progressBar.setMax(100);
+		this.savedInstanceState = savedInstanceState;
+		View rootView = inflater.inflate(R.layout.social_network_layout,
+				container, false);
+
 		/**
 		 * Webview to show webpage
 		 * 
 		 */
-		final WebView webView = (WebView)rootView.findViewById(R.id.webView);
+		final WebView webView = (WebView) rootView.findViewById(R.id.webView);
+		webView.setPadding(0, 0, 0, 0);
 		webView.setWebChromeClient(new MyWebViewClient());
 		webView.setWebViewClient(new WebViewClient());
+
 		webView.getSettings().setJavaScriptEnabled(true);
 		// OR, you can also load from an HTML string:
-		 String defaultContent = "<html><body>Press icons above to go to our social network</body></html>";
-		 webView.loadData(defaultContent, "text/html", null);
-		
+
 		/**
 		 * Social Network headers
 		 */
 		final ArrayList<SocialNetworkItem> socialNetworkItems = new ArrayList<SocialNetworkItem>();
-		socialNetworkItems.add(new SocialNetworkItem("http://facebook.com",R.drawable.ic_launcher));
-		socialNetworkItems.add(new SocialNetworkItem("http://plus.google.com/app/basic",R.drawable.ic_launcher));
-		socialNetworkItems.add(new SocialNetworkItem("http://twitter.com",R.drawable.ic_launcher));
+		socialNetworkItems.add(new SocialNetworkItem("http://facebook.com",
+				R.drawable.facebook_icon, Color.rgb(70, 110, 169)));
+		socialNetworkItems.add(new SocialNetworkItem(
+				"http://plus.google.com/app/basic",
+				R.drawable.google_plus_icon, Color.rgb(228, 96, 68)));
+		socialNetworkItems.add(new SocialNetworkItem("http://twitter.com",
+				R.drawable.twitter_icon, Color.rgb(0, 172, 237)));
+		final int columnWidth = (int) (MainActivity.getScreenWidth() / socialNetworkItems
+				.size());
+		/**
+		 * 
+		 * Progress Bar
+		 */
+		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+		progressBar.setMax(100);
+		progressBar.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
+		progressBar.getLayoutParams().width = columnWidth;
+		
+		int color = Color.rgb(247, 193, 0);
+		progressBar.getProgressDrawable().setColorFilter(
+				color, Mode.MULTIPLY);;
+		
+
 		/**
 		 * Show social network header in gridview
 		 */
-		GridView socialNetworkHeader = (GridView)rootView.findViewById(R.id.socialNetworkHeader);
-		int columnWidth = (int)(MainActivity.screenWidth/socialNetworkItems.size());
+		GridView socialNetworkHeader = (GridView) rootView
+				.findViewById(R.id.socialNetworkHeader);
+
+		socialNetworkHeader.setPadding(0, 0, 0, 0);
+		socialNetworkHeader.setNumColumns(socialNetworkItems.size());
+
 		socialNetworkHeader.setColumnWidth(columnWidth);
-		socialNetworkHeader.setAdapter(new SocialNetworkItemAdapter(getActivity(),
-				R.layout.single_social_network_header,
-				socialNetworkItems,
-				getActivity().getResources().getConfiguration().orientation));
+		socialNetworkHeader.setAdapter(new SocialNetworkItemAdapter(
+				getActivity(), R.layout.single_social_network_header,
+				socialNetworkItems, getActivity().getWindowManager()
+						.getDefaultDisplay().getRotation()));
+
 		socialNetworkHeader.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				progressBar.setVisibility(View.VISIBLE);
-				String url = socialNetworkItems.get(position).getUrl();
-				webView.loadUrl(url);
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+
+				// progressBar.setPadding(position*columnWidth, 0, 0, 0);
+				RelativeLayout.LayoutParams layoutParams = (android.widget.RelativeLayout.LayoutParams) progressBar.getLayoutParams();
+				layoutParams.setMargins(position*columnWidth,
+						BasicFunctions.dpToPx(-7, getActivity().getApplicationContext()),
+						0,
+						BasicFunctions.dpToPx(-7, getActivity().getApplicationContext()));
+				//layoutParams.setMarginStart(columnWidth*position);
+				progressBar.setLayoutParams(layoutParams);
 				
+
+				String url = socialNetworkItems.get(position).getUrl();
+
+				webView.loadUrl(url);
+
 				SocialNetworkFragment.this.progressBar.setProgress(0);
 			}
 		});
+		socialNetworkHeader.performItemClick(socialNetworkHeader, 0,
+				socialNetworkHeader.getItemIdAtPosition(0));
 		return rootView;
 	}
-	private class MyWebViewClient extends WebChromeClient { 
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {          
-            SocialNetworkFragment.this.setValue(newProgress);
-            super.onProgressChanged(view, newProgress);
-        }
-    }
- 
-    public void setValue(int progress) {
-        progressBar.setProgress(progress);
-        if(progress == progressBar.getMax()){
-        	progressBar.setVisibility(View.INVISIBLE);
-        }
-    }
-	
-		
-}
 
+	private class MyWebViewClient extends WebChromeClient {
+		@Override
+		public void onProgressChanged(WebView view, int newProgress) {
+			SocialNetworkFragment.this.setValue(newProgress);
+			super.onProgressChanged(view, newProgress);
+		}
+	}
+
+	public void setValue(int progress) {
+		progressBar.setProgress(progress);
+
+	}
+
+}
