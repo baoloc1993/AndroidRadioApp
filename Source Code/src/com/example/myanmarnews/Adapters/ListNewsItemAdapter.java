@@ -30,6 +30,8 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 
 	// declaring our ArrayList of items
 		private ArrayList<NewsItem> objects;
+		
+		//Declare variable of screen attribute
 		private int screenHeight;
 		private int screenWidth;
 
@@ -81,6 +83,9 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 				
 				// check to see if each individual textview is null.
 				// if not, assign some text!
+				//Config parameter of each textview and imageview(Resize)
+				//For TITLE, ICON, CONTENT, TIMESTAMP
+				
 				if (title != null){
 					title.setText( i.getTitle());
 					title.setWidth((int)(MainActivity.getScreenWidth()*0.7));

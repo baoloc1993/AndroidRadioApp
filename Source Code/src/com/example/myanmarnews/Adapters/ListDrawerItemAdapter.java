@@ -65,6 +65,7 @@ public class ListDrawerItemAdapter extends ArrayAdapter<DrawerItem> {
 				// This is how you obtain a reference to the TextViews.
 				// These TextViews are created in the XML files we defined.
 
+				//Get Ids of element from layout
 				TextView title = (TextView) v.findViewById(R.id.title);
 				ImageView icon = (ImageView) v.findViewById(R.id.icon);
 				TextView notification = (TextView)v.findViewById(R.id.notification);
