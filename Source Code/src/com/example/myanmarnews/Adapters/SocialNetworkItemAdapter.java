@@ -5,29 +5,17 @@ import java.util.ArrayList;
 import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.BasicFunctions.BasicFunctions;
-import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.Items.SocialNetworkItem;
-import com.example.myanmarnews.R.id;
-import com.example.myanmarnews.R.layout;
-
 import android.content.Context;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class SocialNetworkItemAdapter extends ArrayAdapter<SocialNetworkItem> {
 	int orientation; // Screen orientation
@@ -96,17 +84,7 @@ public class SocialNetworkItemAdapter extends ArrayAdapter<SocialNetworkItem> {
 				/**
 				 * get suitable size to scale image
 				 */
-				int size = 0;
-				int screenHeight = MainActivity.getScreenHeight();
-				int screenWidth = MainActivity.getScreenWidth();
-				if (screenHeight <= screenWidth) {
-					// in landscape mode
-					size = (screenHeight / objects.size()) / 3;
-				}
-				if (screenHeight > screenWidth) {
-					// in portrait mode
-					size = (screenWidth / objects.size()) / 3;
-				}
+				int size = MainActivity.getStandardSize()/objects.size()/3;
 				BasicFunctions.ResizeImageView(size, icon);
 			}
 			/**

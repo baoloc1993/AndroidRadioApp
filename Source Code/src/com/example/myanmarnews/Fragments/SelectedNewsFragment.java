@@ -5,19 +5,12 @@ import java.util.ArrayList;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
 import com.example.myanmarnews.Items.NewsItem;
-import com.example.myanmarnews.R.drawable;
-import com.example.myanmarnews.R.id;
-import com.example.myanmarnews.R.layout;
-
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class SelectedNewsFragment extends Fragment {
 	private ListView listNews;

@@ -4,9 +4,6 @@ import java.util.ArrayList;
 
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Items.DrawerItem;
-import com.example.myanmarnews.R.id;
-import com.example.myanmarnews.R.layout;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

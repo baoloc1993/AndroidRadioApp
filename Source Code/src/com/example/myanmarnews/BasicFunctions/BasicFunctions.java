@@ -1,7 +1,5 @@
 package com.example.myanmarnews.BasicFunctions;
 
-import com.example.myanmarnews.MainActivity;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -37,7 +35,7 @@ public class BasicFunctions {
 	public static int dpToPx(int dp, Context context)
 	{
 	    float density = context.getResources().getDisplayMetrics().density;
-	    return Math.round((float)dp * density);
+	    return Math.round(dp * density);
 	}
 	
 }

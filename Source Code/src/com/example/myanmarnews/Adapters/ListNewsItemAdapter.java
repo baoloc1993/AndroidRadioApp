@@ -6,14 +6,7 @@ import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.BasicFunctions.BasicFunctions;
 import com.example.myanmarnews.Items.NewsItem;
-import com.example.myanmarnews.R.id;
-import com.example.myanmarnews.R.layout;
-
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,19 +81,19 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 				
 				if (title != null){
 					title.setText( i.getTitle());
-					title.setWidth((int)(MainActivity.getScreenWidth()*0.7));
+					//title.setWidth((int)(MainActivity.getStandardSize()*0.7));
 				}
 				if (icon != null){
 					icon.setImageResource(i.getImageID());
-					BasicFunctions.ResizeImageView((int)(MainActivity.getScreenWidth()*0.2), icon);
+					BasicFunctions.ResizeImageView((int)(MainActivity.getStandardSize()*0.2), icon);
 				}
 				if (content != null){
 					content.setText(i.getContent());
-					content.setWidth((int)(MainActivity.getScreenWidth()*0.7));
+					//content.setWidth((int)(MainActivity.getStandardSize()*0.7));
 				}
 				if (timestamp != null){
 					timestamp.setText(i.getPublicDate());
-					timestamp.setWidth((int)(MainActivity.getScreenWidth()*0.7));
+					//timestamp.setWidth((int)(MainActivity.getStandardSize()*0.7));
 				}
 				
 			}

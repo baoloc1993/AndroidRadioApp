@@ -5,23 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.example.myanmarnews.R;
-import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
 import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.RSS.*;
-import com.example.myanmarnews.R.drawable;
-import com.example.myanmarnews.R.id;
-import com.example.myanmarnews.R.layout;
-
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +86,7 @@ public class BreakingNewsFragment extends Fragment {
 		// Launching new screen on Selecting Single ListItem
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
+			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// getting values from selected ListItem
@@ -185,11 +178,13 @@ public class BreakingNewsFragment extends Fragment {
 	 * getting all stored website from SQLite
 	 * */
 		
+		@Override
 		protected String doInBackground	(String...params ) {
 			//Thread runOnUiThread;
 			// updating UI from Background Thread
 			 
 			getActivity().runOnUiThread(new Runnable() {
+				@Override
 				public void run() {
 					RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
 					
@@ -253,6 +248,7 @@ public class BreakingNewsFragment extends Fragment {
 		/**
 		 * After completing background task Dismiss the progress dialog
 		 * **/
+		@Override
 		protected void onPostExecute(String args) {
 			// dismiss the dialog after getting all products
 			pDialog.dismiss();

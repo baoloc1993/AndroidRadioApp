@@ -230,7 +230,7 @@ public class RSSParser {
  
             InputSource is = new InputSource();
             is.setCharacterStream(new StringReader(xml));
-            doc = (Document) db.parse(is);
+            doc = db.parse(is);
  
         } catch (ParserConfigurationException e) {
             Log.e("Error: ", e.getMessage());

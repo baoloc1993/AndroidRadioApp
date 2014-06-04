@@ -1,7 +1,5 @@
 package com.example.myanmarnews.Items;
 
-import android.graphics.Color;
-
 public class SocialNetworkItem {
 
 	private String url;

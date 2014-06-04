@@ -6,12 +6,6 @@ import java.util.ArrayList;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.ListDrawerItemAdapter;
 import com.example.myanmarnews.Items.DrawerItem;
-import com.example.myanmarnews.R.drawable;
-import com.example.myanmarnews.R.id;
-import com.example.myanmarnews.R.layout;
-import com.example.myanmarnews.R.menu;
-import com.example.myanmarnews.R.string;
-
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
