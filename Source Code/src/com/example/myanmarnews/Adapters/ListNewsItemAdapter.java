@@ -2,10 +2,6 @@ package com.example.myanmarnews.Adapters;
 
 import java.util.ArrayList;
 
-import com.example.myanmarnews.MainActivity;
-import com.example.myanmarnews.R;
-import com.example.myanmarnews.BasicFunctions.BasicFunctions;
-import com.example.myanmarnews.Items.NewsItem;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.myanmarnews.MainActivity;
+import com.example.myanmarnews.R;
+import com.example.myanmarnews.BasicFunctions.BasicFunctions;
+import com.example.myanmarnews.Items.NewsItem;
 
 public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 	public ListNewsItemAdapter(Context context, int resource) {
@@ -23,10 +24,6 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 
 	// declaring our ArrayList of items
 		private ArrayList<NewsItem> objects;
-		
-		//Declare variable of screen attribute
-		private int screenHeight;
-		private int screenWidth;
 
 		/* here we must override the constructor for ArrayAdapter
 		* the only variable we care about now is ArrayList<Item> objects,
@@ -81,7 +78,6 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 				
 				if (title != null){
 					title.setText( i.getTitle());
-					//title.setWidth((int)(MainActivity.getStandardSize()*0.7));
 				}
 				if (icon != null){
 					icon.setImageResource(i.getImageID());
@@ -89,11 +85,9 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 				}
 				if (content != null){
 					content.setText(i.getContent());
-					//content.setWidth((int)(MainActivity.getStandardSize()*0.7));
 				}
 				if (timestamp != null){
 					timestamp.setText(i.getPublicDate());
-					//timestamp.setWidth((int)(MainActivity.getStandardSize()*0.7));
 				}
 				
 			}

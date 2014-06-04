@@ -1,18 +1,18 @@
 package com.example.myanmarnews;
 
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import com.example.myanmarnews.Fragments.BreakingNewsFragment;
 import com.example.myanmarnews.Fragments.NavigationDrawerFragment;
 import com.example.myanmarnews.Fragments.NewsLiveFragment;
 import com.example.myanmarnews.Fragments.SelectedNewsFragment;
 import com.example.myanmarnews.Fragments.SocialNetworkFragment;
-
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.support.v4.widget.DrawerLayout;
 
 public class MainActivity extends Activity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {

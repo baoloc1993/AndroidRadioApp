@@ -2,8 +2,6 @@ package com.example.myanmarnews.Adapters;
 
 import java.util.ArrayList;
 
-import com.example.myanmarnews.R;
-import com.example.myanmarnews.Items.DrawerItem;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.myanmarnews.R;
+import com.example.myanmarnews.Items.DrawerItem;
 
 public class ListDrawerItemAdapter extends ArrayAdapter<DrawerItem> {
 

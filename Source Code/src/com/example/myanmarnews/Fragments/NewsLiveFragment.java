@@ -2,9 +2,6 @@ package com.example.myanmarnews.Fragments;
 
 import java.util.ArrayList;
 
-import com.example.myanmarnews.R;
-import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
-import com.example.myanmarnews.Items.NewsItem;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.myanmarnews.R;
+import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
+import com.example.myanmarnews.Items.NewsItem;
+
 public class NewsLiveFragment extends Fragment {
 	private ListView listNews;
-	/**
-	 * The fragment argument representing the section number for this fragment.
-	 */
-	private static final String ARG_SECTION_NUMBER = "section_number";
+	
 
 	/**
 	 * Returns a new instance of this fragment for the given section number.

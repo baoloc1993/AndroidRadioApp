@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.example.myanmarnews.R;
-import com.example.myanmarnews.Items.NewsItem;
-import com.example.myanmarnews.RSS.*;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,9 +18,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import com.example.myanmarnews.R;
+import com.example.myanmarnews.Items.NewsItem;
+import com.example.myanmarnews.RSS.RSSDatabaseHandler;
+import com.example.myanmarnews.RSS.RSSFeed;
+import com.example.myanmarnews.RSS.RSSParser;
+import com.example.myanmarnews.RSS.WebSite;
 
 public class BreakingNewsFragment extends Fragment {
 	// /**

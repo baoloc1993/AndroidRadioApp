@@ -2,10 +2,6 @@ package com.example.myanmarnews.Adapters;
 
 import java.util.ArrayList;
 
-import com.example.myanmarnews.MainActivity;
-import com.example.myanmarnews.R;
-import com.example.myanmarnews.BasicFunctions.BasicFunctions;
-import com.example.myanmarnews.Items.SocialNetworkItem;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
@@ -17,8 +13,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.example.myanmarnews.MainActivity;
+import com.example.myanmarnews.R;
+import com.example.myanmarnews.BasicFunctions.BasicFunctions;
+import com.example.myanmarnews.Items.SocialNetworkItem;
+
 public class SocialNetworkItemAdapter extends ArrayAdapter<SocialNetworkItem> {
-	int orientation; // Screen orientation
+	
 	public ProgressBar progressBar;
 
 	public SocialNetworkItemAdapter(Context context, int resource) {
@@ -38,7 +39,7 @@ public class SocialNetworkItemAdapter extends ArrayAdapter<SocialNetworkItem> {
 	 * @params orientation to be used in setting up components' layout
 	 */
 	public SocialNetworkItemAdapter(Context context, int textViewResourceId,
-			ArrayList<SocialNetworkItem> objects, int orientation) {
+			ArrayList<SocialNetworkItem> objects) {
 		super(context, textViewResourceId, objects);
 		this.objects = objects;
 
