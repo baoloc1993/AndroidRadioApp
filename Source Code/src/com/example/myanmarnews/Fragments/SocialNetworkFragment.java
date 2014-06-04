@@ -62,9 +62,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SocialNetworkFragment extends Fragment {
-	ProgressBar progressBar;
 	static Bundle savedInstanceState;
-
+	private static int position = 0;
+	GridView socialNetworkHeader;
+	ArrayList<SocialNetworkItem> socialNetworkItems;
+	WebView webView;
 	public SocialNetworkFragment() {
 	}
 
@@ -79,7 +81,7 @@ public class SocialNetworkFragment extends Fragment {
 		 * Webview to show webpage
 		 * 
 		 */
-		final WebView webView = (WebView) rootView.findViewById(R.id.webView);
+		 webView = (WebView) rootView.findViewById(R.id.webView);
 		webView.setPadding(0, 0, 0, 0);
 		webView.setWebChromeClient(new MyWebViewClient());
 		webView.setWebViewClient(new WebViewClient());
@@ -90,7 +92,7 @@ public class SocialNetworkFragment extends Fragment {
 		/**
 		 * Social Network headers
 		 */
-		final ArrayList<SocialNetworkItem> socialNetworkItems = new ArrayList<SocialNetworkItem>();
+		socialNetworkItems = new ArrayList<SocialNetworkItem>();
 		socialNetworkItems.add(new SocialNetworkItem("http://facebook.com",
 				R.drawable.facebook_icon, Color.rgb(70, 110, 169)));
 		socialNetworkItems.add(new SocialNetworkItem(
@@ -100,24 +102,11 @@ public class SocialNetworkFragment extends Fragment {
 				R.drawable.twitter_icon, Color.rgb(0, 172, 237)));
 		final int columnWidth = (int) (MainActivity.getScreenWidth() / socialNetworkItems
 				.size());
-		/**
-		 * 
-		 * Progress Bar
-		 */
-		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
-		progressBar.setMax(100);
-		progressBar.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-		progressBar.getLayoutParams().width = columnWidth;
-		
-		int color = Color.rgb(247, 193, 0);
-		progressBar.getProgressDrawable().setColorFilter(
-				color, Mode.MULTIPLY);;
-		
 
 		/**
 		 * Show social network header in gridview
 		 */
-		GridView socialNetworkHeader = (GridView) rootView
+		socialNetworkHeader = (GridView) rootView
 				.findViewById(R.id.socialNetworkHeader);
 
 		socialNetworkHeader.setPadding(0, 0, 0, 0);
@@ -135,21 +124,10 @@ public class SocialNetworkFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				// progressBar.setPadding(position*columnWidth, 0, 0, 0);
-				RelativeLayout.LayoutParams layoutParams = (android.widget.RelativeLayout.LayoutParams) progressBar.getLayoutParams();
-				layoutParams.setMargins(position*columnWidth,
-						BasicFunctions.dpToPx(-7, getActivity().getApplicationContext()),
-						0,
-						BasicFunctions.dpToPx(-7, getActivity().getApplicationContext()));
-				//layoutParams.setMarginStart(columnWidth*position);
-				progressBar.setLayoutParams(layoutParams);
-				
-
+				SocialNetworkFragment.position = position;
 				String url = socialNetworkItems.get(position).getUrl();
-
 				webView.loadUrl(url);
 
-				SocialNetworkFragment.this.progressBar.setProgress(0);
 			}
 		});
 		socialNetworkHeader.performItemClick(socialNetworkHeader, 0,
@@ -166,7 +144,23 @@ public class SocialNetworkFragment extends Fragment {
 	}
 
 	public void setValue(int progress) {
-		progressBar.setProgress(progress);
+		if (socialNetworkHeader != null) {
+			for(int i=0;i<socialNetworkItems.size();i++){
+				
+				View v = socialNetworkHeader.getChildAt(i);
+				ProgressBar progressBar = (ProgressBar) v
+						.findViewById(R.id.progressBar);
+				if(i!=position){ //Item not selected
+					progressBar.setVisibility(v.INVISIBLE);
+				}else{
+					progressBar.setVisibility(v.VISIBLE);
+					progressBar.setProgress(progress);
+				}
+				
+				
+			}
+			
+		}
 
 	}
 
