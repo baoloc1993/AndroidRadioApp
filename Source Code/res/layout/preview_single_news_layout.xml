@@ -51,6 +51,6 @@
         android:layout_alignLeft="@+id/content"
         android:layout_below="@+id/content"
         android:layout_toLeftOf="@+id/icon"
-        android:text="Time Stamp" />
+        />
 
 </RelativeLayout>
