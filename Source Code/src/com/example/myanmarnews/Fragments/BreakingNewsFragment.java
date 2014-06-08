@@ -97,11 +97,11 @@ public class BreakingNewsFragment extends Fragment {
 				String sqlite_id = ((TextView) view
 						.findViewById(R.id.sqlite_id)).getText().toString();
 				// Starting new intent
-				Intent in = new Intent(getActivity(),
-						ListRSSItemsActivity.class);
+			//	Intent in = new Intent(getActivity(),
+			//			ListRSSItemsActivity.class);
 				// passing sqlite row id
-				in.putExtra(TAG_ID, sqlite_id);
-				startActivity(in);
+			//	in.putExtra(TAG_ID, sqlite_id);
+			//	startActivity(in);
 			}
 		});
 

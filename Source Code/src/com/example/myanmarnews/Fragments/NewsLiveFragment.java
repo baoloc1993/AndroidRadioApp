@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
-import com.example.myanmarnews.Fragments.ListRSSItemsActivity.loadRSSFeedItems;
+
 import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.RSS.RSSDatabaseHandler;
 import com.example.myanmarnews.RSS.RSSFeed;
@@ -148,7 +148,7 @@ public class NewsLiveFragment extends Fragment {
             String rss_url = args[0];
              
             // list of rss items
-            rssItems = rssParser.getRSSFeedItems(rss_url);
+            rssItems = rssParser.getRSSFeedItems("http://vnexpress.net/rss/tin-moi-nhat.rss");
              
             // looping through each item
             for(RSSItem item : rssItems){
@@ -176,12 +176,21 @@ public class NewsLiveFragment extends Fragment {
                     /**
                      * Updating parsed items into listview
                      * */
+                	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
+                	WebSite site = new WebSite(
+							"title", "link","rss_link","description" );
+					WebSite site2 = new WebSite(
+							"title2", "link2","rss_link2","description2" );
+					// listing all websites from SQLite
+					
+					rssDb.addSite(site);
+					rssDb.addSite(site2);
                     ListAdapter adapter = new SimpleAdapter(
                            getActivity(),
                             rssItemList, R.layout.preview_single_news_layout,
-                            new String[] { TAG_LINK, TAG_TITLE, TAG_PUB_DATE},
+                            new String[] { TAG_LINK, TAG_TITLE, TAG_PUB_DATE, TAG_DESRIPTION},
                             new int[] {
-									R.id.sqlite_id, R.id.title, R.id.rss_url });
+									R.id.sqlite_id, R.id.title, R.id.rss_url, R.id.content });
                      
                     // updating listview
                    listNews.setAdapter(adapter);

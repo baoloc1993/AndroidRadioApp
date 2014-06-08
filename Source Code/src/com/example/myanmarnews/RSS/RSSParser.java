@@ -46,7 +46,7 @@ public class RSSParser {
     private static String TAG_ITEM = "item";
     private static String TAG_PUB_DATE = "pubDate";
     private static String TAG_GUID = "guid";
- 
+    
     // constructor
     public RSSParser() {
  
@@ -68,7 +68,7 @@ public class RSSParser {
         // check if rss_link is found or not
         if (rss_url != null) {
             // RSS url found
-            // get RSS XML from rss ulr
+            // get RSS XML from rss url
             rss_feed_xml = this.getXmlFromUrl(rss_url);
             // check if RSS XML fetched or not
             if (rss_feed_xml != null) {
@@ -135,6 +135,7 @@ public class RSSParser {
                     String description = this.getValue(e1, TAG_DESRIPTION);
                     String pubdate = this.getValue(e1, TAG_PUB_DATE);
                     String guid = this.getValue(e1, TAG_GUID);
+                    
                      
                     RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid);
                      
@@ -267,7 +268,7 @@ public class RSSParser {
     }
  
     /**
-     * Getting node value
+     * Getting node value	
      * 
      * @param Element node
      * @param key  string
