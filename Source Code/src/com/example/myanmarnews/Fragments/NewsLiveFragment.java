@@ -84,15 +84,15 @@ public class NewsLiveFragment extends Fragment {
         WebSite site = new WebSite("TITLE WEB", "LINK WEB", "RSS_LINK", "DESCRIPTION");
         String rss_link = site.getRSSLink();
         
-        ArrayList<NewsItem> newsItems = new ArrayList<NewsItem>();
-        for(int i=0;i<10;i++){
-	        newsItems.add(new NewsItem(
-	        		"Title " + String.valueOf(newsItems.size()+1),
-	        		R.drawable.ic_launcher,
-	        		"a asldkasd asdlkjasldj asldkjasjd aslkdalkjsd qwqw 1212 3lkas asldka1oijd Content " + String.valueOf(newsItems.size()+1),
-					"Time Stamp "+ String.valueOf(newsItems.size()+1)
-	        ));
-        }
+//        ArrayList<NewsItem> newsItems = new ArrayList<NewsItem>();
+//        for(int i=0;i<10;i++){
+//	        newsItems.add(new NewsItem(
+//	        		"Title " + String.valueOf(newsItems.size()+1),
+//	        		R.drawable.ic_launcher,
+//	        		"a asldkasd asdlkjasldj asldkjasjd aslkdalkjsd qwqw 1212 3lkas asldka1oijd Content " + String.valueOf(newsItems.size()+1),
+//					"Time Stamp "+ String.valueOf(newsItems.size()+1)
+//	        ));
+//        }
         
         
         /**
@@ -162,33 +162,8 @@ public class NewsLiveFragment extends Fragment {
                 map.put(TAG_LINK, item.getLink());
                 map.put(TAG_PUB_DATE, item.getPubdate());
                 String description = item.getDescription();
-                String url_img = "";
-                /**
-                 * GET IMAGE FROM DESCRIPTION
-                 */
-                
-                String regex = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]";
-                Pattern p = Pattern.compile(regex);
-                Matcher m = p.matcher("http://abc.abc.jpg");
-                while(m.find()) {
-                String urlStr = m.group();
-                char[] stringArray1 = urlStr.toCharArray();
-
-                if (urlStr.startsWith("(") && urlStr.endsWith(")"))
-                {
-
-                    char[] stringArray = urlStr.toCharArray(); 
-
-                    char[] newArray = new char[stringArray.length-2];
-                    System.arraycopy(stringArray, 1, newArray, 0, stringArray.length-2);
-                    urlStr = new String(newArray);
-                   // System.out.println("Finally Url ="+newArray.toString());
-                    url_img = newArray.toString();
-                }
-                }
-                /**
-                 * END GET
-                 */
+               // String url_img = "";
+               
                 // taking only 200 chars from description
                 
                 if(description.length() > 100){
@@ -204,18 +179,18 @@ public class NewsLiveFragment extends Fragment {
             // updating UI from Background Thread
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                    /**
-                     * Updating parsed items into listview
-                     * */
-                	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-                	WebSite site = new WebSite(
-							"title", "link","rss_link","description" );
-					WebSite site2 = new WebSite(
-							"title2", "link2","rss_link2","description2" );
-					// listing all websites from SQLite
-					
-					rssDb.addSite(site);
-					rssDb.addSite(site2);
+//                    /**
+//                     * Updating parsed items into listview
+//                     * */
+//                	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
+//                	WebSite site = new WebSite(
+//							"title", "link","rss_link","description" );
+//					WebSite site2 = new WebSite(
+//							"title2", "link2","rss_link2","description2" );
+//					// listing all websites from SQLite
+//					
+//					rssDb.addSite(site);
+//					rssDb.addSite(site2);
 //                    ListAdapter adapter = new SimpleAdapter(
 //                           getActivity(),
 //                            rssItemList, R.layout.preview_single_news_layout,

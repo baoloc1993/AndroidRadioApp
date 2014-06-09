@@ -93,21 +93,23 @@ public class ListNewsItemAdapter extends ArrayAdapter<RSSItem> {
 				if (title != null){
 					title.setText( i.getTitle());
 				}
-//				if (icon != null){
-//					icon.setImageResource(i.getImageID());
-//					BasicFunctions.ResizeImageView((int)(MainActivity.getStandardSize()*0.2), icon);
-//				}
+//				
 				if (icon != null){
 					int size = (int) (MainActivity.getStandardSize()*0.3);
 					icon.getLayoutParams().width = size;
 					icon.getLayoutParams().height = size;
-					
+					String url_img = i.getImgUrl();
 					icon.setWebViewClient(new WebViewClient());
 					icon.getSettings().setJavaScriptEnabled(true);
+					
+					
+					//Convert to html code
 					String img_html =
 							"<html>"
 							+ "<body style='margin:0;padding:0;'>"
-							+ "<img src=\"http://www1.bongda.com.vn/data/Image/2014/Thang06/08/Bi.jpg\" width=\""
+							+ "<img src=\""
+							+ url_img
+							+ "\" width=\""
 							+ String.valueOf(size)
 							+ "px\" height=\""
 							+ String.valueOf(size)

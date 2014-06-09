@@ -14,6 +14,8 @@ import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,6 +48,7 @@ public class RSSParser {
     private static String TAG_ITEM = "item";
     private static String TAG_PUB_DATE = "pubDate";
     private static String TAG_GUID = "guid";
+    private static String IMG = "img";
     
     // constructor
     public RSSParser() {
@@ -136,8 +139,37 @@ public class RSSParser {
                     String pubdate = this.getValue(e1, TAG_PUB_DATE);
                     String guid = this.getValue(e1, TAG_GUID);
                     
+                    //Get url image from a text
+                    /**
+                     * GET IMAGE FROM DESCRIPTION
+                     */
+                    
+                    String regex = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]";
+                    String url_img = null;
+                    Pattern p = Pattern.compile(regex);
+                    Matcher m = p.matcher(description);
+                    while(m.find()) {
+                    	String urlStr = m.group();
+                    	char[] stringArray1 = urlStr.toCharArray();
+
+	                    if (urlStr.startsWith("(") && urlStr.endsWith(")"))
+	                    {
+	
+	                        char[] stringArray = urlStr.toCharArray(); 
+	
+	                        char[] newArray = new char[stringArray.length-2];
+	                        System.arraycopy(stringArray, 1, newArray, 0, stringArray.length-2);
+	                        urlStr = new String(newArray);
+	                       // System.out.println("Finally Url ="+newArray.toString());
+	                       url_img = newArray.toString();
+	                    }
+                    }
+                    /**
+                     * END GET
+                     */
+                    
                      
-                    RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid);
+                    RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid, url_img);
                      
                     // adding item to list
                     itemsList.add(rssItem);
