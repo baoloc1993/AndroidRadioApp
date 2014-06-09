@@ -98,18 +98,27 @@ public class ListNewsItemAdapter extends ArrayAdapter<RSSItem> {
 //					BasicFunctions.ResizeImageView((int)(MainActivity.getStandardSize()*0.2), icon);
 //				}
 				if (icon != null){
-					icon.getLayoutParams().width = (int)(MainActivity.getStandardSize()*0.3);
-					icon.getLayoutParams().height = (int)(MainActivity.getStandardSize()*0.3);
+					int size = (int) (MainActivity.getStandardSize()*0.3);
+					icon.getLayoutParams().width = size;
+					icon.getLayoutParams().height = size;
 					
 					icon.setWebViewClient(new WebViewClient());
+					icon.getSettings().setJavaScriptEnabled(true);
 					String img_html =
 							"<html>"
-							+"<body>"
-							+ "<img src=\"http://www1.bongda.com.vn/data/Image/2014/Thang06/08/Bi.jpg\" >"
+							+ "<body style='margin:0;padding:0;'>"
+							+ "<img src=\"http://www1.bongda.com.vn/data/Image/2014/Thang06/08/Bi.jpg\" width=\""
+							+ String.valueOf(size)
+							+ "px\" height=\""
+							+ String.valueOf(size)
+							+ "px\" >"
 							+ "</body>"
 							+ "</html>";
+					//icon.loadUrl("javascript:document.body.style.zoom = "+String.valueOf(size)+";");
+					//icon.setInitialScale(scaleInPercent);
+					icon.setInitialScale(100);
 					icon.loadData(img_html, "text/html", null);
-							
+						
 					
 					
 
