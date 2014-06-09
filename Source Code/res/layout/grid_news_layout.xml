@@ -2,15 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="5dp"
+    android:padding="5dp"
     tools:context="com.example.myanmarnews.Fragments.ListViewNewsLiveFragment" >
 
-    <ListView
-        android:id="@+id/listNews"
+    <GridView
+        android:id="@+id/gridNews"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
-    </ListView>
+        android:layout_alignParentTop="true"
+        android:stretchMode="columnWidth"
+        android:numColumns="3" >
+    </GridView>
 
 </RelativeLayout>

@@ -256,8 +256,9 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+        if (item.getItemId() == R.id.switch_layout) {
+            Toast.makeText(getActivity(), "Layout Change.", Toast.LENGTH_SHORT).show();
+            getActivity().getFragmentManager().beginTransaction().replace(R.id.container, new GridViewNewsLiveFragment()).commit();
             return true;
         }
 

@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import com.example.myanmarnews.Fragments.BreakingNewsFragment;
 import com.example.myanmarnews.Fragments.NavigationDrawerFragment;
-import com.example.myanmarnews.Fragments.NewsLiveFragment;
+import com.example.myanmarnews.Fragments.ListViewNewsLiveFragment;
 import com.example.myanmarnews.Fragments.SelectedNewsFragment;
 import com.example.myanmarnews.Fragments.SocialNetworkFragment;
 
@@ -65,7 +65,7 @@ public class MainActivity extends Activity implements
 		switch (position) {
 		case 0:
 			fragmentManager.beginTransaction()
-					.replace(R.id.container, new NewsLiveFragment()).commit();
+					.replace(R.id.container, new ListViewNewsLiveFragment()).commit();
 			break;
 		case 1:
 			fragmentManager.beginTransaction()

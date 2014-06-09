@@ -235,7 +235,7 @@ public class BreakingNewsFragment extends Fragment {
 					ListAdapter adapter = new SimpleAdapter(
 							getActivity(),
 							rssFeedList,
-							R.layout.preview_single_news_layout,
+							R.layout.preview_single_news_list_layout,
 							new String[] { TAG_ID,
 									TAG_TITLE, TAG_LINK }, 
 							new int[] {

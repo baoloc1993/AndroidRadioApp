@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myanmarnews.R;
+import com.example.myanmarnews.Adapters.GridNewsItemAdapter;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
 import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.RSS.RSSDatabaseHandler;
@@ -35,8 +37,8 @@ import com.example.myanmarnews.RSS.RSSItem;
 import com.example.myanmarnews.RSS.RSSParser;
 import com.example.myanmarnews.RSS.WebSite;
 
-public class NewsLiveFragment extends Fragment {
-	private ListView listNews;
+public class GridViewNewsLiveFragment extends Fragment {
+	private GridView gridNews;
 	
 
 	/**
@@ -60,15 +62,16 @@ public class NewsLiveFragment extends Fragment {
     private static String TAG_GUID = "guid"; // not used
     private static String TAG_IMAGE = "image";
 
-	public NewsLiveFragment() {
+	public GridViewNewsLiveFragment() {
 	}
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.list_news_layout, container, false);
+        View rootView = inflater.inflate(R.layout.grid_news_layout, container, false);
         
-        listNews = (ListView)rootView.findViewById(R.id.listNews);
+        gridNews = (GridView)rootView.findViewById(R.id.gridNews);
+        
      // get fragment data
        // Fragment fragment = getActivity();
          
@@ -105,7 +108,7 @@ public class NewsLiveFragment extends Fragment {
         //ListView lv = getListView();
   
         // Launching new screen on Selecting Single ListItem
-        listNews.setOnItemClickListener(new OnItemClickListener() {
+        gridNews.setOnItemClickListener(new OnItemClickListener() {
   
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
@@ -150,7 +153,7 @@ public class NewsLiveFragment extends Fragment {
             String rss_url = args[0];
              
             // list of rss items
-            rssItems = rssParser.getRSSFeedItems("http://www.bongda.com.vn/Rss");
+            rssItems = rssParser.getRSSFeedItems("http://vnexpress.net/rss/tin-moi-nhat.rss");
              
             // looping through each item
             for(RSSItem item : rssItems){
@@ -199,11 +202,11 @@ public class NewsLiveFragment extends Fragment {
 //									R.id.sqlite_id, R.id.title, R.id.rss_url, R.id.content , R.id.icon});
 //                     
                     // updating listview
-					ListAdapter adapter = new ListNewsItemAdapter(
+					ListAdapter adapter = new GridNewsItemAdapter(
 							getActivity(), 
-							R.layout.preview_single_news_layout, 
+							R.layout.preview_single_news_grid_layout, 
 							(ArrayList<RSSItem>) rssItems);
-                   listNews.setAdapter(adapter);
+                   gridNews.setAdapter(adapter);
                 }
             });
             return null;

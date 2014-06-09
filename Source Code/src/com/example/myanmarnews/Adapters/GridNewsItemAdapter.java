@@ -29,8 +29,8 @@ import com.example.myanmarnews.BasicFunctions.BasicFunctions;
 import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.RSS.RSSItem;
 
-public class ListNewsItemAdapter extends ArrayAdapter<RSSItem> {
-	public ListNewsItemAdapter(Context context, int resource) {
+public class GridNewsItemAdapter extends ArrayAdapter<RSSItem> {
+	public GridNewsItemAdapter(Context context, int resource) {
 		super(context, resource);
 		
 		// TODO Auto-generated constructor stub
@@ -43,7 +43,7 @@ public class ListNewsItemAdapter extends ArrayAdapter<RSSItem> {
 		* the only variable we care about now is ArrayList<Item> objects,
 		* because it is the list of objects we want to display.
 		*/
-		public ListNewsItemAdapter(Context context, int textViewResourceId, ArrayList<RSSItem> objects) {
+		public GridNewsItemAdapter(Context context, int textViewResourceId, ArrayList<RSSItem> objects) {
 			super(context, textViewResourceId, objects);
 			this.objects = objects;
 		}
@@ -62,7 +62,7 @@ public class ListNewsItemAdapter extends ArrayAdapter<RSSItem> {
 			// to inflate it basically means to render, or show, the view.
 			if (v == null) {
 				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = inflater.inflate(R.layout.preview_single_news_list_layout, null);
+				v = inflater.inflate(R.layout.preview_single_news_grid_layout, null);
 				
 			}
 
@@ -82,8 +82,8 @@ public class ListNewsItemAdapter extends ArrayAdapter<RSSItem> {
 
 				TextView title = (TextView) v.findViewById(R.id.title);
 				WebView icon = (WebView) v.findViewById(R.id.icon);
-				TextView content = (TextView)v.findViewById(R.id.content);
-				TextView timestamp = (TextView)v.findViewById(R.id.timestamp);
+				//TextView content = (TextView)v.findViewById(R.id.content);
+				//TextView timestamp = (TextView)v.findViewById(R.id.timestamp);
 				
 				// check to see if each individual textview is null.
 				// if not, assign some text!
@@ -95,9 +95,10 @@ public class ListNewsItemAdapter extends ArrayAdapter<RSSItem> {
 				}
 //				
 				if (icon != null){
-					int size = (int) (MainActivity.getStandardSize()*0.3);
-					icon.getLayoutParams().width = size;
-					icon.getLayoutParams().height = size;
+					int size = icon.getLayoutParams().width;
+					
+					//icon.getLayoutParams().height = icon.getLayoutParams().width;
+					//icon.getLayoutParams().height = size;
 					String url_img = i.getImgUrl();
 					icon.setWebViewClient(new WebViewClient());
 					icon.getSettings().setJavaScriptEnabled(true);
@@ -126,12 +127,12 @@ public class ListNewsItemAdapter extends ArrayAdapter<RSSItem> {
 
 					
 				}
-				if (content != null){
-					content.setText(i.getDescription());
-				}
-				if (timestamp != null){
-					timestamp.setText(i.getPubdate());
-				}
+//				if (content != null){
+//					content.setText(i.getDescription());
+//				}
+//				if (timestamp != null){
+//					timestamp.setText(i.getPubdate());
+//				}
 				
 			}
 
