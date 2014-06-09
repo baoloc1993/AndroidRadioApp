@@ -37,7 +37,7 @@ public class SelectedNewsFragment extends Fragment {
 					"Time Stamp "+ String.valueOf(newsItems.size()+1)
 	        ));
         }
-        listNews.setAdapter(new ListNewsItemAdapter(rootView.getContext(), R.layout.preview_single_news_layout, newsItems));
+       // listNews.setAdapter(new ListNewsItemAdapter(rootView.getContext(), R.layout.preview_single_news_layout, newsItems));
         return rootView;
     }
 	// @Override

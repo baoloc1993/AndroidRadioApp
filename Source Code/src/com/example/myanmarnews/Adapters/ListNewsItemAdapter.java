@@ -1,21 +1,35 @@
 package com.example.myanmarnews.Adapters;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.BasicFunctions.BasicFunctions;
 import com.example.myanmarnews.Items.NewsItem;
+import com.example.myanmarnews.RSS.RSSItem;
 
-public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
+public class ListNewsItemAdapter extends ArrayAdapter<RSSItem> {
 	public ListNewsItemAdapter(Context context, int resource) {
 		super(context, resource);
 		
@@ -23,13 +37,13 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 	}
 
 	// declaring our ArrayList of items
-		private ArrayList<NewsItem> objects;
+		private ArrayList<RSSItem> objects;
 
 		/* here we must override the constructor for ArrayAdapter
 		* the only variable we care about now is ArrayList<Item> objects,
 		* because it is the list of objects we want to display.
 		*/
-		public ListNewsItemAdapter(Context context, int textViewResourceId, ArrayList<NewsItem> objects) {
+		public ListNewsItemAdapter(Context context, int textViewResourceId, ArrayList<RSSItem> objects) {
 			super(context, textViewResourceId, objects);
 			this.objects = objects;
 		}
@@ -59,7 +73,7 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 			 * 
 			 * Therefore, i refers to the current Item object.
 			 */
-			NewsItem i = objects.get(position);
+			RSSItem i = objects.get(position);
 
 			if (i != null) {
 
@@ -67,7 +81,7 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 				// These TextViews are created in the XML files we defined.
 
 				TextView title = (TextView) v.findViewById(R.id.title);
-				ImageView icon = (ImageView) v.findViewById(R.id.icon);
+				WebView icon = (WebView) v.findViewById(R.id.icon);
 				TextView content = (TextView)v.findViewById(R.id.content);
 				TextView timestamp = (TextView)v.findViewById(R.id.timestamp);
 				
@@ -79,15 +93,33 @@ public class ListNewsItemAdapter extends ArrayAdapter<NewsItem> {
 				if (title != null){
 					title.setText( i.getTitle());
 				}
+//				if (icon != null){
+//					icon.setImageResource(i.getImageID());
+//					BasicFunctions.ResizeImageView((int)(MainActivity.getStandardSize()*0.2), icon);
+//				}
 				if (icon != null){
-					icon.setImageResource(i.getImageID());
-					BasicFunctions.ResizeImageView((int)(MainActivity.getStandardSize()*0.2), icon);
+					icon.getLayoutParams().width = (int)(MainActivity.getStandardSize()*0.3);
+					icon.getLayoutParams().height = (int)(MainActivity.getStandardSize()*0.3);
+					
+					icon.setWebViewClient(new WebViewClient());
+					String img_html =
+							"<html>"
+							+"<body>"
+							+ "<img src=\"http://www1.bongda.com.vn/data/Image/2014/Thang06/08/Bi.jpg\" >"
+							+ "</body>"
+							+ "</html>";
+					icon.loadData(img_html, "text/html", null);
+							
+					
+					
+
+					
 				}
 				if (content != null){
-					content.setText(i.getContent());
+					content.setText(i.getDescription());
 				}
 				if (timestamp != null){
-					timestamp.setText(i.getPublicDate());
+					timestamp.setText(i.getPubdate());
 				}
 				
 			}

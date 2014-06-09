@@ -11,6 +11,7 @@ public class RSSItem {
     String _description;
     String _pubdate;
     String _guid;
+    private int imageID;
      
     // constructor
     public RSSItem(){
@@ -72,4 +73,12 @@ public class RSSItem {
     public String getGuid(){
         return this._guid;
     }
+
+	public int getImageID() {
+		return imageID;
+	}
+
+	public void setImageID(int imageID) {
+		this.imageID = imageID;
+	}
 }

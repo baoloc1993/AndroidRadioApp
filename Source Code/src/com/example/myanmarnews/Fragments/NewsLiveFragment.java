@@ -3,6 +3,8 @@ package com.example.myanmarnews.Fragments;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -26,7 +28,6 @@ import android.widget.Toast;
 
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
-
 import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.RSS.RSSDatabaseHandler;
 import com.example.myanmarnews.RSS.RSSFeed;
@@ -57,6 +58,7 @@ public class NewsLiveFragment extends Fragment {
     private static String TAG_DESRIPTION = "description";
     private static String TAG_PUB_DATE = "pubDate";
     private static String TAG_GUID = "guid"; // not used
+    private static String TAG_IMAGE = "image";
 
 	public NewsLiveFragment() {
 	}
@@ -160,11 +162,40 @@ public class NewsLiveFragment extends Fragment {
                 map.put(TAG_LINK, item.getLink());
                 map.put(TAG_PUB_DATE, item.getPubdate());
                 String description = item.getDescription();
+                String url_img = "";
+                /**
+                 * GET IMAGE FROM DESCRIPTION
+                 */
+                
+                String regex = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]";
+                Pattern p = Pattern.compile(regex);
+                Matcher m = p.matcher("http://abc.abc.jpg");
+                while(m.find()) {
+                String urlStr = m.group();
+                char[] stringArray1 = urlStr.toCharArray();
+
+                if (urlStr.startsWith("(") && urlStr.endsWith(")"))
+                {
+
+                    char[] stringArray = urlStr.toCharArray(); 
+
+                    char[] newArray = new char[stringArray.length-2];
+                    System.arraycopy(stringArray, 1, newArray, 0, stringArray.length-2);
+                    urlStr = new String(newArray);
+                   // System.out.println("Finally Url ="+newArray.toString());
+                    url_img = newArray.toString();
+                }
+                }
+                /**
+                 * END GET
+                 */
                 // taking only 200 chars from description
+                
                 if(description.length() > 100){
                     description = description.substring(0, 97) + "..";
                 }
                 map.put(TAG_DESRIPTION, description);
+                
  
                 // adding HashList to ArrayList
                 rssItemList.add(map);
@@ -185,14 +216,18 @@ public class NewsLiveFragment extends Fragment {
 					
 					rssDb.addSite(site);
 					rssDb.addSite(site2);
-                    ListAdapter adapter = new SimpleAdapter(
-                           getActivity(),
-                            rssItemList, R.layout.preview_single_news_layout,
-                            new String[] { TAG_LINK, TAG_TITLE, TAG_PUB_DATE, TAG_DESRIPTION},
-                            new int[] {
-									R.id.sqlite_id, R.id.title, R.id.rss_url, R.id.content });
-                     
+//                    ListAdapter adapter = new SimpleAdapter(
+//                           getActivity(),
+//                            rssItemList, R.layout.preview_single_news_layout,
+//                            new String[] { TAG_LINK, TAG_TITLE, TAG_PUB_DATE, TAG_DESRIPTION, TAG_IMAGE},
+//                            new int[] {
+//									R.id.sqlite_id, R.id.title, R.id.rss_url, R.id.content , R.id.icon});
+//                     
                     // updating listview
+					ListAdapter adapter = new ListNewsItemAdapter(
+							getActivity(), 
+							R.layout.preview_single_news_layout, 
+							(ArrayList<RSSItem>) rssItems);
                    listNews.setAdapter(adapter);
                 }
             });
