@@ -119,10 +119,13 @@ public class RSSParser {
          
         // check if RSS XML fetched or not
         if(rss_feed_xml != null){
+        	
             // successfully fetched rss xml
             // parse the xml
             try{
+            	
                 Document doc = this.getDomElement(rss_feed_xml);
+                Log.d("RSS IS FETCHED?",rss_feed_xml);
                 NodeList nodeList = doc.getElementsByTagName(TAG_CHANNEL);
                 Element e = (Element) nodeList.item(0);
                  
@@ -138,6 +141,7 @@ public class RSSParser {
                     String description = this.getValue(e1, TAG_DESRIPTION);
                     String pubdate = this.getValue(e1, TAG_PUB_DATE);
                     String guid = this.getValue(e1, TAG_GUID);
+                    Log.d("DEBUG", title);
                     
                     //Get url image from a text
                     /**
@@ -148,27 +152,24 @@ public class RSSParser {
                     String url_img = null;
                     Pattern p = Pattern.compile(regex);
                     Matcher m = p.matcher(description);
+                    //m contains a list of link
                     while(m.find()) {
+                    	//Get each link in Matcher
                     	String urlStr = m.group();
-                    	char[] stringArray1 = urlStr.toCharArray();
-
-	                    if (urlStr.startsWith("(") && urlStr.endsWith(")"))
-	                    {
-	
-	                        char[] stringArray = urlStr.toCharArray(); 
-	
-	                        char[] newArray = new char[stringArray.length-2];
-	                        System.arraycopy(stringArray, 1, newArray, 0, stringArray.length-2);
-	                        urlStr = new String(newArray);
-	                       // System.out.println("Finally Url ="+newArray.toString());
-	                       url_img = newArray.toString();
+                    	
+                    	//If the link is image, load to RSSItem
+	                    if (urlStr.endsWith(".jpg") || urlStr.endsWith(".png")){
+	                    	url_img = urlStr;
+	                    	
 	                    }
                     }
                     /**
                      * END GET
                      */
                     
-                     
+                    /**
+                     * REMOVE
+                     */
                     RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid, url_img);
                      
                     // adding item to list
@@ -176,6 +177,7 @@ public class RSSParser {
                 }
             }catch(Exception e){
                 // Check log for errors
+            	Log.d("EXCEPTION","get errors");
                 e.printStackTrace();
             }
         }
