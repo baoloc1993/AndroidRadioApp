@@ -87,6 +87,7 @@ public class SocialNetworkItemAdapter extends ArrayAdapter<SocialNetworkItem> {
 				 */
 				int size = MainActivity.getStandardSize()/objects.size()/3;
 				BasicFunctions.ResizeImageView(size, icon);
+				
 			}
 			/**
 			 * Set background's color
@@ -94,6 +95,7 @@ public class SocialNetworkItemAdapter extends ArrayAdapter<SocialNetworkItem> {
 			RelativeLayout relativeLayout = (RelativeLayout) v
 					.findViewById(R.id.background);
 			relativeLayout.setBackgroundColor(i.getBackground());
+			
 			/**
 			 * 
 			 * Progress Bar
