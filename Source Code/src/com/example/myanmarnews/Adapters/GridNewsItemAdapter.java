@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.BasicFunctions.BasicFunctions;
+import com.example.myanmarnews.Fragments.GridViewNewsLiveFragment;
 import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.RSS.RSSItem;
 
@@ -95,7 +96,7 @@ public class GridNewsItemAdapter extends ArrayAdapter<RSSItem> {
 				}
 //				
 				if (icon != null){
-					int size = icon.getLayoutParams().width;
+					int size = MainActivity.getStandardSize()/3;
 					
 					//icon.getLayoutParams().height = icon.getLayoutParams().width;
 					//icon.getLayoutParams().height = size;
@@ -111,8 +112,8 @@ public class GridNewsItemAdapter extends ArrayAdapter<RSSItem> {
 							+ "<img src=\""
 							+ url_img
 							+ "\" width=\""
-							+ String.valueOf(size)
-							+ "px\" height=\""
+							+ "100"
+							+ "%\" height=\""
 							+ String.valueOf(size)
 							+ "px\" >"
 							+ "</body>"

@@ -38,7 +38,7 @@ import com.example.myanmarnews.RSS.RSSParser;
 import com.example.myanmarnews.RSS.WebSite;
 
 public class GridViewNewsLiveFragment extends Fragment {
-	private GridView gridNews;
+	public static GridView gridNews;
 	
 
 	/**
@@ -115,8 +115,8 @@ public class GridViewNewsLiveFragment extends Fragment {
                // Intent in = new Intent(getApplicationContext(), DisPlayWebPageActivity.class);
                  
                 // getting page url
-                String page_url = ((TextView) view.findViewById(R.id.rss_url)).getText().toString();
-                Toast.makeText(getActivity(), page_url, Toast.LENGTH_SHORT).show();
+                //String page_url = ((TextView) view.findViewById(R.id.rss_url)).getText().toString();
+                //Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
                // in.putExtra("page_url", page_url);
                // startActivity(in);
             }
