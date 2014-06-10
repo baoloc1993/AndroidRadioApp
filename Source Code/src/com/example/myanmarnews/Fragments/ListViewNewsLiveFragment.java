@@ -153,7 +153,7 @@ public class ListViewNewsLiveFragment extends Fragment {
             String rss_url = args[0];
              
             // list of rss items
-            rssItems = rssParser.getRSSFeedItems(getString(R.string.rss_link));
+            rssItems = rssParser.getRSSFeedItems("http://vnexpress.net/rss/tin-moi-nhat.rss");
              
             // looping through each item
             for(RSSItem item : rssItems){
@@ -202,7 +202,7 @@ public class ListViewNewsLiveFragment extends Fragment {
 //									R.id.sqlite_id, R.id.title, R.id.rss_url, R.id.content , R.id.icon});
 //                     
                     // updating listview
-					ListNewsItemAdapter adapter = new ListNewsItemAdapter(
+					ListAdapter adapter = new ListNewsItemAdapter(
 							getActivity(), 
 							R.layout.preview_single_news_list_layout, 
 							(ArrayList<RSSItem>) rssItems);

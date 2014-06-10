@@ -12,8 +12,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:horizontalSpacing="2dp"
-        android:focusable="true"
         android:numColumns="3"
+        android:stretchMode="columnWidth"
         android:verticalSpacing="3dp" >
 
     </GridView>

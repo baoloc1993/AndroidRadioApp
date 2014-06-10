@@ -14,7 +14,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
@@ -33,7 +31,6 @@ import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.RSS.RSSItem;
 
 public class GridNewsItemAdapter extends ArrayAdapter<RSSItem> {
-	private Context context;
 	public GridNewsItemAdapter(Context context, int resource) {
 		super(context, resource);
 		
@@ -49,7 +46,6 @@ public class GridNewsItemAdapter extends ArrayAdapter<RSSItem> {
 		*/
 		public GridNewsItemAdapter(Context context, int textViewResourceId, ArrayList<RSSItem> objects) {
 			super(context, textViewResourceId, objects);
-			this.context = context;
 			this.objects = objects;
 		}
 
@@ -62,7 +58,7 @@ public class GridNewsItemAdapter extends ArrayAdapter<RSSItem> {
 
 			// assign the view we are converting to a local variable
 			View v = convertView;
-			
+
 			// first check to see if the view is null. if so, we have to inflate it.
 			// to inflate it basically means to render, or show, the view.
 			if (v == null) {
@@ -97,14 +93,6 @@ public class GridNewsItemAdapter extends ArrayAdapter<RSSItem> {
 				
 				if (title != null){
 					title.setText( i.getTitle());
-//					title.setOnClickListener(new OnClickListener() {
-//						
-//						@Override
-//						public void onClick(View v) {
-//							// TODO Auto-generated method stub
-//							Toast.makeText(context, "As", Toast.LENGTH_SHORT).show();
-//						}
-//					});
 				}
 //				
 				if (icon != null){
