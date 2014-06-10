@@ -17,6 +17,10 @@ import com.example.myanmarnews.Fragments.SocialNetworkFragment;
 public class MainActivity extends Activity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+	
+	public static Constant currentFragment;
+	
+	
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
@@ -66,26 +70,32 @@ public class MainActivity extends Activity implements
 		case 0:
 			fragmentManager.beginTransaction()
 					.replace(R.id.container, new ListViewNewsLiveFragment()).commit();
+			currentFragment = Constant.ListLiveNews;
 			break;
 		case 1:
 			fragmentManager.beginTransaction()
 					.replace(R.id.container, new BreakingNewsFragment())
 					.commit();
+			currentFragment = Constant.ListBrakingNews;
 			break;
 		case 2:
 			fragmentManager.beginTransaction()
 					.replace(R.id.container, new SelectedNewsFragment())
 					.commit();
+			currentFragment = Constant.ListSelectedNews;
 			break;
+			
 		case 3:
 			fragmentManager.beginTransaction()
 					.replace(R.id.container, new SocialNetworkFragment())
 					.commit();
+			currentFragment = Constant.SocialNetwork;
 			break;
 		default:
 			fragmentManager.beginTransaction()
 					.replace(R.id.container, new SocialNetworkFragment())
 					.commit();
+			currentFragment = Constant.SocialNetwork;
 			break;
 		}
 

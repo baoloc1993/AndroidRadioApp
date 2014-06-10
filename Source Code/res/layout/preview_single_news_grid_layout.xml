@@ -26,12 +26,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#CC000000"
+        android:background="#AA000000"
         android:lines="3"
         android:padding="5dp"
         android:text="title"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#FFFFFF"
-        android:textStyle="bold" />
+         />
 
 </RelativeLayout>

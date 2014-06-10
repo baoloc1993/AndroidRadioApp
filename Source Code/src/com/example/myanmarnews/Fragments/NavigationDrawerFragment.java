@@ -3,6 +3,7 @@ package com.example.myanmarnews.Fragments;
 
 import java.util.ArrayList;
 
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
@@ -11,6 +12,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
@@ -23,6 +25,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.myanmarnews.Constant;
+import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.ListDrawerItemAdapter;
 import com.example.myanmarnews.Items.DrawerItem;
@@ -257,8 +261,30 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.switch_layout) {
-            Toast.makeText(getActivity(), "Layout Change.", Toast.LENGTH_SHORT).show();
-            getActivity().getFragmentManager().beginTransaction().replace(R.id.container, new GridViewNewsLiveFragment()).commit();
+            //Toast.makeText(getActivity(), "Layout Change.", Toast.LENGTH_SHORT).show();
+        	android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
+        	switch (MainActivity.currentFragment) {
+			case GridBrakingNews:
+				fragmentManager.beginTransaction().replace(R.id.container,new BreakingNewsFragment());
+				MainActivity.currentFragment = Constant.ListBrakingNews;
+				
+				break;
+			case ListBrakingNews:
+				fragmentManager.beginTransaction().replace(R.id.container,new BreakingNewsFragment()).commit();
+				MainActivity.currentFragment = Constant.GridBrakingNews;
+				break;
+			case GridLiveNews:
+				fragmentManager.beginTransaction().replace(R.id.container, new ListViewNewsLiveFragment()).commit();
+				MainActivity.currentFragment = Constant.ListLiveNews;
+				break;
+			case ListLiveNews:
+				fragmentManager.beginTransaction().replace(R.id.container, new GridViewNewsLiveFragment()).commit();
+				MainActivity.currentFragment = Constant.GridLiveNews;
+				break;
+			default:
+				break;
+			}
+            //getActivity().getFragmentManager().beginTransaction().replace(R.id.container, new GridViewNewsLiveFragment()).commit();
             return true;
         }
 
