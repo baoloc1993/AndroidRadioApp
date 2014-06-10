@@ -153,7 +153,7 @@ public class ListViewNewsLiveFragment extends Fragment {
             String rss_url = args[0];
              
             // list of rss items
-            rssItems = rssParser.getRSSFeedItems("http://vnexpress.net/rss/tin-moi-nhat.rss");
+            rssItems = rssParser.getRSSFeedItems("http://www.24h.com.vn/upload/rss/tintuctrongngay.rss");
              
             // looping through each item
             for(RSSItem item : rssItems){

@@ -125,13 +125,13 @@ public class RSSParser {
             try{
             	
                 Document doc = this.getDomElement(rss_feed_xml);
-                Log.d("RSS IS FETCHED?",rss_feed_xml);
+                
                 NodeList nodeList = doc.getElementsByTagName(TAG_CHANNEL);
                 Element e = (Element) nodeList.item(0);
                  
                 // Getting items array
                 NodeList items = e.getElementsByTagName(TAG_ITEM);
-                 
+                
                 // looping through each item
                 for(int i = 0; i < items.getLength(); i++){
                     Element e1 = (Element) items.item(i);
@@ -141,7 +141,7 @@ public class RSSParser {
                     String description = this.getValue(e1, TAG_DESRIPTION);
                     String pubdate = this.getValue(e1, TAG_PUB_DATE);
                     String guid = this.getValue(e1, TAG_GUID);
-                    Log.d("DEBUG", title);
+                  //  Log.d("DEBUG", title);
                     
                     //Get url image from a text
                     /**
@@ -257,24 +257,28 @@ public class RSSParser {
      * @param XML string
      * */
     public Document getDomElement(String xml) {
+    	//Log.d("RSS IS FETCHED?",xml);
         Document doc = null;
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        
         try {
  
             DocumentBuilder db = dbf.newDocumentBuilder();
- 
+            
             InputSource is = new InputSource();
             is.setCharacterStream(new StringReader(xml));
+            
             doc = db.parse(is);
+            
  
         } catch (ParserConfigurationException e) {
-            Log.e("Error: ", e.getMessage());
+            Log.e("Error: ParserConfigurationException", e.getMessage());
             return null;
         } catch (SAXException e) {
-            Log.e("Error: ", e.getMessage());
+            Log.e("Error: SAXException", e.getMessage());
             return null;
         } catch (IOException e) {
-            Log.e("Error: ", e.getMessage());
+            Log.e("Error: IOException ", e.getMessage());
             return null;
         }
  
