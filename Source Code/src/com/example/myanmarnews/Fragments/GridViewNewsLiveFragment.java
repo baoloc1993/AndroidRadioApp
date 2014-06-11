@@ -84,8 +84,8 @@ public class GridViewNewsLiveFragment extends Fragment {
          
        // WebSite site = rssDB.getSite(site_id);
         //Create new website object
-        WebSite site = new WebSite("TITLE WEB", "LINK WEB", "RSS_LINK", "DESCRIPTION");
-        String rss_link = site.getRSSLink();
+       // WebSite site = new WebSite("TITLE WEB", "LINK WEB", "RSS_LINK", "DESCRIPTION");
+     //   String rss_link = site.getRSSLink();
         
 //        ArrayList<NewsItem> newsItems = new ArrayList<NewsItem>();
 //        for(int i=0;i<10;i++){
@@ -102,7 +102,7 @@ public class GridViewNewsLiveFragment extends Fragment {
          * Calling a backgroung thread will loads recent articles of a website
          * @param rss url of website
          * */
-        new loadRSSFeedItems().execute(rss_link);
+        new loadRSSFeedItems().execute();
          
         // selecting single ListView item
         //ListView lv = getListView();

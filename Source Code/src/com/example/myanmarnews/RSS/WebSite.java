@@ -10,6 +10,7 @@ public class WebSite {
     String _link;
     String _rss_link;
     String _description;
+    byte[] _img;
      
     // constructor
     public WebSite(){
@@ -17,10 +18,10 @@ public class WebSite {
     }
  
     // constructor with parameters
-    public WebSite(String title, String link, String rss_link, String description){
+    public WebSite(String title, String link, byte[] _img, String description){
         this._title = title;
         this._link = link;
-        this._rss_link = rss_link;
+        this._img = _img;
         this._description = description;
     }
      
@@ -46,6 +47,10 @@ public class WebSite {
     public void setDescription(String description){
         this._description = description;
     }
+    
+    public void setImage(byte[] _img){
+    	this._img = _img;
+    }
      
     /**
      * All get methods
@@ -68,5 +73,8 @@ public class WebSite {
      
     public String getDescription(){
         return this._description;
+    }
+    public byte[] getImage(){
+    	return this._img;
     }
 }

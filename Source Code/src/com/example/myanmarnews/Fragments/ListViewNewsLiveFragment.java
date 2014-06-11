@@ -1,5 +1,11 @@
 package com.example.myanmarnews.Fragments;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,14 +13,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Fragment;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -59,6 +71,8 @@ public class ListViewNewsLiveFragment extends Fragment {
     private static String TAG_PUB_DATE = "pubDate";
     private static String TAG_GUID = "guid"; // not used
     private static String TAG_IMAGE = "image";
+    
+    byte[] img;
 
 	public ListViewNewsLiveFragment() {
 	}
@@ -76,30 +90,21 @@ public class ListViewNewsLiveFragment extends Fragment {
        // Integer site_id = Integer.parseInt(getActivity().getStringExtra("id"));
          
         // Getting Single website from SQLite
-        RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getActivity());
+      //  RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getActivity());
          
          
        // WebSite site = rssDB.getSite(site_id);
         //Create new website object
-        WebSite site = new WebSite("TITLE WEB", "LINK WEB", "RSS_LINK", "DESCRIPTION");
-        String rss_link = site.getRSSLink();
+       // WebSite site = new WebSite("TITLE WEB", "LINK WEB", "RSS_LINK", "DESCRIPTION");
+       // String rss_link = site.getRSSLink();
         
-//        ArrayList<NewsItem> newsItems = new ArrayList<NewsItem>();
-//        for(int i=0;i<10;i++){
-//	        newsItems.add(new NewsItem(
-//	        		"Title " + String.valueOf(newsItems.size()+1),
-//	        		R.drawable.ic_launcher,
-//	        		"a asldkasd asdlkjasldj asldkjasjd aslkdalkjsd qwqw 1212 3lkas asldka1oijd Content " + String.valueOf(newsItems.size()+1),
-//					"Time Stamp "+ String.valueOf(newsItems.size()+1)
-//	        ));
-//        }
-        
+
         
         /**
          * Calling a backgroung thread will loads recent articles of a website
          * @param rss url of website
          * */
-        new loadRSSFeedItems().execute(rss_link);
+        new loadRSSFeedItems().execute();
          
         // selecting single ListView item
         //ListView lv = getListView();
@@ -150,10 +155,12 @@ public class ListViewNewsLiveFragment extends Fragment {
         @Override
         protected String doInBackground(String... args) {
             // rss link url
-            String rss_url = args[0];
-             
+            //String rss_url = args[0];
+             //IF INTERNET CONNECTING, RETRIVE DATA FROM RSS LINK
             // list of rss items
-            rssItems = rssParser.getRSSFeedItems(getString(R.string.rss_link));
+        	if (isConnectingToInternet()){
+        		rssItems = rssParser.getRSSFeedItems(getString(R.string.rss_link));
+        	}
              
             // looping through each item
             for(RSSItem item : rssItems){
@@ -165,42 +172,86 @@ public class ListViewNewsLiveFragment extends Fragment {
                 map.put(TAG_LINK, item.getLink());
                 map.put(TAG_PUB_DATE, item.getPubdate());
                 String description = item.getDescription();
-               // String url_img = "";
                
                 // taking only 200 chars from description
-                
                 if(description.length() > 100){
                     description = description.substring(0, 97) + "..";
                 }
                 map.put(TAG_DESRIPTION, description);
                 
- 
                 // adding HashList to ArrayList
-                rssItemList.add(map);
+                rssItemList.add(map);                            
             }
              
             // updating UI from Background Thread
             getActivity().runOnUiThread(new Runnable() {
+            	InputStream input = null;
+            	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
                 public void run() {
-//                    /**
-//                     * Updating parsed items into listview
-//                     * */
-//                	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-//                	WebSite site = new WebSite(
-//							"title", "link","rss_link","description" );
-//					WebSite site2 = new WebSite(
-//							"title2", "link2","rss_link2","description2" );
-//					// listing all websites from SQLite
-//					
-//					rssDb.addSite(site);
-//					rssDb.addSite(site2);
-//                    ListAdapter adapter = new SimpleAdapter(
-//                           getActivity(),
-//                            rssItemList, R.layout.preview_single_news_layout,
-//                            new String[] { TAG_LINK, TAG_TITLE, TAG_PUB_DATE, TAG_DESRIPTION, TAG_IMAGE},
-//                            new int[] {
-//									R.id.sqlite_id, R.id.title, R.id.rss_url, R.id.content , R.id.icon});
-//                     
+                    /**
+                     * Updating parsed items into listview
+                     * */
+                	
+                	//NO INTERNET -> RSSITEMS is emtpy
+                	if (rssItems.isEmpty()){
+                		
+                		
+                	}else{
+	                	for (RSSItem item : rssItems){
+	                		
+	                		//Retreive Image from URL and Create a new Bitmap Image
+		                      URL url = null;
+		                      
+		                      
+		                      
+							try {
+								url = new URL(item.getImgUrl());
+								
+							} catch (MalformedURLException e) {
+								// TODO Auto-generated catch block
+								url = null;
+								e.printStackTrace();
+							}
+		                      
+							try {
+								//HttpURLConnection connection = null;
+								HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+								
+								 //connection.setDoInput(true);
+								 
+								//connection.connect();
+								 connection.setConnectTimeout(30000);
+						            connection.setReadTimeout(30000);
+						            connection.setInstanceFollowRedirects(true);
+								Log.d("IMG",item.getImgUrl());
+								
+								input = connection.getInputStream();
+								
+								Bitmap myBitmap = BitmapFactory.decodeStream(input);
+								ByteArrayOutputStream bos=new ByteArrayOutputStream();
+				                myBitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+				                img=bos.toByteArray();
+				                    
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+		                
+		                     
+							
+		                    
+		                   
+		                    
+	                		WebSite site = new WebSite(
+	    							item.getTitle(), 
+	    							item.getLink(),
+	    							img,
+	    							item.getDescription());
+	                		rssDb.addSite(site);
+	                	}
+                	}
+                	
+
                     // updating listview
 					ListAdapter adapter = new ListNewsItemAdapter(
 							getActivity(), 
@@ -219,6 +270,24 @@ public class ListViewNewsLiveFragment extends Fragment {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
         }
+    }
+    
+    //CHECK IF IS CONNECTION TO INTERNET OR NOT
+    public boolean isConnectingToInternet(){
+    	Context _context = getActivity().getApplicationContext();
+        ConnectivityManager connectivity = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
+          if (connectivity != null) 
+          {
+              NetworkInfo[] info = connectivity.getAllNetworkInfo();
+              if (info != null) 
+                  for (int i = 0; i < info.length; i++) 
+                      if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                      {
+                          return true;
+                      }
+ 
+          }
+          return false;
     }
 	// @Override
 	// public void onAttach(Activity activity) {

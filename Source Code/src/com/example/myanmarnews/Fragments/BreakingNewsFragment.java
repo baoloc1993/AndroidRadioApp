@@ -192,14 +192,8 @@ public class BreakingNewsFragment extends Fragment {
 				public void run() {
 					RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
 					
-					WebSite site = new WebSite(
-							"title", "link","rss_link","description" );
-					WebSite site2 = new WebSite(
-							"title2", "link2","rss_link2","description2" );
-					// listing all websites from SQLite
 					
-					rssDb.addSite(site);
-					rssDb.addSite(site2);
+				
 					
 					List<WebSite> siteList = rssDb.getAllSites();
 	

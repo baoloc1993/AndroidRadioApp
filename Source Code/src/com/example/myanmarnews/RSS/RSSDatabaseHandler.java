@@ -9,6 +9,10 @@
  */
 package com.example.myanmarnews.RSS;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +21,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+//import android.support.v4.widget.SearchViewCompatIcs.MySearchView;
 
 public class RSSDatabaseHandler extends SQLiteOpenHelper {
 	 
@@ -35,7 +42,13 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_LINK = "link";
     private static final String KEY_RSS_LINK = "rss_link";
     private static final String KEY_DESCRIPTION = "description";
+    private static final String KEY_IMG = "img";
+    private static final String KEY_IMG_LINK = "img_link";
  
+    //Variables for image
+    private byte[] img;
+  //  private MyDataBase mdb;
+    
     public RSSDatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -45,8 +58,8 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_RSS_TABLE = "CREATE TABLE " + TABLE_RSS + "(" + KEY_ID
                 + " INTEGER PRIMARY KEY," + KEY_TITLE + " TEXT," + KEY_LINK
-                + " TEXT," + KEY_RSS_LINK + " TEXT," + KEY_DESCRIPTION
-                + " TEXT" + ")";
+                + " TEXT," + KEY_RSS_LINK + " TEXT," + "IMAGE" + KEY_IMG 
+                + KEY_DESCRIPTION + " TEXT" + ")";
         db.execSQL(CREATE_RSS_TABLE);
     }
  
@@ -66,14 +79,31 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
      * creates a new row
      * */
     public void addSite(WebSite site) {
+    	
+    	
         SQLiteDatabase db = this.getWritableDatabase();
  
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, site.getTitle()); // site title
         values.put(KEY_LINK, site.getLink()); // site url
-        values.put(KEY_RSS_LINK, site.getRSSLink()); // rss link url
+        values.put(KEY_IMG, site.getImage()); // rss img 
         values.put(KEY_DESCRIPTION, site.getDescription()); // site description
- 
+        values.put(KEY_RSS_LINK, site.getRSSLink()); // rss rss url
+        
+        //ADD image from url into database
+        ////Create Bitmap Image from URL 
+//        URL url = new URL(site.getImageURL());
+//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//        connection.setDoInput(true);
+//        connection.connect();
+//        InputStream input = connection.getInputStream();
+//        Bitmap myBitmap = BitmapFactory.decodeStream(input);
+//        //Insert Bitmap Image into Database
+//        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+//        myBitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+//        img=bos.toByteArray();
+//        //db=mdb.getWritableDatabase();
+// 
         // Check if row already existed in database
         if (!isSiteExists(db, site.getRSSLink())) {
             // site not existed, create a new row
@@ -105,7 +135,7 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
                 site.setId(Integer.parseInt(cursor.getString(0)));
                 site.setTitle(cursor.getString(1));
                 site.setLink(cursor.getString(2));
-                site.setRSSLink(cursor.getString(3));
+                site.setImage(cursor.getBlob(3));
                 site.setDescription(cursor.getString(4));
                 // Adding contact to list
                 siteList.add(site);
@@ -151,7 +181,7 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
  
         WebSite site = new WebSite(cursor.getString(1), cursor.getString(2),
-                cursor.getString(3), cursor.getString(4));
+                cursor.getBlob(3), cursor.getString(4));
  
         site.setId(Integer.parseInt(cursor.getString(0)));
         site.setTitle(cursor.getString(1));

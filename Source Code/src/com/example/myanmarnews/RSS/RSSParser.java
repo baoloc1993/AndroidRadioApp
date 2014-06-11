@@ -125,7 +125,7 @@ public class RSSParser {
             try{
             	
                 Document doc = this.getDomElement(rss_feed_xml);
-                Log.d("RSS IS FETCHED?",rss_feed_xml);
+               // Log.d("RSS IS FETCHED?",rss_feed_xml);
                 NodeList nodeList = doc.getElementsByTagName(TAG_CHANNEL);
                 Element e = (Element) nodeList.item(0);
                  
