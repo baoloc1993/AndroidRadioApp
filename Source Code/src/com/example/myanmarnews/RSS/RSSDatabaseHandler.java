@@ -23,6 +23,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 //import android.support.v4.widget.SearchViewCompatIcs.MySearchView;
 
 public class RSSDatabaseHandler extends SQLiteOpenHelper {
@@ -40,27 +41,33 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
     private static final String KEY_LINK = "link";
-    private static final String KEY_RSS_LINK = "rss_link";
+    //private static final String KEY_RSS_LINK = "rss_link";
     private static final String KEY_DESCRIPTION = "description";
-    private static final String KEY_IMG = "img";
-    private static final String KEY_IMG_LINK = "img_link";
+    private static final String KEY_IMG = "img_name";
+    private static final String KEY_IMG_LINK = "rss_link";
+    
+    private Context myContext;
  
-    //Variables for image
-    private byte[] img;
-  //  private MyDataBase mdb;
+    
+
+	//private long insertedRowIndex;
     
     public RSSDatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.myContext = context;
     }
  
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_RSS_TABLE = "CREATE TABLE " + TABLE_RSS + "(" + KEY_ID
-                + " INTEGER PRIMARY KEY," + KEY_TITLE + " TEXT," + KEY_LINK
-                + " TEXT," + KEY_RSS_LINK + " TEXT," + "IMAGE" + KEY_IMG 
-                + KEY_DESCRIPTION + " TEXT" + ")";
+                + " INTEGER PRIMARY KEY, " + KEY_TITLE + " TEXT, " + KEY_LINK
+                + " TEXT, " +  KEY_IMG_LINK + " TEXT, " 
+                + KEY_DESCRIPTION + " TEXT" + ");";
+
         db.execSQL(CREATE_RSS_TABLE);
+    	
+
     }
  
     // Upgrading database
@@ -82,32 +89,22 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
     	
     	
         SQLiteDatabase db = this.getWritableDatabase();
- 
+
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, site.getTitle()); // site title
         values.put(KEY_LINK, site.getLink()); // site url
-        values.put(KEY_IMG, site.getImage()); // rss img 
+        values.put(KEY_IMG_LINK, site.getImageLink()); // rss img 
         values.put(KEY_DESCRIPTION, site.getDescription()); // site description
-        values.put(KEY_RSS_LINK, site.getRSSLink()); // rss rss url
+        //values.put(KEY_RSS_LINK, site.getRSSLink()); // rss rss url
         
-        //ADD image from url into database
-        ////Create Bitmap Image from URL 
-//        URL url = new URL(site.getImageURL());
-//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//        connection.setDoInput(true);
-//        connection.connect();
-//        InputStream input = connection.getInputStream();
-//        Bitmap myBitmap = BitmapFactory.decodeStream(input);
-//        //Insert Bitmap Image into Database
-//        ByteArrayOutputStream bos=new ByteArrayOutputStream();
-//        myBitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-//        img=bos.toByteArray();
-//        //db=mdb.getWritableDatabase();
-// 
+   
         // Check if row already existed in database
-        if (!isSiteExists(db, site.getRSSLink())) {
+       // Log.d("IMAGE LINK", site.getImageLink());
+        if (!isSiteExists(db, site.getImageLink())) {
             // site not existed, create a new row
             db.insert(TABLE_RSS, null, values);
+        
+            Log.d("DATABASE", "INSERT SUCCESSFULLY");
             db.close();
         } else {
             // site already existed update the row
@@ -135,7 +132,7 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
                 site.setId(Integer.parseInt(cursor.getString(0)));
                 site.setTitle(cursor.getString(1));
                 site.setLink(cursor.getString(2));
-                site.setImage(cursor.getBlob(3));
+                site.setImageLink(cursor.getString(3));
                 site.setDescription(cursor.getString(4));
                 // Adding contact to list
                 siteList.add(site);
@@ -157,12 +154,13 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, site.getTitle());
         values.put(KEY_LINK, site.getLink());
-        values.put(KEY_RSS_LINK, site.getRSSLink());
+       // values.put(KEY_RSS_LINK, site.getRSSLink());
         values.put(KEY_DESCRIPTION, site.getDescription());
+        values.put(KEY_IMG_LINK, site.getImageLink());
  
         // updating row return
-        int update = db.update(TABLE_RSS, values, KEY_RSS_LINK + " = ?",
-                new String[] { String.valueOf(site.getRSSLink()) });
+        int update = db.update(TABLE_RSS, values, KEY_IMG_LINK + " = ?",
+                new String[] { String.valueOf(site.getImageLink()) });
         db.close();
         return update;
  
@@ -175,18 +173,18 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
  
         Cursor cursor = db.query(TABLE_RSS, new String[] { KEY_ID, KEY_TITLE,
-                KEY_LINK, KEY_RSS_LINK, KEY_DESCRIPTION }, KEY_ID + "=?",
+                KEY_LINK, KEY_IMG_LINK, KEY_DESCRIPTION, }, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
  
         WebSite site = new WebSite(cursor.getString(1), cursor.getString(2),
-                cursor.getBlob(3), cursor.getString(4));
+                cursor.getString(3), cursor.getString(4));
  
         site.setId(Integer.parseInt(cursor.getString(0)));
         site.setTitle(cursor.getString(1));
         site.setLink(cursor.getString(2));
-        site.setRSSLink(cursor.getString(3));
+        site.setImageLink(cursor.getString(3));
         site.setDescription(cursor.getString(4));
         cursor.close();
         db.close();
@@ -207,10 +205,10 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
      * Checking whether a site is already existed check is done by matching rss
      * link
      * */
-    public boolean isSiteExists(SQLiteDatabase db, String rss_link) {
+    public boolean isSiteExists(SQLiteDatabase db, String img_link) {
  
         Cursor cursor = db.rawQuery("SELECT 1 FROM " + TABLE_RSS
-                + " WHERE rss_link = '" + rss_link + "'", new String[] {});
+                + " WHERE rss_link = '" + img_link + "'", new String[] {});
         boolean exists = (cursor.getCount() > 0);
         return exists;
     }

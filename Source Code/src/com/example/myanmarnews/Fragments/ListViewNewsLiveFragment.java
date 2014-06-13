@@ -1,8 +1,13 @@
 package com.example.myanmarnews.Fragments;
 
+import imageLoader.ImageLoader;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,10 +20,12 @@ import java.util.regex.Pattern;
 import android.app.Fragment;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.app.ListActivity;
@@ -27,11 +34,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -46,10 +56,13 @@ import com.example.myanmarnews.RSS.RSSFeed;
 import com.example.myanmarnews.RSS.RSSItem;
 import com.example.myanmarnews.RSS.RSSParser;
 import com.example.myanmarnews.RSS.WebSite;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Picasso.LoadedFrom;
+import com.squareup.picasso.Target;
 
 public class ListViewNewsLiveFragment extends Fragment {
 	private ListView listNews;
-	
+
 
 	/**
 	 * Returns a new instance of this fragment for the given section number.
@@ -117,8 +130,8 @@ public class ListViewNewsLiveFragment extends Fragment {
                // Intent in = new Intent(getApplicationContext(), DisPlayWebPageActivity.class);
                  
                 // getting page url
-                String page_url = ((TextView) view.findViewById(R.id.rss_url)).getText().toString();
-                Toast.makeText(getActivity(), page_url, Toast.LENGTH_SHORT).show();
+               // String page_url = ((TextView) view.findViewById(R.id.rss_url)).getText().toString();
+                Toast.makeText(getActivity(), "Clicked to item", Toast.LENGTH_SHORT).show();
                // in.putExtra("page_url", page_url);
                // startActivity(in);
             }
@@ -185,7 +198,7 @@ public class ListViewNewsLiveFragment extends Fragment {
              
             // updating UI from Background Thread
             getActivity().runOnUiThread(new Runnable() {
-            	InputStream input = null;
+            	//InputStream input = null;
             	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
                 public void run() {
                     /**
@@ -199,54 +212,11 @@ public class ListViewNewsLiveFragment extends Fragment {
                 	}else{
 	                	for (RSSItem item : rssItems){
 	                		
-	                		//Retreive Image from URL and Create a new Bitmap Image
-		                      URL url = null;
-		                      
-		                      
-		                      
-							try {
-								url = new URL(item.getImgUrl());
-								
-							} catch (MalformedURLException e) {
-								// TODO Auto-generated catch block
-								url = null;
-								e.printStackTrace();
-							}
-		                      
-							try {
-								//HttpURLConnection connection = null;
-								HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-								
-								 //connection.setDoInput(true);
-								 
-								//connection.connect();
-								 connection.setConnectTimeout(30000);
-						            connection.setReadTimeout(30000);
-						            connection.setInstanceFollowRedirects(true);
-								Log.d("IMG",item.getImgUrl());
-								
-								input = connection.getInputStream();
-								
-								Bitmap myBitmap = BitmapFactory.decodeStream(input);
-								ByteArrayOutputStream bos=new ByteArrayOutputStream();
-				                myBitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-				                img=bos.toByteArray();
-				                    
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-		                
-		                     
-							
-		                    
-		                   
-		                    
 	                		WebSite site = new WebSite(
 	    							item.getTitle(), 
 	    							item.getLink(),
-	    							img,
-	    							item.getDescription());
+	    							item.getDescription(),
+	    							item.getImgUrl());
 	                		rssDb.addSite(site);
 	                	}
                 	}
@@ -295,5 +265,6 @@ public class ListViewNewsLiveFragment extends Fragment {
 	// ((MainActivity) activity).onSectionAttached(
 	// getArguments().getInt(ARG_SECTION_NUMBER));
 	// }
-	
+    
 }
+  

@@ -3,6 +3,9 @@
  */
 package com.example.myanmarnews.RSS;
 
+import android.media.Image;
+import android.widget.ImageView;
+
 public class RSSItem {
 
 	// All <item> node name
@@ -13,7 +16,8 @@ public class RSSItem {
     String _guid;
     private int imageID;
     String _img_url;
-     
+    ImageView image;
+    
     // constructor
     public RSSItem(){
          
@@ -27,6 +31,7 @@ public class RSSItem {
         this._pubdate = pubdate;
         this._guid = guid;
         this._img_url = _img_url;
+        //this.image = image;
     }
      
     /**
@@ -55,6 +60,10 @@ public class RSSItem {
     
     public void setImgUrl(String _img_url){
         this._img_url = _img_url;
+    }
+    
+    public void setImage(ImageView image){
+    	this.image = image;
     }
      
     /**
@@ -91,4 +100,8 @@ public class RSSItem {
 	public String getImgUrl(){
         return  _img_url;
     }
+	
+	public ImageView getImage(){
+		return image;
+	}
 }

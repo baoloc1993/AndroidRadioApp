@@ -36,6 +36,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import android.util.Log;
+import android.widget.ImageView;
 	 
 public class RSSParser {
  
@@ -141,11 +142,11 @@ public class RSSParser {
                     String description = this.getValue(e1, TAG_DESRIPTION);
                     String pubdate = this.getValue(e1, TAG_PUB_DATE);
                     String guid = this.getValue(e1, TAG_GUID);
-                    Log.d("DEBUG", title);
+                   
                     
                     //Get url image from a text
                     /**
-                     * GET IMAGE FROM DESCRIPTION
+                     * GET IMAGE URL FROM DESCRIPTION
                      */
                     
                     String regex = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]";
@@ -160,6 +161,7 @@ public class RSSParser {
                     	//If the link is image, load to RSSItem
 	                    if (urlStr.endsWith(".jpg") || urlStr.endsWith(".png")){
 	                    	url_img = urlStr;
+	                    	 
 	                    	
 	                    }
                     }
@@ -170,10 +172,15 @@ public class RSSParser {
                     /**
                      * REMOVE
                      */
-                    RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid, url_img);
-                     
-                    // adding item to list
-                    itemsList.add(rssItem);
+                    //GET IMAGEVIEW FROM URL
+                 //   ImageView image = new ImageView(com.example.myanmarnews.MainActivity.class);
+                    
+                   if (url_img != null){
+                	   RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid, url_img);
+                   
+                	   // adding item to list
+                	   itemsList.add(rssItem);
+                   }
                 }
             }catch(Exception e){
                 // Check log for errors
