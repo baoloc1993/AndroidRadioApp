@@ -40,7 +40,7 @@
         android:text="content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <WebView
+    <ImageView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

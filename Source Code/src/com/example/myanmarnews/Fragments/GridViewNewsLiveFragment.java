@@ -116,7 +116,7 @@ public class GridViewNewsLiveFragment extends Fragment {
                  
                 // getting page url
                 //String page_url = ((TextView) view.findViewById(R.id.rss_url)).getText().toString();
-                //Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
+               // T//oast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
                // in.putExtra("page_url", page_url);
                // startActivity(in);
             }
@@ -150,7 +150,7 @@ public class GridViewNewsLiveFragment extends Fragment {
         @Override
         protected String doInBackground(String... args) {
             // rss link url
-            String rss_url = args[0];
+            //String rss_url = args[0];
              
             // list of rss items
             rssItems = rssParser.getRSSFeedItems(getString(R.string.rss_link));
@@ -181,28 +181,32 @@ public class GridViewNewsLiveFragment extends Fragment {
              
             // updating UI from Background Thread
             getActivity().runOnUiThread(new Runnable() {
+            	//InputStream input = null;
+            	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
                 public void run() {
-//                    /**
-//                     * Updating parsed items into listview
-//                     * */
-//                	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-//                	WebSite site = new WebSite(
-//							"title", "link","rss_link","description" );
-//					WebSite site2 = new WebSite(
-//							"title2", "link2","rss_link2","description2" );
-//					// listing all websites from SQLite
-//					
-//					rssDb.addSite(site);
-//					rssDb.addSite(site2);
-//                    ListAdapter adapter = new SimpleAdapter(
-//                           getActivity(),
-//                            rssItemList, R.layout.preview_single_news_layout,
-//                            new String[] { TAG_LINK, TAG_TITLE, TAG_PUB_DATE, TAG_DESRIPTION, TAG_IMAGE},
-//                            new int[] {
-//									R.id.sqlite_id, R.id.title, R.id.rss_url, R.id.content , R.id.icon});
-//                     
+                    /**
+                     * Updating parsed items into listview
+                     * */
+                	
+                	//NO INTERNET -> RSSITEMS is emtpy
+                	if (rssItems.isEmpty()){
+                		
+                		
+                	}else{
+	                	for (RSSItem item : rssItems){
+	                		
+	                		WebSite site = new WebSite(
+	    							item.getTitle(), 
+	    							item.getLink(),
+	    							item.getDescription(),
+	    							item.getImgUrl());
+	                		rssDb.addSite(site);
+	                	}
+                	}
+                	
+
                     // updating listview
-					ListAdapter adapter = new GridNewsItemAdapter(
+					ListAdapter adapter = new ListNewsItemAdapter(
 							getActivity(), 
 							R.layout.preview_single_news_grid_layout, 
 							(ArrayList<RSSItem>) rssItems);
