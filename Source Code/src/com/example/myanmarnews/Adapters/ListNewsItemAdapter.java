@@ -1,7 +1,5 @@
 package com.example.myanmarnews.Adapters;
 
-import imageLoader.ImageLoader;
-
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -14,7 +12,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +81,7 @@ public class ListNewsItemAdapter extends ArrayAdapter<RSSItem> {
 				// These TextViews are created in the XML files we defined.
 
 				TextView title = (TextView) v.findViewById(R.id.title);
-				ImageView icon = (ImageView) v.findViewById(R.id.icon);
+				WebView icon = (WebView) v.findViewById(R.id.icon);
 				TextView content = (TextView)v.findViewById(R.id.content);
 				TextView timestamp = (TextView)v.findViewById(R.id.timestamp);
 				
@@ -101,13 +98,32 @@ public class ListNewsItemAdapter extends ArrayAdapter<RSSItem> {
 					int size = (int) (MainActivity.getStandardSize()*0.3);
 					icon.getLayoutParams().width = size;
 					icon.getLayoutParams().height = size;
+					String url_img = i.getImgUrl();
+					icon.setWebViewClient(new WebViewClient());
+					icon.getSettings().setJavaScriptEnabled(true);
 					
-					ImageLoader imgLoader = new ImageLoader(getContext());
-            		// Loader image - will be shown before loading image
-                    int loader = R.drawable.image_not_found;
-                     
-					imgLoader.DisplayImage(i.getImgUrl(), loader, icon);
 					
+					//Convert to html code
+					String img_html =
+							"<html>"
+							+ "<body style='margin:0;padding:0;'>"
+							+ "<img src=\""
+							+ url_img
+							+ "\" width=\""
+							+ String.valueOf(size)
+							+ "px\" height=\""
+							+ String.valueOf(size)
+							+ "px\" >"
+							+ "</body>"
+							+ "</html>";
+					//icon.loadUrl("javascript:document.body.style.zoom = "+String.valueOf(size)+";");
+					//icon.setInitialScale(scaleInPercent);
+					icon.setInitialScale(100);
+					icon.loadData(img_html, "text/html", null);
+						
+					
+					
+
 					
 				}
 				if (content != null){

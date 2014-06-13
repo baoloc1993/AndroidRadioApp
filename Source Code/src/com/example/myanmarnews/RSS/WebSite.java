@@ -1,7 +1,5 @@
 package com.example.myanmarnews.RSS;
 
-import android.widget.ImageView;
-
 /**
  * This class file used while inserting data or retrieving data from 
  * SQLite database
@@ -10,10 +8,9 @@ public class WebSite {
     Integer _id;
     String _title;
     String _link;
-    //String _rss_link;
+    String _rss_link;
     String _description;
-    //byte[] _img;
-    String image_link;
+    byte[] _img;
      
     // constructor
     public WebSite(){
@@ -21,11 +18,10 @@ public class WebSite {
     }
  
     // constructor with parameters
-    public WebSite(String title, String link,String description, String image_link){
+    public WebSite(String title, String link, byte[] _img, String description){
         this._title = title;
         this._link = link;
-        //this._img = _img;
-        this.image_link = image_link;
+        this._img = _img;
         this._description = description;
     }
      
@@ -44,18 +40,17 @@ public class WebSite {
         this._link = link;
     }
      
-//    public void setRSSLink(String rss_link){
-//        this._rss_link = rss_link;
-//    }
+    public void setRSSLink(String rss_link){
+        this._rss_link = rss_link;
+    }
      
     public void setDescription(String description){
         this._description = description;
     }
     
-    public void setImageLink(String image_link){
-    	this.image_link = image_link;
+    public void setImage(byte[] _img){
+    	this._img = _img;
     }
-    
      
     /**
      * All get methods
@@ -72,16 +67,14 @@ public class WebSite {
         return this._link;
     }
      
-//    public String getRSSLink(){
-//        return this._rss_link;
-//    }
+    public String getRSSLink(){
+        return this._rss_link;
+    }
      
     public String getDescription(){
         return this._description;
     }
-    
-    public String getImageLink(){
-    	return this.image_link;
+    public byte[] getImage(){
+    	return this._img;
     }
-    
 }
