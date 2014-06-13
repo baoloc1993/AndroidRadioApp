@@ -206,7 +206,7 @@ public class GridViewNewsLiveFragment extends Fragment {
                 	
 
                     // updating listview
-					ListAdapter adapter = new ListNewsItemAdapter(
+					GridNewsItemAdapter adapter = new GridNewsItemAdapter(
 							getActivity(), 
 							R.layout.preview_single_news_grid_layout, 
 							(ArrayList<RSSItem>) rssItems);
