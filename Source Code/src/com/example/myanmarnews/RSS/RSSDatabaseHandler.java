@@ -29,7 +29,7 @@ import android.util.Log;
 public class RSSDatabaseHandler extends SQLiteOpenHelper {
 	 
     // Database Version
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 1;
  
     // Database Name
     private static final String DATABASE_NAME = "rssReader";
