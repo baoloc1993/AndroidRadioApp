@@ -141,7 +141,7 @@ public class RSSParser {
                     String link = this.getValue(e1, TAG_LINK);
                     String description = this.getValue(e1, TAG_DESRIPTION);
                     String pubdate = this.getValue(e1, TAG_PUB_DATE);
-                    String guid = this.getValue(e1, TAG_GUID);
+                    //String guid = this.getValue(e1, TAG_GUID);
                    
                     
                     //Get url image from a text
@@ -176,7 +176,7 @@ public class RSSParser {
                  //   ImageView image = new ImageView(com.example.myanmarnews.MainActivity.class);
                     
                    if (url_img != null){
-                	   RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid, url_img);
+                	   RSSItem rssItem = new RSSItem(title, link, description, pubdate, url_img);
                    
                 	   // adding item to list
                 	   itemsList.add(rssItem);

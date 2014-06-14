@@ -14,6 +14,7 @@ public class WebSite {
     String _description;
     //byte[] _img;
     String image_link;
+    String pub_date;
      
     // constructor
     public WebSite(){
@@ -21,12 +22,13 @@ public class WebSite {
     }
  
     // constructor with parameters
-    public WebSite(String title, String link,String description, String image_link){
+    public WebSite(String title, String link,String description, String pub_date,String image_link){
         this._title = title;
         this._link = link;
         //this._img = _img;
         this.image_link = image_link;
         this._description = description;
+        this.pub_date = pub_date;
     }
      
     /**
@@ -56,6 +58,10 @@ public class WebSite {
     	this.image_link = image_link;
     }
     
+    public void setPubDate(String pubDate){
+    	this.pub_date = pubDate;
+    }
+    
      
     /**
      * All get methods
@@ -82,6 +88,10 @@ public class WebSite {
     
     public String getImageLink(){
     	return this.image_link;
+    }
+    
+    public String getPubDate(){
+    	return this.pub_date;
     }
     
 }

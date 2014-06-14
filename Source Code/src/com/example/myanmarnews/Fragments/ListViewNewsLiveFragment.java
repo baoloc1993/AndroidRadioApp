@@ -32,6 +32,7 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -41,6 +42,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -78,14 +80,17 @@ public class ListViewNewsLiveFragment extends Fragment {
  
     RSSFeed rssFeed;
      
-    private static String TAG_TITLE = "title";
-    private static String TAG_LINK = "link";
-    private static String TAG_DESRIPTION = "description";
-    private static String TAG_PUB_DATE = "pubDate";
-    private static String TAG_GUID = "guid"; // not used
-    private static String TAG_IMAGE = "image";
+//    private static String TAG_TITLE = "title";
+//    private static String TAG_LINK = "link";
+//    private static String TAG_DESRIPTION = "description";
+//    private static String TAG_PUB_DATE = "pubDate";
+//    private static String TAG_GUID = "guid"; // not used
+//    private static String TAG_IMAGE = "image";
     
     byte[] img;
+
+
+	private GridView gridNews;
 
 	public ListViewNewsLiveFragment() {
 	}
@@ -96,6 +101,7 @@ public class ListViewNewsLiveFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.list_news_layout, container, false);
         
         listNews = (ListView)rootView.findViewById(R.id.listNews);
+        gridNews = (GridView)rootView.findViewById(R.id.gridNews);
      // get fragment data
        // Fragment fragment = getActivity();
          
@@ -175,47 +181,49 @@ public class ListViewNewsLiveFragment extends Fragment {
         		rssItems = rssParser.getRSSFeedItems(getString(R.string.rss_link));
         	}
              
-            // looping through each item
-            for(RSSItem item : rssItems){
-                // creating new HashMap
-                HashMap<String, String> map = new HashMap<String, String>();
-                 
-                // adding each child node to HashMap key => value
-                map.put(TAG_TITLE, item.getTitle());
-                map.put(TAG_LINK, item.getLink());
-                map.put(TAG_PUB_DATE, item.getPubdate());
-                String description = item.getDescription();
-               
-                // taking only 200 chars from description
-                if(description.length() > 100){
-                    description = description.substring(0, 97) + "..";
-                }
-                map.put(TAG_DESRIPTION, description);
-                
-                // adding HashList to ArrayList
-                rssItemList.add(map);                            
-            }
+
              
             // updating UI from Background Thread
+            Log.d("DEBUG","DEBUG");
             getActivity().runOnUiThread(new Runnable() {
+            	
             	//InputStream input = null;
-            	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
+            	
+            	
                 public void run() {
+                	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
+                	
                     /**
                      * Updating parsed items into listview
                      * */
+                	//rssDb.onCreate(rssDb);
                 	
                 	//NO INTERNET -> RSSITEMS is emtpy
                 	if (rssItems.isEmpty()){
                 		
+                		//Get All Website from database
+                		List<WebSite> websites = rssDb.getAllSites();
+                		for (WebSite website : websites){
+                			RSSItem newItem = new RSSItem(
+                					website.getTitle(),
+                					website.getLink(),
+                					website.getDescription(),
+                					website.getPubDate(),
+                					 website.getImageLink());
+                			
+                			//Add RSSItem to RSSItems
+                			rssItems.add(newItem);
+                		}
                 		
                 	}else{
 	                	for (RSSItem item : rssItems){
-	                		
+
+	                		//ADD EACH ITEM INTO DATABASE
 	                		WebSite site = new WebSite(
 	    							item.getTitle(), 
 	    							item.getLink(),
 	    							item.getDescription(),
+	    							item.getPubdate(),
 	    							item.getImgUrl());
 	                		rssDb.addSite(site);
 	                	}
@@ -227,6 +235,7 @@ public class ListViewNewsLiveFragment extends Fragment {
 							getActivity(), 
 							R.layout.preview_single_news_list_layout, 
 							(ArrayList<RSSItem>) rssItems);
+					
                    listNews.setAdapter(adapter);
                 }
             });

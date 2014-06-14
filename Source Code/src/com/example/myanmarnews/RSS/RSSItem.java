@@ -13,7 +13,7 @@ public class RSSItem {
     String _link;
     String _description;
     String _pubdate;
-    String _guid;
+    //String _guid;
     private int imageID;
     String _img_url;
     ImageView image;
@@ -24,12 +24,12 @@ public class RSSItem {
     }
      
     // constructor with parameters
-    public RSSItem(String title, String link, String description, String pubdate, String guid, String _img_url){
+    public RSSItem(String title, String link, String description, String pubdate, String _img_url){
         this._title = title;
         this._link = link;
         this._description = description;
         this._pubdate = pubdate;
-        this._guid = guid;
+        //this._guid = guid;
         this._img_url = _img_url;
         //this.image = image;
     }
@@ -54,9 +54,9 @@ public class RSSItem {
     }
      
      
-    public void setGuid(String guid){
-        this._guid = guid;
-    }
+//    public void setGuid(String guid){
+//        this._guid = guid;
+//    }
     
     public void setImgUrl(String _img_url){
         this._img_url = _img_url;
@@ -85,9 +85,9 @@ public class RSSItem {
         return this._pubdate;
     }
      
-    public String getGuid(){
-        return this._guid;
-    }
+//    public String getGuid(){
+//        return this._guid;
+//    }
 
 	public int getImageID() {
 		return imageID;

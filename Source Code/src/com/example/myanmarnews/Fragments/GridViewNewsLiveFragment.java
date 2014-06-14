@@ -55,12 +55,12 @@ public class GridViewNewsLiveFragment extends Fragment {
  
     RSSFeed rssFeed;
      
-    private static String TAG_TITLE = "title";
-    private static String TAG_LINK = "link";
-    private static String TAG_DESRIPTION = "description";
-    private static String TAG_PUB_DATE = "pubDate";
-    private static String TAG_GUID = "guid"; // not used
-    private static String TAG_IMAGE = "image";
+//    private static String TAG_TITLE = "title";
+//    private static String TAG_LINK = "link";
+//    private static String TAG_DESRIPTION = "description";
+//    private static String TAG_PUB_DATE = "pubDate";
+//    private static String TAG_GUID = "guid"; // not used
+//    private static String TAG_IMAGE = "image";
 
 	public GridViewNewsLiveFragment() {
 	}
@@ -81,21 +81,7 @@ public class GridViewNewsLiveFragment extends Fragment {
         // Getting Single website from SQLite
         RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getActivity());
          
-         
-       // WebSite site = rssDB.getSite(site_id);
-        //Create new website object
-       // WebSite site = new WebSite("TITLE WEB", "LINK WEB", "RSS_LINK", "DESCRIPTION");
-     //   String rss_link = site.getRSSLink();
-        
-//        ArrayList<NewsItem> newsItems = new ArrayList<NewsItem>();
-//        for(int i=0;i<10;i++){
-//	        newsItems.add(new NewsItem(
-//	        		"Title " + String.valueOf(newsItems.size()+1),
-//	        		R.drawable.ic_launcher,
-//	        		"a asldkasd asdlkjasldj asldkjasjd aslkdalkjsd qwqw 1212 3lkas asldka1oijd Content " + String.valueOf(newsItems.size()+1),
-//					"Time Stamp "+ String.valueOf(newsItems.size()+1)
-//	        ));
-//        }
+ 
         
         
         /**
@@ -155,29 +141,7 @@ public class GridViewNewsLiveFragment extends Fragment {
             // list of rss items
             rssItems = rssParser.getRSSFeedItems(getString(R.string.rss_link));
              
-            // looping through each item
-            for(RSSItem item : rssItems){
-                // creating new HashMap
-                HashMap<String, String> map = new HashMap<String, String>();
-                 
-                // adding each child node to HashMap key => value
-                map.put(TAG_TITLE, item.getTitle());
-                map.put(TAG_LINK, item.getLink());
-                map.put(TAG_PUB_DATE, item.getPubdate());
-                String description = item.getDescription();
-               // String url_img = "";
-               
-                // taking only 200 chars from description
-                
-                if(description.length() > 100){
-                    description = description.substring(0, 97) + "..";
-                }
-                map.put(TAG_DESRIPTION, description);
-                
- 
-                // adding HashList to ArrayList
-                rssItemList.add(map);
-            }
+
              
             // updating UI from Background Thread
             getActivity().runOnUiThread(new Runnable() {
@@ -190,7 +154,19 @@ public class GridViewNewsLiveFragment extends Fragment {
                 	
                 	//NO INTERNET -> RSSITEMS is emtpy
                 	if (rssItems.isEmpty()){
-                		
+                		//Get All Website from database
+                		List<WebSite> websites = rssDb.getAllSites();
+                		for (WebSite website : websites){
+                			RSSItem newItem = new RSSItem(
+                					website.getTitle(),
+                					website.getLink(),
+                					website.getDescription(),
+                					website.getPubDate(),
+                					 website.getImageLink());
+                			
+                			//Add RSSItem to RSSItems
+                			rssItems.add(newItem);
+                		}
                 		
                 	}else{
 	                	for (RSSItem item : rssItems){
@@ -199,6 +175,7 @@ public class GridViewNewsLiveFragment extends Fragment {
 	    							item.getTitle(), 
 	    							item.getLink(),
 	    							item.getDescription(),
+	    							item.getPubdate(),
 	    							item.getImgUrl());
 	                		rssDb.addSite(site);
 	                	}
