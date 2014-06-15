@@ -50,6 +50,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myanmarnews.DisplayWebPageActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
 import com.example.myanmarnews.Items.NewsItem;
@@ -130,13 +131,19 @@ public class ListViewNewsLiveFragment extends Fragment {
   
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-               // Intent in = new Intent(getApplicationContext(), DisPlayWebPageActivity.class);
-                 
+                Intent in = new Intent(getActivity(), DisplayWebPageActivity.class);
+                 RSSItem rss_item = (RSSItem) listNews.getItemAtPosition(position);
                 // getting page url
                // String page_url = ((TextView) view.findViewById(R.id.rss_url)).getText().toString();
-                Toast.makeText(getActivity(), "Clicked to item", Toast.LENGTH_SHORT).show();
-               // in.putExtra("page_url", page_url);
-               // startActivity(in);
+                
+                in.putExtra("page_title", rss_item.getTitle());
+                in.putExtra("page_link", rss_item.getLink());
+                in.putExtra("page_img_link", rss_item.getImgUrl());
+                in.putExtra("description", rss_item.getDescription());
+                in.putExtra("page_public_date", rss_item.getPubdate());
+                
+                Toast.makeText(getActivity(), "Clicked to item " + rss_item.getTitle() , Toast.LENGTH_SHORT).show();
+                startActivity(in);
             }
         });
         
@@ -210,6 +217,7 @@ public class ListViewNewsLiveFragment extends Fragment {
                 			
                 			//Add RSSItem to RSSItems
                 			rssItems.add(newItem);
+                			
                 		}
                 		
                 	}else{
@@ -223,6 +231,7 @@ public class ListViewNewsLiveFragment extends Fragment {
 	    							item.getPubdate(),
 	    							item.getImgUrl());
 	                		rssDb.addSite(site);
+	                		//Log.d("LINK",item.getLink());
 	                	}
                 	}
                 	
