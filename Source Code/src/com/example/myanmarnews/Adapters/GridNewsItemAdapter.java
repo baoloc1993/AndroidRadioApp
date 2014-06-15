@@ -99,7 +99,7 @@ public class GridNewsItemAdapter extends ArrayAdapter<RSSItem> {
 //				
 				if (icon != null){
 					int size = MainActivity.getStandardSize()/3;
-					icon.getLayoutParams().width = size;
+					//icon.getLayoutParams().width = size;
 					icon.getLayoutParams().height = size;
 					
 					ImageLoader imgLoader = new ImageLoader(getContext());
@@ -107,6 +107,7 @@ public class GridNewsItemAdapter extends ArrayAdapter<RSSItem> {
                     int loader = R.drawable.image_not_found;
                      
 					imgLoader.DisplayImage(i.getImgUrl(), loader, icon);
+					//icon
 					//icon.getLayoutParams().height = icon.getLayoutParams().width;
 					//icon.getLayoutParams().height = size;
 					//String url_img = i.getImgUrl();

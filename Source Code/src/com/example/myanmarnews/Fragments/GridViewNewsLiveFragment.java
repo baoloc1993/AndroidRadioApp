@@ -52,7 +52,7 @@ public class GridViewNewsLiveFragment extends Fragment {
     RSSParser rssParser = new RSSParser();
      
     List<RSSItem> rssItems = new ArrayList<RSSItem>();
- 
+ //
     RSSFeed rssFeed;
      
 //    private static String TAG_TITLE = "title";
