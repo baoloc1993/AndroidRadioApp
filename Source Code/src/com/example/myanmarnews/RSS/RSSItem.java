@@ -9,6 +9,7 @@ import android.widget.ImageView;
 public class RSSItem {
 
 	// All <item> node name
+	int id;
     String _title;
     String _link;
     String _description;
@@ -24,7 +25,8 @@ public class RSSItem {
     }
      
     // constructor with parameters
-    public RSSItem(String title, String link, String description, String pubdate, String _img_url){
+    public RSSItem(int id,String title, String link, String description, String pubdate, String _img_url){
+    	this.id = id;
         this._title = title;
         this._link = link;
         this._description = description;

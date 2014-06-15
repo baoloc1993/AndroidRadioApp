@@ -51,6 +51,8 @@ public class RSSParser {
     private static String TAG_GUID = "guid";
     private static String IMG = "img";
     
+    private static int DEFAULT_ID = 0;
+    
     // constructor
     public RSSParser() {
  
@@ -165,18 +167,11 @@ public class RSSParser {
 	                    	
 	                    }
                     }
-                    /**
-                     * END GET
-                     */
                     
-                    /**
-                     * REMOVE
-                     */
-                    //GET IMAGEVIEW FROM URL
-                 //   ImageView image = new ImageView(com.example.myanmarnews.MainActivity.class);
+                    
                     
                    if (url_img != null){
-                	   RSSItem rssItem = new RSSItem(title, link, description, pubdate, url_img);
+                	   RSSItem rssItem = new RSSItem(DEFAULT_ID,title, link, description, pubdate, url_img);
                    
                 	   // adding item to list
                 	   itemsList.add(rssItem);

@@ -1,21 +1,10 @@
 package com.example.myanmarnews.Fragments;
 
-import imageLoader.ImageLoader;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import android.app.Fragment;
 import android.net.ConnectivityManager;
@@ -50,10 +39,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myanmarnews.DisplayWebPageActivity;
+
+import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
-import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.RSS.RSSDatabaseHandler;
 import com.example.myanmarnews.RSS.RSSFeed;
 import com.example.myanmarnews.RSS.RSSItem;
@@ -74,7 +63,9 @@ public class ListViewNewsLiveFragment extends Fragment {
  
     RSSParser rssParser = new RSSParser();
      
+    //List<RSSItem> rssItems = MainActivity.rssItems;
     List<RSSItem> rssItems = new ArrayList<RSSItem>();
+    
  
     RSSFeed rssFeed;
      
@@ -131,19 +122,19 @@ public class ListViewNewsLiveFragment extends Fragment {
   
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                Intent in = new Intent(getActivity(), DisplayWebPageActivity.class);
-                 RSSItem rss_item = (RSSItem) listNews.getItemAtPosition(position);
-                // getting page url
-               // String page_url = ((TextView) view.findViewById(R.id.rss_url)).getText().toString();
+//              
+            	//Get Item of current position
+            	RSSItem rss_item = (RSSItem) listNews.getItemAtPosition(position);
+            	
+            	//transfer link of current Item to other fragment
+                Bundle args = new Bundle();
+                args.putString(DisplayFullNewsFragment.ARG_LINK, rss_item.getLink());
+                android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
+                DisplayFullNewsFragment displayFullNewsFragment = new DisplayFullNewsFragment();
+                displayFullNewsFragment.setArguments(args);
                 
-                in.putExtra("page_title", rss_item.getTitle());
-                in.putExtra("page_link", rss_item.getLink());
-                in.putExtra("page_img_link", rss_item.getImgUrl());
-                in.putExtra("description", rss_item.getDescription());
-                in.putExtra("page_public_date", rss_item.getPubdate());
-                
-                Toast.makeText(getActivity(), "Clicked to item " + rss_item.getTitle() , Toast.LENGTH_SHORT).show();
-                startActivity(in);
+                //Go to DisplayFullNewsFragment
+    	        fragmentManager.beginTransaction().replace(R.id.container, displayFullNewsFragment).commit();
             }
         });
         
@@ -209,6 +200,7 @@ public class ListViewNewsLiveFragment extends Fragment {
                 		List<WebSite> websites = rssDb.getAllSites();
                 		for (WebSite website : websites){
                 			RSSItem newItem = new RSSItem(
+                					website.getId(),
                 					website.getTitle(),
                 					website.getLink(),
                 					website.getDescription(),
@@ -243,6 +235,7 @@ public class ListViewNewsLiveFragment extends Fragment {
 							(ArrayList<RSSItem>) rssItems);
 					
                    listNews.setAdapter(adapter);
+                   //MainActivity.rssItems = rssItems;
                 }
             });
             return null;
