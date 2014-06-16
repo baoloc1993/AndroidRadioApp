@@ -2,6 +2,8 @@ package com.example.myanmarnews.Fragments;
 
 import imageLoader.ImageLoader;
 
+import com.example.myanmarnews.libs.actionbarpulltorefresh.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,6 +16,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,10 +62,14 @@ import com.example.myanmarnews.RSS.RSSFeed;
 import com.example.myanmarnews.RSS.RSSItem;
 import com.example.myanmarnews.RSS.RSSParser;
 import com.example.myanmarnews.RSS.WebSite;
+import com.example.myanmarnews.libs.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import com.example.myanmarnews.libs.actionbarpulltorefresh.library.Options;
+import com.example.myanmarnews.libs.actionbarpulltorefresh.library.PullToRefreshLayout;
+import com.example.myanmarnews.libs.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class ListViewNewsLiveFragment extends Fragment {
 	private ListView listNews;
-
+	private PullToRefreshLayout mPullToRefreshLayout;
 
 	/**
 	 * Returns a new instance of this fragment for the given section number.
@@ -98,7 +106,7 @@ public class ListViewNewsLiveFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.list_news_layout, container, false);
         
         listNews = (ListView)rootView.findViewById(R.id.listNews);
-        gridNews = (GridView)rootView.findViewById(R.id.gridNews);
+        //gridNews = (GridView)rootView.findViewById(R.id.gridNews);
      // get fragment data
        // Fragment fragment = getActivity();
          
@@ -143,7 +151,53 @@ public class ListViewNewsLiveFragment extends Fragment {
       //  listNews.setAdapter(new ListNewsItemAdapter(rootView.getContext(), R.layout.preview_single_news_layout, newsItems));
         return rootView;
     }
-	
+	@Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+    	super.onViewCreated(view, savedInstanceState);
+    	
+    	listNews = (ListView)view.findViewById(R.id.listNews);
+    	
+    	// This is the View which is created by ListFragment
+		ViewGroup viewGroup = (ViewGroup) view;
+
+		// We need to create a PullToRefreshLayout manually
+		mPullToRefreshLayout = new PullToRefreshLayout(viewGroup.getContext());
+
+		// We can now setup the PullToRefreshLayout
+		ActionBarPullToRefresh.from(getActivity())
+		.insertLayoutInto(viewGroup) // We need to insert the PullToRefreshLayout into the Fragment's ViewGroup
+		.theseChildrenArePullable(listNews) // We need to mark the ListView and it's Empty View as pullable This is because they are not direct children of the
+		// ViewGroup
+		.options(Options.create()
+				.refreshingText("Fetching A lot of Stuff...")
+				.pullText("Pull me down!")
+				.releaseText("Let go of me!!!")
+				.titleTextColor(android.R.color.black)
+				.progressBarColor(android.R.color.holo_orange_light)
+				.headerBackgroundColor(android.R.color.holo_blue_light)
+				.progressBarStyle(Options.PROGRESS_BAR_STYLE_INSIDE)
+				.build())
+		.listener(new OnRefreshListener() { // We can now complete the setup as desired
+			@Override
+			public void onRefreshStarted(View view) {
+
+				Timer timer = new Timer();
+	        	TimerTask task = new TimerTask() {
+					@Override
+					public void run() {
+						getActivity().runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								mPullToRefreshLayout.setRefreshComplete();
+							}
+						});
+					}
+				};
+	        	timer.schedule(task, 5000);
+			}
+		})
+		.setup(mPullToRefreshLayout);
+    }
 	
 	
 	 /**
