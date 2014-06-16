@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -21,12 +23,14 @@ import com.example.myanmarnews.Fragments.NavigationDrawerFragment;
 import com.example.myanmarnews.Fragments.ListViewNewsLiveFragment;
 import com.example.myanmarnews.Fragments.SelectedNewsFragment;
 import com.example.myanmarnews.Fragments.SocialNetworkFragment;
+import com.example.myanmarnews.RSS.RSSItem;
 
 public class MainActivity extends Activity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 	
 	public static Constant currentFragment;
+	public static List<RSSItem> rssItems = new ArrayList<RSSItem>();
 	
 	
 	/**

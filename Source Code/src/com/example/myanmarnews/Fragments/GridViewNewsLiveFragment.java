@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Fragment;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,6 +30,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.GridNewsItemAdapter;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
@@ -51,7 +55,7 @@ public class GridViewNewsLiveFragment extends Fragment {
  
     RSSParser rssParser = new RSSParser();
      
-    List<RSSItem> rssItems = new ArrayList<RSSItem>();
+    List<RSSItem> rssItems = MainActivity.rssItems;
  //
     RSSFeed rssFeed;
      
@@ -79,7 +83,7 @@ public class GridViewNewsLiveFragment extends Fragment {
        // Integer site_id = Integer.parseInt(getActivity().getStringExtra("id"));
          
         // Getting Single website from SQLite
-        RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getActivity());
+       // RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getActivity());
          
  
         
@@ -139,7 +143,10 @@ public class GridViewNewsLiveFragment extends Fragment {
             //String rss_url = args[0];
              
             // list of rss items
-            rssItems = rssParser.getRSSFeedItems(getString(R.string.rss_link));
+        	
+        	if (isConnectingToInternet()){
+        		rssItems = rssParser.getRSSFeedItems(getString(R.string.rss_link));
+        	}
              
 
              
@@ -158,6 +165,7 @@ public class GridViewNewsLiveFragment extends Fragment {
                 		List<WebSite> websites = rssDb.getAllSites();
                 		for (WebSite website : websites){
                 			RSSItem newItem = new RSSItem(
+                					website.getId(),
                 					website.getTitle(),
                 					website.getLink(),
                 					website.getDescription(),
@@ -188,6 +196,7 @@ public class GridViewNewsLiveFragment extends Fragment {
 							R.layout.preview_single_news_grid_layout, 
 							(ArrayList<RSSItem>) rssItems);
                    gridNews.setAdapter(adapter);
+                   //MainActivity.rssItems = rssItems;
                 }
             });
             return null;
@@ -200,6 +209,22 @@ public class GridViewNewsLiveFragment extends Fragment {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
         }
+    }
+    public boolean isConnectingToInternet(){
+    	Context _context = getActivity().getApplicationContext();
+        ConnectivityManager connectivity = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
+          if (connectivity != null) 
+          {
+              NetworkInfo[] info = connectivity.getAllNetworkInfo();
+              if (info != null) 
+                  for (int i = 0; i < info.length; i++) 
+                      if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                      {
+                          return true;
+                      }
+ 
+          }
+          return false;
     }
 	// @Override
 	// public void onAttach(Activity activity) {

@@ -201,6 +201,32 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return site;
     }
+    
+    /**
+     * Reading a row (website) row is identified by link 
+     * */
+    public WebSite getSite(String link) {
+        SQLiteDatabase db = this.getReadableDatabase();
+ 
+        Cursor cursor = db.query(TABLE_RSS, new String[] { KEY_ID, KEY_TITLE,
+                KEY_LINK, KEY_IMG_LINK, KEY_DESCRIPTION, KEY_PUBLIC_DATE }, KEY_LINK + "=?",
+                new String[] { link }, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+ 
+        WebSite site = new WebSite(cursor.getString(1), cursor.getString(2),
+                cursor.getString(3), cursor.getString(4), cursor.getString(5));
+ 
+        site.setId(Integer.parseInt(cursor.getString(0)));
+        site.setTitle(cursor.getString(1));
+        site.setLink(cursor.getString(2));
+        site.setImageLink(cursor.getString(3));
+        site.setDescription(cursor.getString(4));
+        site.setPubDate(cursor.getString(5));
+        cursor.close();
+        db.close();
+        return site;
+    }
  
     /**
      * Deleting single row

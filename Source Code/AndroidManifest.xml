@@ -37,9 +37,8 @@
             android:configChanges="keyboardHidden|orientation"/>
          
         <!-- Display webpage Activity -->
-        <activity android:name=".DisPlayWebPageActivity"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:configChanges="keyboardHidden|orientation" />
+        <activity android:name="com.example.myanmarnews.DisplayWebPageActivity"></activity>
+       
     </application>
      
   
