@@ -1,7 +1,7 @@
 package com.example.myanmarnews.Fragments;
 
 
-<<<<<<< HEAD
+
 import com.example.myanmarnews.libs.actionbarpulltorefresh.*;
 
 import java.io.ByteArrayOutputStream;
@@ -20,12 +20,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-=======
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
->>>>>>> origin/master
+
 
 import android.app.Fragment;
 import android.net.ConnectivityManager;
