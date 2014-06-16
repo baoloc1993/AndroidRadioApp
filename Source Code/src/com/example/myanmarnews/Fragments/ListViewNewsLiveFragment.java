@@ -309,27 +309,6 @@ public class ListViewNewsLiveFragment extends Fragment {
 		}
 	}
 
-//	// CHECK IF IS CONNECTION TO INTERNET OR NOT
-//	public boolean isConnectingToInternet() {
-//		Context _context = getActivity().getApplicationContext();
-//		ConnectivityManager connectivity = (ConnectivityManager) _context
-//				.getSystemService(Context.CONNECTIVITY_SERVICE);
-//		if (connectivity != null) {
-//			NetworkInfo[] info = connectivity.getAllNetworkInfo();
-//			if (info != null)
-//				for (int i = 0; i < info.length; i++)
-//					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-//						return true;
-//					}
-//
-//		}
-//		return false;
-//	}
-	// @Override
-	// public void onAttach(Activity activity) {
-	// super.onAttach(activity);
-	// ((MainActivity) activity).onSectionAttached(
-	// getArguments().getInt(ARG_SECTION_NUMBER));
-	// }
+
 
 }

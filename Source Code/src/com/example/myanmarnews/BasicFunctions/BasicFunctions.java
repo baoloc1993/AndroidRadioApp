@@ -101,17 +101,10 @@ public class BasicFunctions {
 									Toast.makeText(activity.getApplicationContext(),
 											"INTERNET IS NOT AVAILABLE. THE OLD DATA WILL BE USED ",
 											Toast.LENGTH_LONG).show();
-									Timer timer = new Timer();
-									TimerTask task = new TimerTask() {
+									
 
-										@Override
-										public void run() {
-											// TODO Auto-generated method stub
-											mPullToRefreshLayout.setRefreshComplete();
-										}
-									};
-
-									timer.schedule(task, 1000);
+									
+									mPullToRefreshLayout.setRefreshComplete();
 								}
 							}
 						}).setup(mPullToRefreshLayout);
