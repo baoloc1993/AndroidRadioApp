@@ -179,7 +179,7 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
     /**
      * Reading a row (website) row is identified by row id
      * */
-    public WebSite getSite(int id) {
+    public WebSite getSiteById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
  
         Cursor cursor = db.query(TABLE_RSS, new String[] { KEY_ID, KEY_TITLE,
@@ -205,7 +205,7 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
     /**
      * Reading a row (website) row is identified by link 
      * */
-    public WebSite getSite(String link) {
+    public WebSite getSiteByLink(String link) {
         SQLiteDatabase db = this.getReadableDatabase();
  
         Cursor cursor = db.query(TABLE_RSS, new String[] { KEY_ID, KEY_TITLE,

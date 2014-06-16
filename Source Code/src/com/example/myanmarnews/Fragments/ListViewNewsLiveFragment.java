@@ -123,18 +123,27 @@ public class ListViewNewsLiveFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
 //              
-            	//Get Item of current position
+            	//Get Item of current position in database
+            	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
             	RSSItem rss_item = (RSSItem) listNews.getItemAtPosition(position);
+            	WebSite website = rssDb.getSiteByLink(rss_item.getLink());
+            	List<WebSite> websites = rssDb.getAllSites();
+            	
             	
             	//transfer link of current Item to other fragment
                 Bundle args = new Bundle();
-                args.putString(DisplayFullNewsFragment.ARG_LINK, rss_item.getLink());
+                args.putInt(DisplayFullNewsFragment.ARG_ID, website.getId());
+                args.putInt(DisplayFullNewsFragment.ARG_SIZE, websites.size());
+                //Log.d("SET ON ITEM CLICK LISTENER", String.valueOf(website.getId()));
+
                 android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
                 DisplayFullNewsFragment displayFullNewsFragment = new DisplayFullNewsFragment();
                 displayFullNewsFragment.setArguments(args);
                 
                 //Go to DisplayFullNewsFragment
     	        fragmentManager.beginTransaction().replace(R.id.container, displayFullNewsFragment).commit();
+                //Log.d("SET ON ITEM CLICK LISTENER", String.valueOf(rss_item.getId()));
+
             }
         });
         
@@ -179,7 +188,7 @@ public class ListViewNewsLiveFragment extends Fragment {
 
              
             // updating UI from Background Thread
-            Log.d("DEBUG","DEBUG");
+            
             getActivity().runOnUiThread(new Runnable() {
             	
             	//InputStream input = null;

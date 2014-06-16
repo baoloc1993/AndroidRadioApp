@@ -39,6 +39,9 @@ public class RSSItem {
     /**
      * All SET methods
      * */
+    public void setID(int id){
+    	this.id = id;
+    }
     public void setTitle(String title){
         this._title = title;
     }
@@ -71,6 +74,10 @@ public class RSSItem {
     /**
      * All GET methods
      * */
+    
+    public int getId(){
+    	return id;
+    }
     public String getTitle(){
         return this._title;
     }

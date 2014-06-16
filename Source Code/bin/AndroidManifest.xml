@@ -36,8 +36,7 @@
         <activity android:name=".ListRSSItemsActivity"
             android:configChanges="keyboardHidden|orientation"/>
          
-        <!-- Display webpage Activity -->
-        <activity android:name="com.example.myanmarnews.DisplayWebPageActivity"></activity>
+        
        
     </application>
      
