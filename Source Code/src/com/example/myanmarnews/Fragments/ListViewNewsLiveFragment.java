@@ -1,7 +1,5 @@
 package com.example.myanmarnews.Fragments;
 
-
-
 import com.example.myanmarnews.libs.actionbarpulltorefresh.*;
 
 import java.io.ByteArrayOutputStream;
@@ -20,12 +18,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
 
 import android.app.Fragment;
 import android.net.ConnectivityManager;
@@ -60,10 +55,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
+import com.example.myanmarnews.BasicFunctions.BasicFunctions;
 import com.example.myanmarnews.RSS.RSSDatabaseHandler;
 import com.example.myanmarnews.RSS.RSSFeed;
 import com.example.myanmarnews.RSS.RSSItem;
@@ -77,32 +72,31 @@ import com.example.myanmarnews.libs.actionbarpulltorefresh.library.listeners.OnR
 public class ListViewNewsLiveFragment extends Fragment {
 	private ListView listNews;
 	private PullToRefreshLayout mPullToRefreshLayout;
-
+	ViewGroup viewGroup;
+	private boolean FirstOpen = true;
 	/**
 	 * Returns a new instance of this fragment for the given section number.
 	 */
 	private ProgressDialog pDialog;
-	 
-    // Array list for list view
-    ArrayList<HashMap<String, String>> rssItemList = new ArrayList<HashMap<String,String>>();
- 
-    RSSParser rssParser = new RSSParser();
-     
-    //List<RSSItem> rssItems = MainActivity.rssItems;
-    List<RSSItem> rssItems = new ArrayList<RSSItem>();
-    
- 
-    RSSFeed rssFeed;
-     
-//    private static String TAG_TITLE = "title";
-//    private static String TAG_LINK = "link";
-//    private static String TAG_DESRIPTION = "description";
-//    private static String TAG_PUB_DATE = "pubDate";
-//    private static String TAG_GUID = "guid"; // not used
-//    private static String TAG_IMAGE = "image";
-    
-    byte[] img;
 
+	// Array list for list view
+	ArrayList<HashMap<String, String>> rssItemList = new ArrayList<HashMap<String, String>>();
+
+	RSSParser rssParser = new RSSParser();
+
+	// List<RSSItem> rssItems = MainActivity.rssItems;
+	List<RSSItem> rssItems = new ArrayList<RSSItem>();
+
+	RSSFeed rssFeed;
+
+	// private static String TAG_TITLE = "title";
+	// private static String TAG_LINK = "link";
+	// private static String TAG_DESRIPTION = "description";
+	// private static String TAG_PUB_DATE = "pubDate";
+	// private static String TAG_GUID = "guid"; // not used
+	// private static String TAG_IMAGE = "image";
+
+	byte[] img;
 
 	private GridView gridNews;
 
@@ -110,240 +104,224 @@ public class ListViewNewsLiveFragment extends Fragment {
 	}
 
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.list_news_layout, container, false);
-        
-        listNews = (ListView)rootView.findViewById(R.id.listNews);
-        //gridNews = (GridView)rootView.findViewById(R.id.gridNews);
-     // get fragment data
-       // Fragment fragment = getActivity();
-         
-        // SQLite Row id
-       // Integer site_id = Integer.parseInt(getActivity().getStringExtra("id"));
-         
-        // Getting Single website from SQLite
-      //  RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getActivity());
-         
-         
-       // WebSite site = rssDB.getSite(site_id);
-        //Create new website object
-       // WebSite site = new WebSite("TITLE WEB", "LINK WEB", "RSS_LINK", "DESCRIPTION");
-       // String rss_link = site.getRSSLink();
-        
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.list_news_layout, container,
+				false);
 
-        
-        /**
-         * Calling a backgroung thread will loads recent articles of a website
-         * @param rss url of website
-         * */
-        new loadRSSFeedItems().execute();
-         
-        // selecting single ListView item
-        //ListView lv = getListView();
-  
-        // Launching new screen on Selecting Single ListItem
-        listNews.setOnItemClickListener(new OnItemClickListener() {
-  
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-//              
-            	//Get Item of current position
-            	RSSItem rss_item = (RSSItem) listNews.getItemAtPosition(position);
-            	
-            	//transfer link of current Item to other fragment
-                Bundle args = new Bundle();
-                args.putString(DisplayFullNewsFragment.ARG_LINK, rss_item.getLink());
-                android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
-                DisplayFullNewsFragment displayFullNewsFragment = new DisplayFullNewsFragment();
-                displayFullNewsFragment.setArguments(args);
-                
-                //Go to DisplayFullNewsFragment
-    	        fragmentManager.beginTransaction().replace(R.id.container, displayFullNewsFragment).commit();
-            }
-        });
-        
-      //  listNews.setAdapter(new ListNewsItemAdapter(rootView.getContext(), R.layout.preview_single_news_layout, newsItems));
-        return rootView;
-    }
-	@Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-    	super.onViewCreated(view, savedInstanceState);
-    	
-    	listNews = (ListView)view.findViewById(R.id.listNews);
-    	
-    	// This is the View which is created by ListFragment
-		ViewGroup viewGroup = (ViewGroup) view;
+		listNews = (ListView) rootView.findViewById(R.id.listNews);
+		// gridNews = (GridView)rootView.findViewById(R.id.gridNews);
+		// get fragment data
+		// Fragment fragment = getActivity();
 
-		// We need to create a PullToRefreshLayout manually
-		mPullToRefreshLayout = new PullToRefreshLayout(viewGroup.getContext());
+		// SQLite Row id
+		// Integer site_id =
+		// Integer.parseInt(getActivity().getStringExtra("id"));
 
-		// We can now setup the PullToRefreshLayout
-		ActionBarPullToRefresh.from(getActivity())
-		.insertLayoutInto(viewGroup) // We need to insert the PullToRefreshLayout into the Fragment's ViewGroup
-		.theseChildrenArePullable(listNews) // We need to mark the ListView and it's Empty View as pullable This is because they are not direct children of the
-		// ViewGroup
-		.options(Options.create()
-				.refreshingText("Fetching A lot of Stuff...")
-				.pullText("Pull me down!")
-				.releaseText("Let go of me!!!")
-				.titleTextColor(android.R.color.black)
-				.progressBarColor(android.R.color.holo_orange_light)
-				.headerBackgroundColor(android.R.color.holo_blue_light)
-				.progressBarStyle(Options.PROGRESS_BAR_STYLE_INSIDE)
-				.build())
-		.listener(new OnRefreshListener() { // We can now complete the setup as desired
-			@Override
-			public void onRefreshStarted(View view) {
+		// Getting Single website from SQLite
+		// RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getActivity());
 
-				Timer timer = new Timer();
-	        	TimerTask task = new TimerTask() {
-					@Override
-					public void run() {
-						getActivity().runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								mPullToRefreshLayout.setRefreshComplete();
-							}
-						});
-					}
-				};
-	        	timer.schedule(task, 5000);
+		// WebSite site = rssDB.getSite(site_id);
+		// Create new website object
+		// WebSite site = new WebSite("TITLE WEB", "LINK WEB", "RSS_LINK",
+		// "DESCRIPTION");
+		// String rss_link = site.getRSSLink();
+
+		/**
+		 * Calling a backgroung thread will loads recent articles of a website
+		 * 
+		 * @param rss
+		 *            url of website
+		 * */
+		new loadRSSFeedItems().execute();
+
+		// selecting single ListView item
+		// ListView lv = getListView();
+
+		// Launching new screen on Selecting Single ListItem
+		listNews.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				//
+				// Get Item of current position
+				RSSItem rss_item = (RSSItem) listNews
+						.getItemAtPosition(position);
+
+				// transfer link of current Item to other fragment
+				Bundle args = new Bundle();
+				args.putString(DisplayFullNewsFragment.ARG_LINK,
+						rss_item.getLink());
+				android.app.FragmentManager fragmentManager = getActivity()
+						.getFragmentManager();
+				DisplayFullNewsFragment displayFullNewsFragment = new DisplayFullNewsFragment();
+				displayFullNewsFragment.setArguments(args);
+
+				// Go to DisplayFullNewsFragment
+				fragmentManager.beginTransaction()
+						.replace(R.id.container, displayFullNewsFragment)
+						.commit();
 			}
-		})
-		.setup(mPullToRefreshLayout);
-    }
-	
-	
-	 /**
-     * Background Async Task to get RSS Feed Items data from URL
-     * */
-    class loadRSSFeedItems extends AsyncTask<String, String, String> {
- 
-        /**
-         * Before starting background thread Show Progress Dialog
-         * */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(
-                    getActivity());
-            pDialog.setMessage("Loading recent articles...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
- 
-        /**
-         * getting all recent articles and showing them in listview
-         * */
-        @Override
-        protected String doInBackground(String... args) {
-            // rss link url
-            //String rss_url = args[0];
-             //IF INTERNET CONNECTING, RETRIVE DATA FROM RSS LINK
-            // list of rss items
-        	if (isConnectingToInternet()){
-        		rssItems = rssParser.getRSSFeedItems(getString(R.string.rss_link));
-        	}
-             
+		});
 
-             
-            // updating UI from Background Thread
-            Log.d("DEBUG","DEBUG");
-            getActivity().runOnUiThread(new Runnable() {
-            	
-            	//InputStream input = null;
-            	
-            	
-                public void run() {
-                	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-                	
-                    /**
-                     * Updating parsed items into listview
-                     * */
-                	//rssDb.onCreate(rssDb);
-                	
-                	//NO INTERNET -> RSSITEMS is emtpy
-                	if (rssItems.isEmpty()){
-                		
-                		//Get All Website from database
-                		List<WebSite> websites = rssDb.getAllSites();
-                		for (WebSite website : websites){
-                			RSSItem newItem = new RSSItem(
-                					website.getId(),
-                					website.getTitle(),
-                					website.getLink(),
-                					website.getDescription(),
-                					website.getPubDate(),
-                					 website.getImageLink());
-                			
-                			//Add RSSItem to RSSItems
-                			rssItems.add(newItem);
-                			
-                		}
-                		
-                	}else{
-	                	for (RSSItem item : rssItems){
+		// listNews.setAdapter(new ListNewsItemAdapter(rootView.getContext(),
+		// R.layout.preview_single_news_layout, newsItems));
+		return rootView;
+	}
 
-	                		//ADD EACH ITEM INTO DATABASE
-	                		WebSite site = new WebSite(
-	    							item.getTitle(), 
-	    							item.getLink(),
-	    							item.getDescription(),
-	    							item.getPubdate(),
-	    							item.getImgUrl());
-	                		rssDb.addSite(site);
-	                		//Log.d("LINK",item.getLink());
-	                	}
-                	}
-                	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 
-                    // updating listview
+		listNews = (ListView) view.findViewById(R.id.listNews);
+		
+		// We need to create a PullToRefreshLayout manually
+		mPullToRefreshLayout = new PullToRefreshLayout(view.getContext());
+		TimerTask timerTask = new TimerTask() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				new loadRSSFeedItems().execute();
+			}
+		};
+		// We can now setup the PullToRefreshLayout
+		BasicFunctions.IniPullToRefresh(getActivity(), (ViewGroup) view,
+				(View) listNews, timerTask, mPullToRefreshLayout);
+	}
+
+	/**
+	 * Background Async Task to get RSS Feed Items data from URL
+	 * */
+	public class loadRSSFeedItems extends AsyncTask<String, String, String> {
+
+		/**
+		 * Before starting background thread Show Progress Dialog
+		 * */
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			if (FirstOpen) {
+				pDialog = new ProgressDialog(getActivity());
+				pDialog.setMessage("Loading recent articles...");
+				pDialog.setIndeterminate(false);
+				pDialog.setCancelable(false);
+				pDialog.show();
+				FirstOpen = false;
+			} else {
+			}
+
+		}
+
+		/**
+		 * getting all recent articles and showing them in listview
+		 * */
+		@Override
+		protected String doInBackground(String... args) {
+			// rss link url
+			// String rss_url = args[0];
+			// IF INTERNET CONNECTING, RETRIVE DATA FROM RSS LINK
+			// list of rss items
+			if (isConnectingToInternet()) {
+				rssItems = rssParser
+						.getRSSFeedItems(getString(R.string.rss_link));
+			}
+
+			// updating UI from Background Thread
+			Log.d("DEBUG", "DEBUG");
+			getActivity().runOnUiThread(new Runnable() {
+
+				// InputStream input = null;
+
+				public void run() {
+					RSSDatabaseHandler rssDb = new RSSDatabaseHandler(
+							getActivity());
+
+					/**
+					 * Updating parsed items into listview
+					 * */
+					// rssDb.onCreate(rssDb);
+
+					// NO INTERNET -> RSSITEMS is emtpy
+					if (rssItems.isEmpty()) {
+
+						// Get All Website from database
+						List<WebSite> websites = rssDb.getAllSites();
+						for (WebSite website : websites) {
+							RSSItem newItem = new RSSItem(website.getId(),
+									website.getTitle(), website.getLink(),
+									website.getDescription(), website
+											.getPubDate(), website
+											.getImageLink());
+
+							// Add RSSItem to RSSItems
+							rssItems.add(newItem);
+
+						}
+
+					} else {
+						for (RSSItem item : rssItems) {
+
+							// ADD EACH ITEM INTO DATABASE
+							WebSite site = new WebSite(item.getTitle(), item
+									.getLink(), item.getDescription(), item
+									.getPubdate(), item.getImgUrl());
+							rssDb.addSite(site);
+							// Log.d("LINK",item.getLink());
+						}
+					}
+
+					// updating listview
 					ListAdapter adapter = new ListNewsItemAdapter(
-							getActivity(), 
-							R.layout.preview_single_news_list_layout, 
+							getActivity(),
+							R.layout.preview_single_news_list_layout,
 							(ArrayList<RSSItem>) rssItems);
-					
-                   listNews.setAdapter(adapter);
-                   //MainActivity.rssItems = rssItems;
-                }
-            });
-            return null;
-        }
- 
-        /**
-         * After completing background task Dismiss the progress dialog
-         * **/
-        protected void onPostExecute(String args) {
-            // dismiss the dialog after getting all products
-            pDialog.dismiss();
-        }
-    }
-    
-    //CHECK IF IS CONNECTION TO INTERNET OR NOT
-    public boolean isConnectingToInternet(){
-    	Context _context = getActivity().getApplicationContext();
-        ConnectivityManager connectivity = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
-          if (connectivity != null) 
-          {
-              NetworkInfo[] info = connectivity.getAllNetworkInfo();
-              if (info != null) 
-                  for (int i = 0; i < info.length; i++) 
-                      if (info[i].getState() == NetworkInfo.State.CONNECTED)
-                      {
-                          return true;
-                      }
- 
-          }
-          return false;
-    }
+
+					listNews.setAdapter(adapter);
+					// MainActivity.rssItems = rssItems;
+				}
+			});
+			return null;
+		}
+
+		/**
+		 * After completing background task Dismiss the progress dialog
+		 * **/
+		protected void onPostExecute(String args) {
+			// dismiss the dialog after getting all products
+			if (pDialog != null) {
+				pDialog.dismiss();
+			} else {
+
+			}
+			if (mPullToRefreshLayout != null) {
+				mPullToRefreshLayout.setRefreshComplete();
+			}
+
+		}
+	}
+
+	// CHECK IF IS CONNECTION TO INTERNET OR NOT
+	public boolean isConnectingToInternet() {
+		Context _context = getActivity().getApplicationContext();
+		ConnectivityManager connectivity = (ConnectivityManager) _context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connectivity != null) {
+			NetworkInfo[] info = connectivity.getAllNetworkInfo();
+			if (info != null)
+				for (int i = 0; i < info.length; i++)
+					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+						return true;
+					}
+
+		}
+		return false;
+	}
 	// @Override
 	// public void onAttach(Activity activity) {
 	// super.onAttach(activity);
 	// ((MainActivity) activity).onSectionAttached(
 	// getArguments().getInt(ARG_SECTION_NUMBER));
 	// }
-    
+
 }
-  
