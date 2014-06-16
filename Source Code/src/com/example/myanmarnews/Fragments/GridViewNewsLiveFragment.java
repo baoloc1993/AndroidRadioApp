@@ -3,6 +3,7 @@ package com.example.myanmarnews.Fragments;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,17 +35,19 @@ import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.GridNewsItemAdapter;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
+import com.example.myanmarnews.BasicFunctions.BasicFunctions;
+import com.example.myanmarnews.Fragments.ListViewNewsLiveFragment.loadRSSFeedItems;
 import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.RSS.RSSDatabaseHandler;
 import com.example.myanmarnews.RSS.RSSFeed;
 import com.example.myanmarnews.RSS.RSSItem;
 import com.example.myanmarnews.RSS.RSSParser;
 import com.example.myanmarnews.RSS.WebSite;
+import com.example.myanmarnews.libs.actionbarpulltorefresh.library.PullToRefreshLayout;
 
 public class GridViewNewsLiveFragment extends Fragment {
 	public static GridView gridNews;
-	
-
+	private boolean FirstOpen = true;
 	/**
 	 * Returns a new instance of this fragment for the given section number.
 	 */
@@ -58,6 +61,9 @@ public class GridViewNewsLiveFragment extends Fragment {
     List<RSSItem> rssItems = MainActivity.rssItems;
  //
     RSSFeed rssFeed;
+
+
+	private PullToRefreshLayout mPullToRefreshLayout;
      
 //    private static String TAG_TITLE = "title";
 //    private static String TAG_LINK = "link";
@@ -115,6 +121,29 @@ public class GridViewNewsLiveFragment extends Fragment {
       //  listNews.setAdapter(new ListNewsItemAdapter(rootView.getContext(), R.layout.preview_single_news_layout, newsItems));
         return rootView;
     }
+	@Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+    	super.onViewCreated(view, savedInstanceState);
+    	
+    	gridNews = (GridView)view.findViewById(R.id.gridNews);
+    	
+    	
+
+		// We need to create a PullToRefreshLayout manually
+		
+		
+		TimerTask timerTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				new loadRSSFeedItems().execute();
+			}
+		};
+		mPullToRefreshLayout = new PullToRefreshLayout(view.getContext());
+		// We can now setup the PullToRefreshLayout
+		BasicFunctions.IniPullToRefresh(getActivity(), (ViewGroup) view, (View)gridNews, timerTask,mPullToRefreshLayout);
+    }
 	 /**
      * Background Async Task to get RSS Feed Items data from URL
      * */
@@ -126,12 +155,15 @@ public class GridViewNewsLiveFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(
-                    getActivity());
-            pDialog.setMessage("Loading recent articles...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
+            if (FirstOpen) {
+				pDialog = new ProgressDialog(getActivity());
+				pDialog.setMessage("Loading recent articles...");
+				pDialog.setIndeterminate(false);
+				pDialog.setCancelable(false);
+				pDialog.show();
+				FirstOpen = false;
+			} else {
+			}
         }
  
         /**
@@ -207,7 +239,14 @@ public class GridViewNewsLiveFragment extends Fragment {
          * **/
         protected void onPostExecute(String args) {
             // dismiss the dialog after getting all products
-            pDialog.dismiss();
+        	if (pDialog != null) {
+				pDialog.dismiss();
+			} else {
+
+			}
+			if (mPullToRefreshLayout != null) {
+				mPullToRefreshLayout.setRefreshComplete();
+			}
         }
     }
     public boolean isConnectingToInternet(){
