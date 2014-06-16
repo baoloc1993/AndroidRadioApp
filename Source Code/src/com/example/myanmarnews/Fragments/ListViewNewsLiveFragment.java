@@ -104,161 +104,9 @@ public class ListViewNewsLiveFragment extends Fragment {
 	}
 
 	@Override
-<<<<<<< HEAD
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.list_news_layout, container, false);
-        
-        listNews = (ListView)rootView.findViewById(R.id.listNews);
-        gridNews = (GridView)rootView.findViewById(R.id.gridNews);
-     // get fragment data
-       // Fragment fragment = getActivity();
-         
-        // SQLite Row id
-       // Integer site_id = Integer.parseInt(getActivity().getStringExtra("id"));
-         
-        // Getting Single website from SQLite
-      //  RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getActivity());
-         
-         
-       // WebSite site = rssDB.getSite(site_id);
-        //Create new website object
-       // WebSite site = new WebSite("TITLE WEB", "LINK WEB", "RSS_LINK", "DESCRIPTION");
-       // String rss_link = site.getRSSLink();
-        
-
-        
-        /**
-         * Calling a backgroung thread will loads recent articles of a website
-         * @param rss url of website
-         * */
-        new loadRSSFeedItems().execute();
-         
-        // selecting single ListView item
-        //ListView lv = getListView();
-  
-        // Launching new screen on Selecting Single ListItem
-        listNews.setOnItemClickListener(new OnItemClickListener() {
-  
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-//              
-            	//Get Item of current position in database
-            	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-            	RSSItem rss_item = (RSSItem) listNews.getItemAtPosition(position);
-            	WebSite website = rssDb.getSiteByLink(rss_item.getLink());
-            	List<WebSite> websites = rssDb.getAllSites();
-            	
-            	
-            	//transfer link of current Item to other fragment
-                Bundle args = new Bundle();
-                args.putInt(DisplayFullNewsFragment.ARG_ID, website.getId());
-                args.putInt(DisplayFullNewsFragment.ARG_SIZE, websites.size());
-                //Log.d("SET ON ITEM CLICK LISTENER", String.valueOf(website.getId()));
-
-                android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
-                DisplayFullNewsFragment displayFullNewsFragment = new DisplayFullNewsFragment();
-                displayFullNewsFragment.setArguments(args);
-                
-                //Go to DisplayFullNewsFragment
-    	        fragmentManager.beginTransaction().replace(R.id.container, displayFullNewsFragment).commit();
-                //Log.d("SET ON ITEM CLICK LISTENER", String.valueOf(rss_item.getId()));
-
-            }
-        });
-        
-      //  listNews.setAdapter(new ListNewsItemAdapter(rootView.getContext(), R.layout.preview_single_news_layout, newsItems));
-        return rootView;
-    }
-	
-	
-	
-	 /**
-     * Background Async Task to get RSS Feed Items data from URL
-     * */
-    class loadRSSFeedItems extends AsyncTask<String, String, String> {
- 
-        /**
-         * Before starting background thread Show Progress Dialog
-         * */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(
-                    getActivity());
-            pDialog.setMessage("Loading recent articles...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
- 
-        /**
-         * getting all recent articles and showing them in listview
-         * */
-        @Override
-        protected String doInBackground(String... args) {
-            // rss link url
-            //String rss_url = args[0];
-             //IF INTERNET CONNECTING, RETRIVE DATA FROM RSS LINK
-            // list of rss items
-        	if (isConnectingToInternet()){
-        		rssItems = rssParser.getRSSFeedItems(getString(R.string.rss_link));
-        	}
-             
-
-             
-            // updating UI from Background Thread
-            
-            getActivity().runOnUiThread(new Runnable() {
-            	
-            	//InputStream input = null;
-            	
-            	
-                public void run() {
-                	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-                	
-                    /**
-                     * Updating parsed items into listview
-                     * */
-                	//rssDb.onCreate(rssDb);
-                	
-                	//NO INTERNET -> RSSITEMS is emtpy
-                	if (rssItems.isEmpty()){
-                		
-                		//Get All Website from database
-                		List<WebSite> websites = rssDb.getAllSites();
-                		for (WebSite website : websites){
-                			RSSItem newItem = new RSSItem(
-                					website.getId(),
-                					website.getTitle(),
-                					website.getLink(),
-                					website.getDescription(),
-                					website.getPubDate(),
-                					 website.getImageLink());
-                			
-                			//Add RSSItem to RSSItems
-                			rssItems.add(newItem);
-                			
-                		}
-                		
-                	}else{
-	                	for (RSSItem item : rssItems){
-
-	                		//ADD EACH ITEM INTO DATABASE
-	                		WebSite site = new WebSite(
-	    							item.getTitle(), 
-	    							item.getLink(),
-	    							item.getDescription(),
-	    							item.getPubdate(),
-	    							item.getImgUrl());
-	                		rssDb.addSite(site);
-	                		//Log.d("LINK",item.getLink());
-	                	}
-                	}
-                	
 
                     // updating listview
-=======
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.list_news_layout, container,
@@ -295,29 +143,33 @@ public class ListViewNewsLiveFragment extends Fragment {
 
 		// Launching new screen on Selecting Single ListItem
 		listNews.setOnItemClickListener(new OnItemClickListener() {
+			  
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+//              
+            	//Get Item of current position in database
+            	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
+            	RSSItem rss_item = (RSSItem) listNews.getItemAtPosition(position);
+            	WebSite website = rssDb.getSiteByLink(rss_item.getLink());
+            	List<WebSite> websites = rssDb.getAllSites();
+            	
+            	
+            	//transfer link of current Item to other fragment
+                Bundle args = new Bundle();
+                args.putInt(DisplayFullNewsFragment.ARG_ID, website.getId());
+                args.putInt(DisplayFullNewsFragment.ARG_SIZE, websites.size());
+                //Log.d("SET ON ITEM CLICK LISTENER", String.valueOf(website.getId()));
 
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				//
-				// Get Item of current position
-				RSSItem rss_item = (RSSItem) listNews
-						.getItemAtPosition(position);
+                android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
+                DisplayFullNewsFragment displayFullNewsFragment = new DisplayFullNewsFragment();
+                displayFullNewsFragment.setArguments(args);
+                
+                //Go to DisplayFullNewsFragment
+    	        fragmentManager.beginTransaction().replace(R.id.container, displayFullNewsFragment).commit();
+                //Log.d("SET ON ITEM CLICK LISTENER", String.valueOf(rss_item.getId()));
 
-				// transfer link of current Item to other fragment
-				Bundle args = new Bundle();
-				args.putString(DisplayFullNewsFragment.ARG_LINK,
-						rss_item.getLink());
-				android.app.FragmentManager fragmentManager = getActivity()
-						.getFragmentManager();
-				DisplayFullNewsFragment displayFullNewsFragment = new DisplayFullNewsFragment();
-				displayFullNewsFragment.setArguments(args);
-
-				// Go to DisplayFullNewsFragment
-				fragmentManager.beginTransaction()
-						.replace(R.id.container, displayFullNewsFragment)
-						.commit();
-			}
-		});
+            }
+        });
 
 		// listNews.setAdapter(new ListNewsItemAdapter(rootView.getContext(),
 		// R.layout.preview_single_news_layout, newsItems));
@@ -427,7 +279,7 @@ public class ListViewNewsLiveFragment extends Fragment {
 					}
 
 					// updating listview
->>>>>>> origin/master
+
 					ListAdapter adapter = new ListNewsItemAdapter(
 							getActivity(),
 							R.layout.preview_single_news_list_layout,
