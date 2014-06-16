@@ -117,19 +117,7 @@ public class ListViewNewsLiveFragment extends Fragment {
 		// get fragment data
 		// Fragment fragment = getActivity();
 
-		// SQLite Row id
-		// Integer site_id =
-		// Integer.parseInt(getActivity().getStringExtra("id"));
-
-		// Getting Single website from SQLite
-		// RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getActivity());
-
-		// WebSite site = rssDB.getSite(site_id);
-		// Create new website object
-		// WebSite site = new WebSite("TITLE WEB", "LINK WEB", "RSS_LINK",
-		// "DESCRIPTION");
-		// String rss_link = site.getRSSLink();
-
+		
 		/**
 		 * Calling a backgroung thread will loads recent articles of a website
 		 * 

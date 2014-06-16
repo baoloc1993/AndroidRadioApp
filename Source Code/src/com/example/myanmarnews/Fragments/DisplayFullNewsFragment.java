@@ -94,26 +94,26 @@ public class DisplayFullNewsFragment extends Fragment {
 			//Log.d("DisplayFillNewsFragment", "get item");
 
 	        View rootView = inflater.inflate(R.layout.swipe_view_layout, container, false);
-	        //android.support.v4.app.FragmentManager fragmentManager = getActivity().get;
+	        
 	        
 	     // Create the adapter that will return a fragment for each of the three
 			// primary sections of the activity.
 	        Bundle bundle = this.getArguments();
 	        id = bundle.getInt(ARG_ID);
 	        size = bundle.getInt(ARG_SIZE);
-	        //Log.d("Value of ID", String.valueOf(size));
+	        Log.d("Value of ID", "TEST = " + String.valueOf(id));
 	        
 	        mSectionsPagerAdapter = new SectionsPagerAdapter(myContext.getSupportFragmentManager());
 
-	        //int position = etIntExtra("POSITION_KEY", 0);
+	        
 	       
 			// Set up the ViewPager with the sections adapter.
 			mViewPager = (ViewPager) rootView.findViewById(R.id.pager);
 			
-			// mSectionsPagerAdapter.instantiateItem(mViewPager, id);
-			//mSectionsPagerAdapter.setPrimaryItem(mViewPager, id, bundle);
 			mViewPager.setAdapter(mSectionsPagerAdapter);
-			mViewPager.setCurrentItem(id);
+			
+			//id start from 0. Position start from 1
+			mViewPager.setCurrentItem(id+1);
 			return rootView;
 	        
 	 }
@@ -155,19 +155,6 @@ public class DisplayFullNewsFragment extends Fragment {
 				return size;
 			}
 
-//			@Override
-//			public CharSequence getPageTitle(int position) {
-//				Locale l = Locale.getDefault();
-//				switch (position) {
-//				case 0:
-//					return getString(R.string.title_section1).toUpperCase(l);
-//				case 1:
-//					return getString(R.string.title_section2).toUpperCase(l);
-//				case 2:
-//					return getString(R.string.title_section3).toUpperCase(l);
-//				}
-//				return null;
-//			}
 		}
 
 		/**
@@ -181,10 +168,7 @@ public class DisplayFullNewsFragment extends Fragment {
 			public static PlaceholderFragment newInstance(int sectionNumber) {
 				PlaceholderFragment fragment = new PlaceholderFragment();
 				Bundle args = new Bundle();
-				//Get data from database
-		        //RSSDatabaseHandler rssDb = new RSSDatabaseHandler(DisplayFullNewsFragment.myContext);
-		        //WebSite website = rssDb.getSiteById(sectionNumber);
-		        //Log.d("value of sectionNumber in placeholder fragment new instance", String.valueOf(sectionNumber));
+				
 				args.putInt(ARG_ID, sectionNumber);
 				fragment.setArguments(args);
 				return fragment;
@@ -203,20 +187,20 @@ public class DisplayFullNewsFragment extends Fragment {
 	    		Bundle bundle = this.getArguments();
 		        int position = bundle.getInt(ARG_ID);
 		        //int id = 0;
-		        int size = DisplayFullNewsFragment.size;
+		        
 		       // size = bundle.getInt(ARG_SIZE);
 		        Log.d("value of position in placeholder fragment", "TEST " + String.valueOf(position));
 		        //Log.d("value of ID in placeholder fragment", String.valueOf(DisplayFullNewsFragment.id+position-1));
 		        //Log.d("value of SIZE in placeholder fragment", String.valueOf(size));
 		        
-		        id = DisplayFullNewsFragment.id +position -1;
+		       // id = DisplayFullNewsFragment.id +position -1;
 		        //Get data from database
 		        RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
 		        List<WebSite> websites = rssDb.getAllSitesByID();
 		        Log.d("value of SIZE OF DATABASE", "TEST = " + String.valueOf(websites.size()));
 		        
 		        
-		        	WebSite website = rssDb.getSiteById(position-1);
+		        	WebSite website = rssDb.getSiteById(position);
 		    		
 	    			final RSSItem item = new RSSItem(
 	    					website.getId(),
