@@ -377,7 +377,7 @@ public class ListViewNewsLiveFragment extends Fragment {
 			// String rss_url = args[0];
 			// IF INTERNET CONNECTING, RETRIVE DATA FROM RSS LINK
 			// list of rss items
-			if (isConnectingToInternet()) {
+			if (BasicFunctions.isConnectingToInternet(getActivity().getApplicationContext())) {
 				rssItems = rssParser
 						.getRSSFeedItems(getString(R.string.rss_link));
 			}
@@ -457,22 +457,22 @@ public class ListViewNewsLiveFragment extends Fragment {
 		}
 	}
 
-	// CHECK IF IS CONNECTION TO INTERNET OR NOT
-	public boolean isConnectingToInternet() {
-		Context _context = getActivity().getApplicationContext();
-		ConnectivityManager connectivity = (ConnectivityManager) _context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		if (connectivity != null) {
-			NetworkInfo[] info = connectivity.getAllNetworkInfo();
-			if (info != null)
-				for (int i = 0; i < info.length; i++)
-					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-						return true;
-					}
-
-		}
-		return false;
-	}
+//	// CHECK IF IS CONNECTION TO INTERNET OR NOT
+//	public boolean isConnectingToInternet() {
+//		Context _context = getActivity().getApplicationContext();
+//		ConnectivityManager connectivity = (ConnectivityManager) _context
+//				.getSystemService(Context.CONNECTIVITY_SERVICE);
+//		if (connectivity != null) {
+//			NetworkInfo[] info = connectivity.getAllNetworkInfo();
+//			if (info != null)
+//				for (int i = 0; i < info.length; i++)
+//					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+//						return true;
+//					}
+//
+//		}
+//		return false;
+//	}
 	// @Override
 	// public void onAttach(Activity activity) {
 	// super.onAttach(activity);
