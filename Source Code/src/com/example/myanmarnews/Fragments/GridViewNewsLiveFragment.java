@@ -194,7 +194,7 @@ public class GridViewNewsLiveFragment extends Fragment {
                 	//NO INTERNET -> RSSITEMS is emtpy
                 	if (rssItems.isEmpty()){
                 		//Get All Website from database
-                		List<WebSite> websites = rssDb.getAllSites();
+                		List<WebSite> websites = rssDb.getAllSitesByID();
                 		for (WebSite website : websites){
                 			RSSItem newItem = new RSSItem(
                 					website.getId(),

@@ -151,7 +151,7 @@ public class ListViewNewsLiveFragment extends Fragment {
             	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
             	RSSItem rss_item = (RSSItem) listNews.getItemAtPosition(position);
             	WebSite website = rssDb.getSiteByLink(rss_item.getLink());
-            	List<WebSite> websites = rssDb.getAllSites();
+            	List<WebSite> websites = rssDb.getAllSitesByID();
             	
             	
             	//transfer link of current Item to other fragment
@@ -248,25 +248,8 @@ public class ListViewNewsLiveFragment extends Fragment {
 					 * Updating parsed items into listview
 					 * */
 					// rssDb.onCreate(rssDb);
-
+					List<RSSItem> rssItemsDataBase = new ArrayList<RSSItem>();
 					// NO INTERNET -> RSSITEMS is emtpy
-					if (rssItems.isEmpty()) {
-
-						// Get All Website from database
-						List<WebSite> websites = rssDb.getAllSites();
-						for (WebSite website : websites) {
-							RSSItem newItem = new RSSItem(website.getId(),
-									website.getTitle(), website.getLink(),
-									website.getDescription(), website
-											.getPubDate(), website
-											.getImageLink());
-
-							// Add RSSItem to RSSItems
-							rssItems.add(newItem);
-
-						}
-
-					} else {
 						for (RSSItem item : rssItems) {
 
 							// ADD EACH ITEM INTO DATABASE
@@ -276,14 +259,25 @@ public class ListViewNewsLiveFragment extends Fragment {
 							rssDb.addSite(site);
 							// Log.d("LINK",item.getLink());
 						}
-					}
+					
 
 					// updating listview
+					//Get All Website for Database
+					List<WebSite> websites = rssDb.getAllSitesByID();
+					for (WebSite website : websites) {
+						RSSItem newItem = new RSSItem(website.getId(),
+								website.getTitle(), website.getLink(),
+								website.getDescription(), website
+										.getPubDate(), website
+										.getImageLink());
 
+						// Add RSSItem to RSSItems
+						rssItemsDataBase.add(newItem);
+					}
 					ListAdapter adapter = new ListNewsItemAdapter(
 							getActivity(),
 							R.layout.preview_single_news_list_layout,
-							(ArrayList<RSSItem>) rssItems);
+							(ArrayList<RSSItem>) rssItemsDataBase);
 
 					listNews.setAdapter(adapter);
 					// MainActivity.rssItems = rssItems;

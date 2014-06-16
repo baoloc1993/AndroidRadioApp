@@ -123,11 +123,11 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
     /**
      * Reading all rows from database
      * */
-    public List<WebSite> getAllSites() {
+    public List<WebSite> getAllSitesByID() {
         List<WebSite> siteList = new ArrayList<WebSite>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_RSS
-                + " ORDER BY " + KEY_PUBLIC_DATE + " DESC";
+                + " ORDER BY " + KEY_ID + " DESC";
  
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

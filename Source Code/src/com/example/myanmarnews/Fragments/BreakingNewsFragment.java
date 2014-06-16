@@ -195,7 +195,7 @@ public class BreakingNewsFragment extends Fragment {
 					
 				
 					
-					List<WebSite> siteList = rssDb.getAllSites();
+					List<WebSite> siteList = rssDb.getAllSitesByID();
 	
 					sqliteIds = new String[siteList.size()];
 					

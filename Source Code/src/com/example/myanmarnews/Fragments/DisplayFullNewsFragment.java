@@ -20,9 +20,15 @@ import com.example.myanmarnews.RSS.WebSite;
 
 
 
+
+
+
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -33,6 +39,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -101,16 +109,11 @@ public class DisplayFullNewsFragment extends Fragment {
 	       
 			// Set up the ViewPager with the sections adapter.
 			mViewPager = (ViewPager) rootView.findViewById(R.id.pager);
+			
 			// mSectionsPagerAdapter.instantiateItem(mViewPager, id);
 			//mSectionsPagerAdapter.setPrimaryItem(mViewPager, id, bundle);
 			mViewPager.setAdapter(mSectionsPagerAdapter);
-			
-
-		    
-	      //  Fragment currentFragment =  fragmentManager.findFragmentByTag(getTag());
-	        //fragmentManager.beginTransaction().add(DisplayFullNewsFragment,"Current");
-	       // fragmentManager.beginTransaction().replace(R.id.container,currentFragment).commit();
-			//MainActivity.currentFragment = Constant.ListBrakingNews;
+			mViewPager.setCurrentItem(id);
 			return rootView;
 	        
 	 }
@@ -179,8 +182,8 @@ public class DisplayFullNewsFragment extends Fragment {
 				PlaceholderFragment fragment = new PlaceholderFragment();
 				Bundle args = new Bundle();
 				//Get data from database
-		        RSSDatabaseHandler rssDb = new RSSDatabaseHandler(DisplayFullNewsFragment.myContext);
-		        WebSite website = rssDb.getSiteById(sectionNumber);
+		        //RSSDatabaseHandler rssDb = new RSSDatabaseHandler(DisplayFullNewsFragment.myContext);
+		        //WebSite website = rssDb.getSiteById(sectionNumber);
 		        //Log.d("value of sectionNumber in placeholder fragment new instance", String.valueOf(sectionNumber));
 				args.putInt(ARG_ID, sectionNumber);
 				fragment.setArguments(args);
@@ -190,7 +193,7 @@ public class DisplayFullNewsFragment extends Fragment {
 			public PlaceholderFragment() {
 			}
 
-			private int id;
+			private int id ;
 			@Override
 			public View onCreateView(LayoutInflater inflater, ViewGroup container,
 					Bundle savedInstanceState) {
@@ -199,24 +202,30 @@ public class DisplayFullNewsFragment extends Fragment {
 		    	//Get Data from previous fragment
 	    		Bundle bundle = this.getArguments();
 		        int position = bundle.getInt(ARG_ID);
+		        //int id = 0;
+		        int size = DisplayFullNewsFragment.size;
 		       // size = bundle.getInt(ARG_SIZE);
-		        Log.d("value of position in placeholder fragment", String.valueOf(position));
-		        Log.d("value of ID in placeholder fragment", String.valueOf(DisplayFullNewsFragment.id+position-1));
-		        Log.d("value of SIZE in placeholder fragment", String.valueOf(DisplayFullNewsFragment.size));
+		        Log.d("value of position in placeholder fragment", "TEST " + String.valueOf(position));
+		        //Log.d("value of ID in placeholder fragment", String.valueOf(DisplayFullNewsFragment.id+position-1));
+		        //Log.d("value of SIZE in placeholder fragment", String.valueOf(size));
 		        
+		        id = DisplayFullNewsFragment.id +position -1;
 		        //Get data from database
 		        RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-		        List<WebSite> websites = rssDb.getAllSites();
-		        Log.d("value of SIZE OF DATABASE", String.valueOf(websites.size()));
-		        WebSite website = rssDb.getSiteById(DisplayFullNewsFragment.id+position-1);
-	    		
-    			RSSItem item = new RSSItem(
-    					website.getId(),
-    					website.getTitle(),
-    					website.getLink(),
-    					website.getDescription(),
-    					website.getPubDate(),
-    					 website.getImageLink());
+		        List<WebSite> websites = rssDb.getAllSitesByID();
+		        Log.d("value of SIZE OF DATABASE", "TEST = " + String.valueOf(websites.size()));
+		        
+		        
+		        	WebSite website = rssDb.getSiteById(position-1);
+		    		
+	    			final RSSItem item = new RSSItem(
+	    					website.getId(),
+	    					website.getTitle(),
+	    					website.getLink(),
+	    					website.getDescription(),
+	    					website.getPubDate(),
+	    					 website.getImageLink());
+		        
     			
 		        //Get ID Layout
 		        TextView page_title = (TextView) rootView.findViewById(R.id.page_title);
@@ -240,8 +249,19 @@ public class DisplayFullNewsFragment extends Fragment {
 		        int loader = R.drawable.image_not_found;
 		         
 				imgLoader.DisplayImage(item.getImgUrl(), loader, page_image);
+				
 			    //Set Information for button
-			    //go_to_website.
+			   go_to_website.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse( item.getLink() ) );
+
+				    startActivity( browse );
+					
+				}
+			});
 				return rootView;
 			}
 		}
