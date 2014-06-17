@@ -103,9 +103,7 @@ public class ListViewNewsLiveFragment extends Fragment {
 	public ListViewNewsLiveFragment() {
 	}
 
-	@Override
-
-                    // updating listview
+	@Override        
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

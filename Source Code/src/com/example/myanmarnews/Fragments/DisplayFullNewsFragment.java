@@ -24,6 +24,7 @@ import com.example.myanmarnews.RSS.WebSite;
 
 
 
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -113,7 +114,7 @@ public class DisplayFullNewsFragment extends Fragment {
 			mViewPager.setAdapter(mSectionsPagerAdapter);
 			
 			//id start from 0. Position start from 1
-			mViewPager.setCurrentItem(id+1);
+			mViewPager.setCurrentItem(id-1);
 			return rootView;
 	        
 	 }
@@ -240,9 +241,15 @@ public class DisplayFullNewsFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse( item.getLink() ) );
-
-				    startActivity( browse );
+					Bundle args = new Bundle();
+					//Go to webView
+					args.putString(DisplaySingleNewsFragment.KEY_SITE_LINK, item.getLink());
+					android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
+	                DisplaySingleNewsFragment displaySingleNewsFragment = new DisplaySingleNewsFragment();
+	                displaySingleNewsFragment.setArguments(args);
+	                
+	                //Go to DisplayFullNewsFragment
+	    	        fragmentManager.beginTransaction().replace(R.id.container, displaySingleNewsFragment).commit();
 					
 				}
 			});
