@@ -25,14 +25,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
-import java.util.HashSet;
 
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.libs.actionbarpulltorefresh.library.listeners.HeaderViewListener;
-import com.example.myanmarnews.libs.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import com.example.myanmarnews.libs.actionbarpulltorefresh.library.viewdelegates.ViewDelegate;
 
 /**

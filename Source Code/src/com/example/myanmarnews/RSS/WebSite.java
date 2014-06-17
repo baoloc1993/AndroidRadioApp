@@ -1,7 +1,5 @@
 package com.example.myanmarnews.RSS;
 
-import android.widget.ImageView;
-
 /**
  * This class file used while inserting data or retrieving data from 
  * SQLite database

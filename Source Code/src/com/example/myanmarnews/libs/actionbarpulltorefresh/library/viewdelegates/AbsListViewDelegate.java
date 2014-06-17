@@ -26,7 +26,7 @@ import android.widget.AbsListView;
  */
 public class AbsListViewDelegate implements ViewDelegate {
 
-    public static final Class[] SUPPORTED_VIEW_CLASSES =  { AbsListView.class };
+    public static final Class<?>[] SUPPORTED_VIEW_CLASSES =  { AbsListView.class };
 
     @Override
     public boolean isReadyForPull(View view, final float x, final float y) {

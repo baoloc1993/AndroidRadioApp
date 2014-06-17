@@ -36,7 +36,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import android.util.Log;
-import android.widget.ImageView;
 	 
 public class RSSParser {
  

@@ -37,23 +37,24 @@ class InstanceCreationUtils {
     private static final Class<?>[] VIEW_DELEGATE_CONSTRUCTOR_SIGNATURE = new Class[]{};
     private static final Class<?>[] TRANSFORMER_CONSTRUCTOR_SIGNATURE = new Class[]{};
 
-    private static final HashMap<Class, Class> BUILT_IN_DELEGATES;
+    
+	private static final HashMap<Class<?>, Class<?>> BUILT_IN_DELEGATES;
     static {
-        BUILT_IN_DELEGATES = new HashMap<Class, Class>();
+        BUILT_IN_DELEGATES = new HashMap<Class<?>, Class<?>>();
         addBuiltinDelegates(AbsListViewDelegate.SUPPORTED_VIEW_CLASSES, AbsListViewDelegate.class);
         addBuiltinDelegates(ScrollYDelegate.SUPPORTED_VIEW_CLASSES, ScrollYDelegate.class);
         addBuiltinDelegates(WebViewDelegate.SUPPORTED_VIEW_CLASSES, WebViewDelegate.class);
     }
 
-    private static void addBuiltinDelegates(Class[] supportedViews, Class<?> delegateClass) {
+    private static void addBuiltinDelegates(Class<?>[] supportedViews, Class<?> delegateClass) {
         for (int i = 0, z = supportedViews.length; i< z ; i++) {
             BUILT_IN_DELEGATES.put(supportedViews[i], delegateClass);
         }
     }
 
     static ViewDelegate getBuiltInViewDelegate(final View view) {
-        final Set<Map.Entry<Class, Class>> entries = BUILT_IN_DELEGATES.entrySet();
-        for (final Map.Entry<Class, Class> entry : entries) {
+        final Set<Map.Entry<Class<?>, Class<?>>> entries = BUILT_IN_DELEGATES.entrySet();
+        for (final Map.Entry<Class<?>, Class<?>> entry : entries) {
             if (entry.getKey().isInstance(view)) {
                 return InstanceCreationUtils.newInstance(view.getContext(),
                         entry.getValue(), VIEW_DELEGATE_CONSTRUCTOR_SIGNATURE);
@@ -82,7 +83,8 @@ class InstanceCreationUtils {
         return null;
     }
 
-    private static <T> T newInstance(Context context, Class clazz, Class[] constructorSig,
+    @SuppressWarnings("unchecked")
+	private static <T> T newInstance(Context context, Class<?> clazz, Class<?>[] constructorSig,
             Object... arguments) {
         try {
             Constructor<?> constructor = clazz.getConstructor(constructorSig);

@@ -18,8 +18,6 @@ package com.example.myanmarnews.libs.actionbarpulltorefresh.library;
 
 import com.example.myanmarnews.R;
 
-import android.graphics.Color;
-
 /**
  * Allows you to specify a number of configuration options when setting up a {@link PullToRefreshLayout}.
  */

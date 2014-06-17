@@ -1,10 +1,5 @@
 package com.example.myanmarnews.Adapters;
 
-import java.util.Locale;
-
-import com.example.myanmarnews.Fragments.DisplayFullNewsFragment;
-
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

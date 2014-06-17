@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.myanmarnews.R;
-import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
 import com.example.myanmarnews.Items.NewsItem;
 
 public class SelectedNewsFragment extends Fragment {

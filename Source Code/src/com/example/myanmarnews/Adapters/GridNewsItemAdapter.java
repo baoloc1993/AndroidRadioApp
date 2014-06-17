@@ -2,34 +2,18 @@ package com.example.myanmarnews.Adapters;
 
 import imageLoader.ImageLoader;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
-import com.example.myanmarnews.BasicFunctions.BasicFunctions;
-import com.example.myanmarnews.Fragments.GridViewNewsLiveFragment;
-import com.example.myanmarnews.Items.NewsItem;
 import com.example.myanmarnews.RSS.RSSItem;
 
 public class GridNewsItemAdapter extends ArrayAdapter<RSSItem> {

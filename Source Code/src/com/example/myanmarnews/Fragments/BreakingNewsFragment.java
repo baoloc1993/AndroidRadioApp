@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -76,8 +75,6 @@ public class BreakingNewsFragment extends Fragment {
 		//inflate layout
 		View rootView = inflater.inflate(R.layout.list_news_layout, container,
 				false);
-		ArrayList<NewsItem> newsItems = new ArrayList<NewsItem>();
-
 		// Hashmap for ListView
 		rssFeedList = new ArrayList<HashMap<String, String>>();
 		lv = (ListView) rootView.findViewById(R.id.listNews);
@@ -93,15 +90,6 @@ public class BreakingNewsFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// getting values from selected ListItem
-				String sqlite_id = ((TextView) view
-						.findViewById(R.id.sqlite_id)).getText().toString();
-				// Starting new intent
-			//	Intent in = new Intent(getActivity(),
-			//			ListRSSItemsActivity.class);
-				// passing sqlite row id
-			//	in.putExtra(TAG_ID, sqlite_id);
-			//	startActivity(in);
 			}
 		});
 

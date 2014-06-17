@@ -39,6 +39,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.RelativeLayout;
@@ -376,7 +377,7 @@ public class DefaultHeaderTransformer extends HeaderTransformer {
 
 	private void applyProgressBarStyle() {
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT, mProgressBarHeight);
+				LayoutParams.MATCH_PARENT, mProgressBarHeight);
 
 		switch (mProgressBarStyle) {
 		case PROGRESS_BAR_STYLE_INSIDE:

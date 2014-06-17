@@ -16,7 +16,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class LoadRSSFeedItems extends AsyncTask<String, String, String> {
@@ -79,6 +78,7 @@ public class LoadRSSFeedItems extends AsyncTask<String, String, String> {
 
 			// InputStream input = null;
 
+			@Override
 			public void run() {
 				RSSDatabaseHandler rssDb = new RSSDatabaseHandler(
 						MainActivity.activity);
@@ -139,6 +139,7 @@ public class LoadRSSFeedItems extends AsyncTask<String, String, String> {
 	/**
 	 * After completing background task Dismiss the progress dialog
 	 * **/
+	@Override
 	protected void onPostExecute(String args) {
 		// dismiss the dialog after getting all products
 		if (pDialog != null) {

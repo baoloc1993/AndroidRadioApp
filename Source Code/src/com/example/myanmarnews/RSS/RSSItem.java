@@ -3,7 +3,6 @@
  */
 package com.example.myanmarnews.RSS;
 
-import android.media.Image;
 import android.widget.ImageView;
 
 public class RSSItem {

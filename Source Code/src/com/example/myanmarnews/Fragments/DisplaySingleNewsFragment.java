@@ -5,11 +5,7 @@ import com.example.myanmarnews.RSS.RSSDatabaseHandler;
 import com.example.myanmarnews.RSS.WebSite;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Website;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
