@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.app.ListActivity;
@@ -126,39 +127,8 @@ public class ListViewNewsLiveFragment extends Fragment {
 
 		// selecting single ListView item
 		// ListView lv = getListView();
-
 		// Launching new screen on Selecting Single ListItem
-		listNews.setOnItemClickListener(new OnItemClickListener() {
-			  
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-//              
-            	//Get Item of current position in database
-            	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-            	RSSItem rss_item = (RSSItem) listNews.getItemAtPosition(position);
-            	WebSite website = rssDb.getSiteByLink(rss_item.getLink());
-            	//List<WebSite> websites = rssDb.getAllSitesByID();
-            	
-            	
-            	//transfer link of current Item to other fragment
-                Bundle args = new Bundle();
-                args.putInt(DisplayFullNewsFragment.ARG_ID, website.getId());
-               // args.putInt(DisplayFullNewsFragment.ARG_SIZE, websites.size());
-                //Log.d("SET ON ITEM CLICK LISTENER", String.valueOf(website.getId()));
-
-                android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
-                DisplayFullNewsFragment displayFullNewsFragment = new DisplayFullNewsFragment();
-                displayFullNewsFragment.setArguments(args);
-                
-                //Go to DisplayFullNewsFragment
-    	        fragmentManager.beginTransaction().replace(R.id.container, displayFullNewsFragment).commit();
-                //Log.d("SET ON ITEM CLICK LISTENER", String.valueOf(rss_item.getId()));
-
-            }
-        });
-
-		// listNews.setAdapter(new ListNewsItemAdapter(rootView.getContext(),
-		// R.layout.preview_single_news_layout, newsItems));
+		listNews.setOnItemClickListener(BasicFunctions.createOnItemClickListener());
 		return rootView;
 	}
 

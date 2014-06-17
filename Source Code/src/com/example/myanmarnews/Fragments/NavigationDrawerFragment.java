@@ -267,19 +267,23 @@ public class NavigationDrawerFragment extends Fragment {
 			case GridBrakingNews:
 				fragmentManager.beginTransaction().replace(R.id.container,new BreakingNewsFragment());
 				MainActivity.currentFragment = Constant.ListBrakingNews;
+				MainActivity.curViewGroup = Constant.List;
 				
 				break;
 			case ListBrakingNews:
 				fragmentManager.beginTransaction().replace(R.id.container,new BreakingNewsFragment()).commit();
 				MainActivity.currentFragment = Constant.GridBrakingNews;
+				MainActivity.curViewGroup = Constant.Grid;
 				break;
 			case GridLiveNews:
 				fragmentManager.beginTransaction().replace(R.id.container, new ListViewNewsLiveFragment()).commit();
 				MainActivity.currentFragment = Constant.ListLiveNews;
+				MainActivity.curViewGroup = Constant.List;
 				break;
 			case ListLiveNews:
 				fragmentManager.beginTransaction().replace(R.id.container, new GridViewNewsLiveFragment()).commit();
 				MainActivity.currentFragment = Constant.GridLiveNews;
+				MainActivity.curViewGroup = Constant.Grid;
 				break;
 			default:
 				break;

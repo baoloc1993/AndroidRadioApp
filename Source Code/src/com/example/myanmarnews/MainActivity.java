@@ -31,6 +31,7 @@ public class MainActivity extends FragmentActivity implements
 
 	public static boolean FirstOpen;
 	public static Constant currentFragment;
+	public static Constant curViewGroup;
 	public static Activity activity;
 	public static List<RSSItem> rssItems = new ArrayList<RSSItem>();
 	
@@ -89,18 +90,21 @@ public class MainActivity extends FragmentActivity implements
 			fragmentManager.beginTransaction()
 					.replace(R.id.container, new ListViewNewsLiveFragment()).commit();
 			currentFragment = Constant.ListLiveNews;
+			curViewGroup = Constant.List;
 			break;
 		case 1:
 			fragmentManager.beginTransaction()
 					.replace(R.id.container, new BreakingNewsFragment())
 					.commit();
 			currentFragment = Constant.ListBrakingNews;
+			curViewGroup = Constant.List;
 			break;
 		case 2:
 			fragmentManager.beginTransaction()
 					.replace(R.id.container, new SelectedNewsFragment())
 					.commit();
 			currentFragment = Constant.ListSelectedNews;
+			curViewGroup = Constant.List;
 			break;
 			
 		case 3:

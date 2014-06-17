@@ -47,7 +47,13 @@ import com.example.myanmarnews.libs.actionbarpulltorefresh.library.PullToRefresh
 
 public class GridViewNewsLiveFragment extends Fragment {
 	public static GridView gridNews;
-	// Array list for list view
+	private boolean FirstOpen = true;
+	/**
+	 * Returns a new instance of this fragment for the given section number.
+	 */
+	private ProgressDialog pDialog;
+	 
+    // Array list for list view
     ArrayList<HashMap<String, String>> rssItemList = new ArrayList<HashMap<String,String>>();
  
     RSSParser rssParser = new RSSParser();
@@ -98,19 +104,7 @@ public class GridViewNewsLiveFragment extends Fragment {
         //ListView lv = getListView();
   
         // Launching new screen on Selecting Single ListItem
-        gridNews.setOnItemClickListener(new OnItemClickListener() {
-  
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-               // Intent in = new Intent(getApplicationContext(), DisPlayWebPageActivity.class);
-                 
-                // getting page url
-                //String page_url = ((TextView) view.findViewById(R.id.rss_url)).getText().toString();
-               // T//oast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
-               // in.putExtra("page_url", page_url);
-               // startActivity(in);
-            }
-        });
+        gridNews.setOnItemClickListener(BasicFunctions.createOnItemClickListener());
         
       //  listNews.setAdapter(new ListNewsItemAdapter(rootView.getContext(), R.layout.preview_single_news_layout, newsItems));
         return rootView;
