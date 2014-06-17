@@ -36,8 +36,8 @@ import com.example.myanmarnews.R;
 import com.example.myanmarnews.Adapters.GridNewsItemAdapter;
 import com.example.myanmarnews.Adapters.ListNewsItemAdapter;
 import com.example.myanmarnews.BasicFunctions.BasicFunctions;
-import com.example.myanmarnews.Fragments.ListViewNewsLiveFragment.loadRSSFeedItems;
 import com.example.myanmarnews.Items.NewsItem;
+import com.example.myanmarnews.RSS.LoadRSSFeedItems;
 import com.example.myanmarnews.RSS.RSSDatabaseHandler;
 import com.example.myanmarnews.RSS.RSSFeed;
 import com.example.myanmarnews.RSS.RSSItem;
@@ -47,13 +47,7 @@ import com.example.myanmarnews.libs.actionbarpulltorefresh.library.PullToRefresh
 
 public class GridViewNewsLiveFragment extends Fragment {
 	public static GridView gridNews;
-	private boolean FirstOpen = true;
-	/**
-	 * Returns a new instance of this fragment for the given section number.
-	 */
-	private ProgressDialog pDialog;
-	 
-    // Array list for list view
+	// Array list for list view
     ArrayList<HashMap<String, String>> rssItemList = new ArrayList<HashMap<String,String>>();
  
     RSSParser rssParser = new RSSParser();
@@ -98,7 +92,7 @@ public class GridViewNewsLiveFragment extends Fragment {
          * Calling a backgroung thread will loads recent articles of a website
          * @param rss url of website
          * */
-        new loadRSSFeedItems().execute();
+        new LoadRSSFeedItems(gridNews,mPullToRefreshLayout).execute();
          
         // selecting single ListView item
         //ListView lv = getListView();
@@ -137,139 +131,13 @@ public class GridViewNewsLiveFragment extends Fragment {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				new loadRSSFeedItems().execute();
+				new LoadRSSFeedItems(gridNews,mPullToRefreshLayout).execute();
 			}
 		};
 		mPullToRefreshLayout = new PullToRefreshLayout(view.getContext());
 		// We can now setup the PullToRefreshLayout
 		BasicFunctions.IniPullToRefresh(getActivity(), (ViewGroup) view, (View)gridNews, timerTask,mPullToRefreshLayout);
     }
-	 /**
-     * Background Async Task to get RSS Feed Items data from URL
-     * */
-    class loadRSSFeedItems extends AsyncTask<String, String, String> {
- 
-        /**
-         * Before starting background thread Show Progress Dialog
-         * */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (FirstOpen) {
-				pDialog = new ProgressDialog(getActivity());
-				pDialog.setMessage("Loading recent articles...");
-				pDialog.setIndeterminate(false);
-				pDialog.setCancelable(false);
-				pDialog.show();
-				FirstOpen = false;
-			} else {
-			}
-        }
- 
-        /**
-         * getting all recent articles and showing them in listview
-         * */
-        @Override
-        protected String doInBackground(String... args) {
-            // rss link url
-            //String rss_url = args[0];
-             
-            // list of rss items
-        	
-        	if (isConnectingToInternet()){
-        		rssItems = rssParser.getRSSFeedItems(getString(R.string.rss_link));
-        	}
-             
-
-             
-            // updating UI from Background Thread
-            getActivity().runOnUiThread(new Runnable() {
-            	//InputStream input = null;
-            	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-                public void run() {
-                    /**
-                     * Updating parsed items into listview
-                     * */
-                	
-                	//NO INTERNET -> RSSITEMS is emtpy
-                	if (rssItems.isEmpty()){
-                		//Get All Website from database
-                		List<WebSite> websites = rssDb.getAllSitesByID();
-                		for (WebSite website : websites){
-                			RSSItem newItem = new RSSItem(
-                					website.getId(),
-                					website.getTitle(),
-                					website.getLink(),
-                					website.getDescription(),
-                					website.getPubDate(),
-                					 website.getImageLink());
-                			
-                			//Add RSSItem to RSSItems
-                			rssItems.add(newItem);
-                		}
-                		
-                	}else{
-	                	for (RSSItem item : rssItems){
-	                		
-	                		WebSite site = new WebSite(
-	    							item.getTitle(), 
-	    							item.getLink(),
-	    							item.getDescription(),
-	    							item.getPubdate(),
-	    							item.getImgUrl());
-	                		rssDb.addSite(site);
-	                	}
-                	}
-                	
-
-                    // updating listview
-					GridNewsItemAdapter adapter = new GridNewsItemAdapter(
-							getActivity(), 
-							R.layout.preview_single_news_grid_layout, 
-							(ArrayList<RSSItem>) rssItems);
-                   gridNews.setAdapter(adapter);
-                   //MainActivity.rssItems = rssItems;
-                }
-            });
-            return null;
-        }
- 
-        /**
-         * After completing background task Dismiss the progress dialog
-         * **/
-        protected void onPostExecute(String args) {
-            // dismiss the dialog after getting all products
-        	if (pDialog != null) {
-				pDialog.dismiss();
-			} else {
-
-			}
-			if (mPullToRefreshLayout != null) {
-				mPullToRefreshLayout.setRefreshComplete();
-			}
-        }
-    }
-    public boolean isConnectingToInternet(){
-    	Context _context = getActivity().getApplicationContext();
-        ConnectivityManager connectivity = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
-          if (connectivity != null) 
-          {
-              NetworkInfo[] info = connectivity.getAllNetworkInfo();
-              if (info != null) 
-                  for (int i = 0; i < info.length; i++) 
-                      if (info[i].getState() == NetworkInfo.State.CONNECTED)
-                      {
-                          return true;
-                      }
- 
-          }
-          return false;
-    }
-	// @Override
-	// public void onAttach(Activity activity) {
-	// super.onAttach(activity);
-	// ((MainActivity) activity).onSectionAttached(
-	// getArguments().getInt(ARG_SECTION_NUMBER));
-	// }
+	 
 	
 }

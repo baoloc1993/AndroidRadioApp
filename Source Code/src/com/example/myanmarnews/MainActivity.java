@@ -29,8 +29,9 @@ import com.example.myanmarnews.RSS.RSSItem;
 public class MainActivity extends FragmentActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-	
+	public static boolean FirstOpen;
 	public static Constant currentFragment;
+	public static Activity activity;
 	public static List<RSSItem> rssItems = new ArrayList<RSSItem>();
 	
 	
@@ -62,6 +63,7 @@ public class MainActivity extends FragmentActivity implements
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		screenHeight = displayMetrics.heightPixels;
 		screenWidth = displayMetrics.widthPixels;
+		activity = this;
 		/**
 		 * Navigation Drawer
 		 */
