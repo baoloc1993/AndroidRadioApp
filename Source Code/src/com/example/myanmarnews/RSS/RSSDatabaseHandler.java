@@ -23,6 +23,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.provider.ContactsContract.CommonDataKinds.Website;
 import android.util.Log;
 //import android.support.v4.widget.SearchViewCompatIcs.MySearchView;
 

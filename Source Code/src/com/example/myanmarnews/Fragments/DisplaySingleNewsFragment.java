@@ -1,10 +1,16 @@
 package com.example.myanmarnews.Fragments;
 
 import com.example.myanmarnews.R;
+import com.example.myanmarnews.RSS.RSSDatabaseHandler;
+import com.example.myanmarnews.RSS.WebSite;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Website;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +33,8 @@ public class DisplaySingleNewsFragment extends Fragment {
 		
 		//Get SITE_LINK sent from other fragment
 		Bundle args = this.getArguments();
-		String link = args.getString(KEY_SITE_LINK);
-		Log.d("DEBUG", "LINK = " + link);
+		final String link = args.getString(KEY_SITE_LINK);
+		//Log.d("DEBUG", "LINK = " + link);
 		WebView webView = (WebView) rootView.findViewById(R.id.single_web_view);
 		 
 		webView.getSettings().setJavaScriptEnabled(true);
@@ -44,8 +50,41 @@ public class DisplaySingleNewsFragment extends Fragment {
 		webView.setWebViewClient(new WebViewClient());
 		webView.loadUrl(link);
 		 
+		rootView.setFocusableInTouchMode(true);
+		rootView.requestFocus();
+		rootView.setOnKeyListener(new View.OnKeyListener() {
+		       
+
+				@Override
+				public boolean onKey(View v, int keyCode, KeyEvent event) {
+					// TODO Auto-generated method stub
+					//Log.i(getTag(), "keyCode: " + keyCode);
+		            if( keyCode == KeyEvent.KEYCODE_BACK ) {
+		                  //  Log.i(getTag(), "onKey Back listener is working!!!");
+		            	RSSDatabaseHandler RssDb = new RSSDatabaseHandler(getActivity());
+		            	WebSite website = RssDb.getSiteByLink(link);
+		            	
+		            	Bundle args = new Bundle();
+		                args.putInt(DisplayFullNewsFragment.ARG_ID, website.getId());
+		                
+		                android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
+		                DisplayFullNewsFragment displayFullNewsFragment = new DisplayFullNewsFragment();
+		                displayFullNewsFragment.setArguments(args);
+		                
+		                //Go to DisplayFullNewsFragment
+		    	        fragmentManager.beginTransaction().replace(R.id.container, displayFullNewsFragment).commit();
+		                //getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		                return true;
+		            } else {
+		                return false;
+		            }
+				}
+		    });
+
+		
 		return rootView;
 	}
+	
 	
 	
 }

@@ -95,13 +95,15 @@ public class DisplayFullNewsFragment extends Fragment {
 			//Log.d("DisplayFillNewsFragment", "get item");
 
 	        View rootView = inflater.inflate(R.layout.swipe_view_layout, container, false);
-	        
+	        RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
+	        List<WebSite> websites = rssDb.getAllSitesByID();
+	        size = websites.size();
 	        
 	     // Create the adapter that will return a fragment for each of the three
 			// primary sections of the activity.
 	        Bundle bundle = this.getArguments();
 	        id = bundle.getInt(ARG_ID);
-	        size = bundle.getInt(ARG_SIZE);
+	        //size = bundle.getInt(ARG_SIZE);
 	        Log.d("Value of ID", "TEST = " + String.valueOf(id));
 	        
 	        mSectionsPagerAdapter = new SectionsPagerAdapter(myContext.getSupportFragmentManager());
@@ -197,8 +199,8 @@ public class DisplayFullNewsFragment extends Fragment {
 		       // id = DisplayFullNewsFragment.id +position -1;
 		        //Get data from database
 		        RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-		        List<WebSite> websites = rssDb.getAllSitesByID();
-		        Log.d("value of SIZE OF DATABASE", "TEST = " + String.valueOf(websites.size()));
+		      //  List<WebSite> websites = rssDb.getAllSitesByID();
+		        Log.d("value of SIZE OF DATABASE", "TEST = " + String.valueOf(DisplayFullNewsFragment.size));
 		        
 		        
 		        	WebSite website = rssDb.getSiteById(position);
@@ -249,12 +251,14 @@ public class DisplayFullNewsFragment extends Fragment {
 	                displaySingleNewsFragment.setArguments(args);
 	                
 	                //Go to DisplayFullNewsFragment
-	    	        fragmentManager.beginTransaction().replace(R.id.container, displaySingleNewsFragment).commit();
+	    	        fragmentManager.beginTransaction().replace(R.id.container, displaySingleNewsFragment)
+	    	        	.addToBackStack("back").commit();
 					
 				}
 			});
 				return rootView;
 			}
+			
 		}
 		
 		@Override
@@ -262,5 +266,7 @@ public class DisplayFullNewsFragment extends Fragment {
 		    myContext=(MainActivity) activity;
 		    super.onAttach(activity);
 		}
+		
+		
 
 }

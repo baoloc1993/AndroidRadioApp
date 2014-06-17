@@ -137,13 +137,13 @@ public class ListViewNewsLiveFragment extends Fragment {
             	RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
             	RSSItem rss_item = (RSSItem) listNews.getItemAtPosition(position);
             	WebSite website = rssDb.getSiteByLink(rss_item.getLink());
-            	List<WebSite> websites = rssDb.getAllSitesByID();
+            	//List<WebSite> websites = rssDb.getAllSitesByID();
             	
             	
             	//transfer link of current Item to other fragment
                 Bundle args = new Bundle();
                 args.putInt(DisplayFullNewsFragment.ARG_ID, website.getId());
-                args.putInt(DisplayFullNewsFragment.ARG_SIZE, websites.size());
+               // args.putInt(DisplayFullNewsFragment.ARG_SIZE, websites.size());
                 //Log.d("SET ON ITEM CLICK LISTENER", String.valueOf(website.getId()));
 
                 android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
