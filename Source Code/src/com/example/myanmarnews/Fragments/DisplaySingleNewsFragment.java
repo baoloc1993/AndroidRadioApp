@@ -1,9 +1,11 @@
 package com.example.myanmarnews.Fragments;
 
+import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.RSS.RSSDatabaseHandler;
 import com.example.myanmarnews.RSS.WebSite;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -17,6 +19,7 @@ import android.webkit.WebViewClient;
 public class DisplaySingleNewsFragment extends Fragment {
 	
 	public static String KEY_SITE_LINK = "";
+	private MainActivity myContext;
 	public DisplaySingleNewsFragment(){
 		super();
 	}
@@ -63,7 +66,7 @@ public class DisplaySingleNewsFragment extends Fragment {
 		            	Bundle args = new Bundle();
 		                args.putInt(DisplayFullNewsFragment.ARG_ID, website.getId());
 		                
-		                android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
+		                FragmentManager fragmentManager = getActivity().getFragmentManager();
 		                DisplayFullNewsFragment displayFullNewsFragment = new DisplayFullNewsFragment();
 		                displayFullNewsFragment.setArguments(args);
 		                
@@ -81,6 +84,11 @@ public class DisplaySingleNewsFragment extends Fragment {
 		return rootView;
 	}
 	
+	@Override
+	public void onAttach(Activity activity) {
+	    myContext=(MainActivity) activity;
+	    super.onAttach(activity);
+	}
 	
 	
 }

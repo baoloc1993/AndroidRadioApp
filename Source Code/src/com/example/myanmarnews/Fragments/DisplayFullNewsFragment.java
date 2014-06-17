@@ -47,12 +47,12 @@ public class DisplayFullNewsFragment extends Fragment {
 	 * becomes too memory intensive, it may be best to switch to a
 	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
 	 */
-	PagerAdapter mSectionsPagerAdapter;
+	//PagerAdapter mSectionsPagerAdapter;
 
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
-	ViewPager mViewPager;
+	
 	//private Fragment fragmentManager;
 	//private ArrayList<RSSItem> rssItems = new ArrayList<RSSItem>();
 	
@@ -96,18 +96,19 @@ public class DisplayFullNewsFragment extends Fragment {
 	        Bundle bundle = this.getArguments();
 	        id = bundle.getInt(ARG_ID);
 	        //size = bundle.getInt(ARG_SIZE);
-	        Log.d("Value of ID", "TEST = " + String.valueOf(id));
+	       
 	        
-	        mSectionsPagerAdapter = new SectionsPagerAdapter(myContext.getSupportFragmentManager());
+	        PagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(myContext.getSupportFragmentManager());
 
 	        
 	       
 			// Set up the ViewPager with the sections adapter.
-			mViewPager = (ViewPager) rootView.findViewById(R.id.pager);
+	        ViewPager mViewPager = (ViewPager) rootView.findViewById(R.id.pager);
 			
 			mViewPager.setAdapter(mSectionsPagerAdapter);
 			
 			//id start from 0. Position start from 1
+			 Log.d("Value of ID", "TEST = " + String.valueOf(id));
 			mViewPager.setCurrentItem(id-1);
 			return rootView;
 	        
@@ -213,6 +214,7 @@ public class DisplayFullNewsFragment extends Fragment {
 			    TextView page_content = (TextView) rootView.findViewById(R.id.page_content);
 			    Button go_to_website = (Button) rootView.findViewById(R.id.go_to_website_button);
 			    
+			    
 			    //Get information of current News
 			    
 			   // RSSItem item = MainActivity.rssItems.get(position);
@@ -222,6 +224,7 @@ public class DisplayFullNewsFragment extends Fragment {
 			    page_public_date.setText(item.getPubdate());
 			    page_content.setText(item.getDescription());
 			    
+			    Log.d("TEXTVIEW", "TITLE = " + item.getTitle());
 			    //Set information for ImageView
 			   ImageLoader imgLoader = new ImageLoader(getActivity());
 				// Loader image - will be shown before loading image
@@ -243,8 +246,7 @@ public class DisplayFullNewsFragment extends Fragment {
 	                displaySingleNewsFragment.setArguments(args);
 	                
 	                //Go to DisplayFullNewsFragment
-	    	        fragmentManager.beginTransaction().replace(R.id.container, displaySingleNewsFragment)
-	    	        	.addToBackStack("back").commit();
+	    	        fragmentManager.beginTransaction().replace(R.id.container, displaySingleNewsFragment).commit();
 					
 				}
 			});
