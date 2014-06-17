@@ -3,6 +3,7 @@ package com.example.myanmarnews.Fragments;
 import imageLoader.ImageLoader;
 
 import java.util.List;
+
 import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.RSS.RSSDatabaseHandler;
@@ -21,10 +22,12 @@ import com.example.myanmarnews.RSS.WebSite;
 
 
 
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 //import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -69,7 +72,7 @@ public class DisplayFullNewsFragment extends Fragment {
 	 * The fragment argument representing the section number for this
 	 * fragment.
 	 */
-	private static final String ARG_SECTION_NUMBER = "section_number";
+	
 	//private ArrayList<RSSItem> rssItems = (ArrayList<RSSItem>) MainActivity.rssItems;
 
 	
@@ -95,8 +98,6 @@ public class DisplayFullNewsFragment extends Fragment {
 			// primary sections of the activity.
 	        Bundle bundle = this.getArguments();
 	        id = bundle.getInt(ARG_ID);
-	        //size = bundle.getInt(ARG_SIZE);
-	       
 	        
 	        PagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(myContext.getSupportFragmentManager());
 
@@ -129,7 +130,7 @@ public class DisplayFullNewsFragment extends Fragment {
 		 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 		 * one of the sections/tabs/pages.
 		 */
-		public class SectionsPagerAdapter extends FragmentPagerAdapter {
+		public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
 			public SectionsPagerAdapter(android.support.v4.app.FragmentManager fragmentManager) {
 				super(fragmentManager);
@@ -140,6 +141,8 @@ public class DisplayFullNewsFragment extends Fragment {
 				// getItem is called to instantiate the fragment for the given page.
 					// below).
 				// Return a PlaceholderFragment (defined as a static inner class
+				Log.d("SECTIONPAGER", "CALLED");
+
 				return PlaceholderFragment.newInstance(position+1);
 			}
 
@@ -193,7 +196,7 @@ public class DisplayFullNewsFragment extends Fragment {
 		        //Get data from database
 		        RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
 		      //  List<WebSite> websites = rssDb.getAllSitesByID();
-		        Log.d("value of SIZE OF DATABASE", "TEST = " + String.valueOf(DisplayFullNewsFragment.size));
+		        //Log.d("value of SIZE OF DATABASE", "TEST = " + String.valueOf(DisplayFullNewsFragment.size));
 		        
 		        
 		        	WebSite website = rssDb.getSiteById(position);
@@ -206,7 +209,7 @@ public class DisplayFullNewsFragment extends Fragment {
 	    					website.getPubDate(),
 	    					 website.getImageLink());
 		        
-    			
+    			//Log.d("DEBUG", "TITLE = " + item.getTitle());
 		        //Get ID Layout
 		        TextView page_title = (TextView) rootView.findViewById(R.id.page_title);
 			    TextView page_public_date = (TextView) rootView.findViewById(R.id.page_public_date);

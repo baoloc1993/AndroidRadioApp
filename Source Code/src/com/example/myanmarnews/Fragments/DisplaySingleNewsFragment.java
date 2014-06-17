@@ -7,6 +7,7 @@ import com.example.myanmarnews.RSS.WebSite;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
