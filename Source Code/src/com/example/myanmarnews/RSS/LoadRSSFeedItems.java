@@ -73,7 +73,7 @@ public class LoadRSSFeedItems extends AsyncTask<String, String, String> {
 		}
 
 		// updating UI from Background Thread
-		Log.d("DEBUG", "DEBUG");
+		
 		MainActivity.activity.runOnUiThread(new Runnable() {
 
 			// InputStream input = null;

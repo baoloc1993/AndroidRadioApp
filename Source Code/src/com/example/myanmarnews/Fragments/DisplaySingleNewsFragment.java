@@ -73,7 +73,7 @@ public class DisplaySingleNewsFragment extends Fragment {
 		                
 		                //Go to DisplayFullNewsFragment
 		    	        fragmentManager.beginTransaction().replace(R.id.container, displayFullNewsFragment).commit();
-		                //getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		              //  getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		                return true;
 		            } else {
 		                return false;

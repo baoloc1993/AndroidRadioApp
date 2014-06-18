@@ -154,6 +154,7 @@ public class BasicFunctions {
 	        	//transfer link of current Item to other fragment
 	            Bundle args = new Bundle();
 	            args.putInt(DisplayFullNewsFragment.ARG_ID, website.getId());
+	          //  args.putString(DisplayFullNewsFragment.ARG_TYPE_FRAGMENT, getClass().toString());
 	           // args.putInt(DisplayFullNewsFragment.ARG_SIZE, websites.size());
 	            //Log.d("SET ON ITEM CLICK LISTENER", String.valueOf(website.getId()));
 
