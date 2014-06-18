@@ -241,5 +241,17 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
         boolean exists = (cursor.getCount() > 0);
         return exists;
     }
+    
+    /**
+     * Get the size of the database
+     */
+    public int getDatabaseSize(){
+    	String countQuery = "SELECT  * FROM " + TABLE_RSS;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int cnt = cursor.getCount();
+        cursor.close();
+        return cnt;
+    }
  
 }

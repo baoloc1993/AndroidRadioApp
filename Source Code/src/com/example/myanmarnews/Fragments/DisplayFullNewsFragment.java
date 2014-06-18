@@ -91,8 +91,8 @@ public class DisplayFullNewsFragment extends Fragment {
 
 	        View rootView = inflater.inflate(R.layout.swipe_view_layout, container, false);
 	        RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-	        List<WebSite> websites = rssDb.getAllSitesByID();
-	        size = websites.size();
+	        size = rssDb.getDatabaseSize();
+
 	        
 	     // Create the adapter that will return a fragment for each of the three
 			// primary sections of the activity.
@@ -141,7 +141,7 @@ public class DisplayFullNewsFragment extends Fragment {
 				// getItem is called to instantiate the fragment for the given page.
 					// below).
 				// Return a PlaceholderFragment (defined as a static inner class
-				Log.d("SECTIONPAGER", "CALLED");
+				//Log.d("SECTIONPAGER", "CALLED");
 
 				return PlaceholderFragment.newInstance(position+1);
 			}
@@ -195,8 +195,9 @@ public class DisplayFullNewsFragment extends Fragment {
 		       // id = DisplayFullNewsFragment.id +position -1;
 		        //Get data from database
 		        RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
-		      //  List<WebSite> websites = rssDb.getAllSitesByID();
-		        //Log.d("value of SIZE OF DATABASE", "TEST = " + String.valueOf(DisplayFullNewsFragment.size));
+		        //List<WebSite> websites = rssDb.getAllSitesByID();
+//		        Log.d("value of SIZE OF DATABASE", "TEST = " + String.valueOf(DisplayFullNewsFragment.size));
+//		        Log.d("value of SIZE OF DATABASE", "USING FUNCTION TEST = " + String.valueOf(rssDb.getDatabaseSize()));
 		        
 		        
 		        	WebSite website = rssDb.getSiteById(position);
@@ -219,10 +220,7 @@ public class DisplayFullNewsFragment extends Fragment {
 			    
 			    
 			    //Get information of current News
-			    
-			   // RSSItem item = MainActivity.rssItems.get(position);
-			    //Log.d("POSITION", page_title.toString());
-			    //Set Information for text
+
 			    page_title.setText(item.getTitle());
 			    page_public_date.setText(item.getPubdate());
 			    page_content.setText(item.getDescription());
