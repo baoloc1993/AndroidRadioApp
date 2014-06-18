@@ -146,41 +146,41 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
         return siteList;
     }
  
-    /**
-     * Reading all rows from database
-     * */
-    public List<WebSite> getAllSitesLimited(int limitedNumber) {
-    	int count = 0;
-        List<WebSite> siteList = new ArrayList<WebSite>();
-        // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_RSS
-                + " ORDER BY " + KEY_ID + " DESC";
- 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
- 
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-            	count++;
-                WebSite site = new WebSite();
-                site.setId(Integer.parseInt(cursor.getString(0)));
-                site.setTitle(cursor.getString(1));
-                site.setLink(cursor.getString(2));
-                site.setImageLink(cursor.getString(3));
-                site.setDescription(cursor.getString(4));
-                site.setPubDate(cursor.getString(5));
-                // Adding contact to list
-                siteList.add(site);
-            } while (cursor.moveToNext() && count < limitedNumber);
-        }
-        cursor.close();
-        db.close();
- 
-        // return contact list
-        
-        return siteList;
-    }
+//    /**
+//     * Reading all rows from database
+//     * */
+//    public List<WebSite> getAllSitesLimited(int limitedNumber) {
+//    	int count = 0;
+//        List<WebSite> siteList = new ArrayList<WebSite>();
+//        // Select All Query
+//        String selectQuery = "SELECT * FROM " + TABLE_RSS
+//                + " ORDER BY " + KEY_ID + " DESC";
+// 
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(selectQuery, null);
+// 
+//        // looping through all rows and adding to list
+//        if (cursor.moveToFirst()) {
+//            do {
+//            	count++;
+//                WebSite site = new WebSite();
+//                site.setId(Integer.parseInt(cursor.getString(0)));
+//                site.setTitle(cursor.getString(1));
+//                site.setLink(cursor.getString(2));
+//                site.setImageLink(cursor.getString(3));
+//                site.setDescription(cursor.getString(4));
+//                site.setPubDate(cursor.getString(5));
+//                // Adding contact to list
+//                siteList.add(site);
+//            } while (cursor.moveToNext() && count < limitedNumber);
+//        }
+//        cursor.close();
+//        db.close();
+// 
+//        // return contact list
+//        
+//        return siteList;
+//    }
 
     /**
      * Updating a single row row will be identified by rss link

@@ -102,7 +102,7 @@ public class LoadRSSFeedItems extends AsyncTask<String, String, String> {
 
 				// updating listview
 				//Get All Website for Database
-				List<WebSite> websites = rssDb.getAllSitesLimited(MainActivity.LIMITED_NUMBER);
+				List<WebSite> websites = rssDb.getAllSitesByID();
 				for (WebSite website : websites) {
 					RSSItem newItem = new RSSItem(website.getId(),
 							website.getTitle(), website.getLink(),
