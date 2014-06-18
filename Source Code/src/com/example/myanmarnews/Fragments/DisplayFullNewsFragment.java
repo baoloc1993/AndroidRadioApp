@@ -4,6 +4,7 @@ import imageLoader.ImageLoader;
 
 import java.util.List;
 
+import com.example.myanmarnews.Constant;
 import com.example.myanmarnews.MainActivity;
 import com.example.myanmarnews.R;
 import com.example.myanmarnews.RSS.RSSDatabaseHandler;
@@ -23,8 +24,11 @@ import com.example.myanmarnews.RSS.WebSite;
 
 
 
+
+
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -32,6 +36,7 @@ import android.support.v4.view.PagerAdapter;
 //import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +67,7 @@ public class DisplayFullNewsFragment extends Fragment {
 	public static String ARG_ID = "";
 	public static String ARG_TITLE = "";
 	public static final String ARG_SIZE = null;
+	//public static final String ARG_TYPE_FRAGMENT = null;
 	
 	private static int size = 0;
 	private static int id = 0;
@@ -80,14 +86,14 @@ public class DisplayFullNewsFragment extends Fragment {
 	public DisplayFullNewsFragment(){
 		
 		super();
-		//Log.d("DisplayFillNewsFragment", "get item");
+		
 	}
 	
 	
 	 @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
-			//Log.d("DisplayFillNewsFragment", "get item");
+			
 
 	        View rootView = inflater.inflate(R.layout.swipe_view_layout, container, false);
 	        RSSDatabaseHandler rssDb = new RSSDatabaseHandler(getActivity());
@@ -251,6 +257,43 @@ public class DisplayFullNewsFragment extends Fragment {
 					
 				}
 			});
+			   rootView.setFocusableInTouchMode(true);
+				rootView.requestFocus();
+				rootView.setOnKeyListener(new View.OnKeyListener() {
+				       
+
+						@Override
+						public boolean onKey(View v, int keyCode, KeyEvent event) {
+							// TODO Auto-generated method stub
+							Log.i(getTag(), "keyCode: " + keyCode);
+				            if( keyCode == KeyEvent.KEYCODE_BACK ) {
+				                 
+				            	Bundle args = new Bundle();
+				            	//String fragment_type = args.getString(ARG_TYPE_FRAGMENT);
+				                
+				                FragmentManager fragmentManager = getActivity().getFragmentManager();
+				                
+				                //displayFullNewsFragment.setArguments(args);
+				                ListViewNewsLiveFragment list = new ListViewNewsLiveFragment();
+				                GridViewNewsLiveFragment grid = new GridViewNewsLiveFragment();
+				                //Log.d("DEBUG", "LIST = " + fragment_type);
+				                //Back to ListFragment
+				                if (MainActivity.curViewGroup == Constant.List){
+				                	fragmentManager.beginTransaction().replace(R.id.container, list).commit();
+				                } 
+				                
+				                //Back to GridFragment
+				                if (MainActivity.curViewGroup == Constant.Grid){
+				                	Log.d("aaaa", "GRID");
+				                	fragmentManager.beginTransaction().replace(R.id.container, grid).commit();
+				                }
+				              //  getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+				                return true;
+				            } else {
+				                return false;
+				            }
+						}
+				    });
 				return rootView;
 			}
 			

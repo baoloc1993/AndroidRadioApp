@@ -34,6 +34,7 @@ public class MainActivity extends FragmentActivity implements
 	public static Constant curViewGroup;
 	public static Activity activity;
 	public static List<RSSItem> rssItems = new ArrayList<RSSItem>();
+	public static int LIMITED_NUMBER = 100;
 	
 	
 	/**
